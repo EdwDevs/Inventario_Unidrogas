@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario UNIDROGAS - Sistema Compacto</title>
+    <title>Inventario LABS CHALVER - Sistema Compacto</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -286,8 +286,14 @@
         .product-name {
             font-weight: 600;
             color: var(--primary);
-            max-width: 300px;
+            max-width: 350px;
             line-height: 1.4;
+        }
+
+        .laboratorio {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
         .price {
@@ -322,15 +328,6 @@
         .badge-medio { background: var(--warning); }
         .badge-poco { background: #e67e22; }
         .badge-agotado { background: var(--danger); }
-
-        .discount {
-            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-            color: #7d6608;
-            padding: 0.25rem 0.5rem;
-            border-radius: var(--radius);
-            font-weight: 600;
-            font-size: 0.75rem;
-        }
 
         /* Sin Resultados */
         .no-results {
@@ -430,19 +427,19 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header Compacto -->
+        <!-- Header Actualizado -->
         <header class="header">
             <div>
-                <h1><i class="fas fa-hospital"></i> INVENTARIO UNIDROGAS</h1>
-                <p>Sistema de Control de Stock - Portafolio Chalver</p>
+                <h1><i class="fas fa-pills"></i> INVENTARIO LABS CHALVER</h1>
+                <p>Sistema de Control de Stock - LABS CHALVER DE COLOMBIA</p>
             </div>
             <div class="header-info">
-                <div><i class="fas fa-building"></i> Depósito UNIDROGAS</div>
-                <div><i class="fas fa-clock"></i> 10/06/2025 05:55</div>
+                <div><i class="fas fa-building"></i> LABS CHALVER DE COLOMBIA</div>
+                <div><i class="fas fa-clock"></i> 10/06/2025 04:46</div>
             </div>
         </header>
 
-        <!-- Dashboard Compacto -->
+        <!-- Dashboard Actualizado -->
         <section class="dashboard">
             <div class="stats-grid">
                 <div class="stat-card total">
@@ -454,7 +451,7 @@
                     <div class="stat-label"><i class="fas fa-check-circle"></i> Disponibles</div>
                 </div>
                 <div class="stat-card poco">
-                    <div class="stat-number">4</div>
+                    <div class="stat-number">5</div>
                     <div class="stat-label"><i class="fas fa-exclamation-triangle"></i> Crítico</div>
                 </div>
                 <div class="stat-card agotado">
@@ -462,13 +459,13 @@
                     <div class="stat-label"><i class="fas fa-times-circle"></i> Agotado</div>
                 </div>
                 <div class="stat-card valor">
-                    <div class="stat-number">$168.4M</div>
+                    <div class="stat-number">$264.8M</div>
                     <div class="stat-label"><i class="fas fa-dollar-sign"></i> Valor Total</div>
                 </div>
             </div>
         </section>
 
-        <!-- Controles Compactos -->
+        <!-- Controles -->
         <section class="controls">
             <div class="search-container">
                 <input type="text" class="search-input" placeholder="Buscar productos..." id="searchInput">
@@ -488,99 +485,248 @@
             <i class="fas fa-info-circle"></i> Mostrando 23 productos
         </div>
 
-        <!-- Tabla de Productos -->
+        <!-- Tabla de Productos Actualizada -->
         <section class="table-container">
             <table class="products-table">
                 <thead>
                     <tr>
-                        <th><i class="fas fa-tag"></i> Producto</th>
+                        <th><i class="fas fa-tag"></i> Producto / Laboratorio</th>
                         <th><i class="fas fa-dollar-sign"></i> Precio</th>
                         <th><i class="fas fa-cube"></i> Stock</th>
                         <th><i class="fas fa-signal"></i> Estado</th>
                         <th><i class="fas fa-calculator"></i> Valor Inventario</th>
-                        <th><i class="fas fa-percent"></i> Descuento</th>
                     </tr>
                 </thead>
                 <tbody id="productTableBody">
-                    <tr data-category="alto" data-search="inflacor retard betametasona 3/3 ml x 1 amp + jer">
-                        <td class="product-name">INFLACOR RETARD BETAMETASONA 3/3 ML X 1 AMP + JER</td>
+                    <tr data-category="alto" data-search="inflaor retard betametasona 3x/3ml x 1 amp + jer">
+                        <td>
+                            <div class="product-name">INFLAOR RETARD BETAMETASONA 3X/3ML X 1 AMP + JER</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
                         <td class="price">$37,049</td>
                         <td class="stock">1233</td>
                         <td><span class="status-badge badge-alto">Alto</span></td>
                         <td class="inventory-value">$45,681,417</td>
-                        <td><span class="discount">12%</span></td>
                     </tr>
-                    <tr data-category="alto" data-search="dolpasse dexketoprofeno 25 mg x 20 tab">
-                        <td class="product-name">DOLPASSE DEXKETOPROFENO 25 MG X 20 TAB</td>
-                        <td class="price">$29,862</td>
-                        <td class="stock">957</td>
+                    <tr data-category="alto" data-search="airmax salbutamol 100 mcg inhalador x 200 dosis">
+                        <td>
+                            <div class="product-name">AIRMAX SALBUTAMOL 100 MCG INHALADOR X 200 DOSIS</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$14,601</td>
+                        <td class="stock">381</td>
                         <td><span class="status-badge badge-alto">Alto</span></td>
-                        <td class="inventory-value">$28,582,134</td>
-                        <td><span class="discount">8%</span></td>
+                        <td class="inventory-value">$5,562,981</td>
                     </tr>
-                    <tr data-category="alto" data-search="advil ultra ibuprofeno 400 mg x 20 cap">
-                        <td class="product-name">ADVIL ULTRA IBUPROFENO 400 MG X 20 CAP</td>
-                        <td class="price">$24,518</td>
-                        <td class="stock">894</td>
+                    <tr data-category="alto" data-search="descongel gripa acetaminofen/loratadina/fenilefrina x 100 cap">
+                        <td>
+                            <div class="product-name">DESCONGEL GRIPA ACETAMINOFEN/LORATADINA/FENILEFRINA X 100 CAP</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$117,010</td>
+                        <td class="stock">345</td>
                         <td><span class="status-badge badge-alto">Alto</span></td>
-                        <td class="inventory-value">$21,919,092</td>
-                        <td><span class="discount">15%</span></td>
+                        <td class="inventory-value">$40,368,450</td>
                     </tr>
-                    <tr data-category="alto" data-search="dolex niños acetaminofen 80 mg/ml x 60 ml">
-                        <td class="product-name">DOLEX NIÑOS ACETAMINOFEN 80 MG/ML X 60 ML</td>
-                        <td class="price">$18,456</td>
-                        <td class="stock">723</td>
+                    <tr data-category="alto" data-search="cutamizol clotrimazol 1% crema x 20 gr">
+                        <td>
+                            <div class="product-name">CUTAMIZOL CLOTRIMAZOL 1% CREMA X 20 GR</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$15,507</td>
+                        <td class="stock">338</td>
                         <td><span class="status-badge badge-alto">Alto</span></td>
-                        <td class="inventory-value">$13,345,688</td>
-                        <td><span class="discount">10%</span></td>
+                        <td class="inventory-value">$5,241,366</td>
                     </tr>
-                    <tr data-category="alto" data-search="aspirina protect acido acetilsalicilico 100 mg x 30 tab">
-                        <td class="product-name">ASPIRINA PROTECT ACIDO ACETILSALICILICO 100 MG X 30 TAB</td>
-                        <td class="price">$15,789</td>
-                        <td class="stock">612</td>
-                        <td><span class="status-badge badge-alto">Alto</span></td>
-                        <td class="inventory-value">$9,662,868</td>
-                        <td><span class="discount">5%</span></td>
-                    </tr>
-                    <tr data-category="medio" data-search="mentisan mentol alcanfor eucalipto x 100 g">
-                        <td class="product-name">MENTISAN MENTOL ALCANFOR EUCALIPTO X 100 G</td>
-                        <td class="price">$12,345</td>
-                        <td class="stock">456</td>
+                    <tr data-category="medio" data-search="trigentax clotrimazol/neomicina/betametasona 0.04/1/0.0.5 gr crema x 40 gr">
+                        <td>
+                            <div class="product-name">TRIGENTAX CLOTRIMAZOL/NEOMICINA/BETAMETASONA 0.04/1/0.0.5 GR CREMA X 40 GR</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$44,106</td>
+                        <td class="stock">210</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$5,629,320</td>
-                        <td><span class="discount">7%</span></td>
+                        <td class="inventory-value">$9,262,260</td>
                     </tr>
-                    <tr data-category="medio" data-search="buscapina hioscina 10 mg x 20 drag">
-                        <td class="product-name">BUSCAPINA HIOSCINA 10 MG X 20 DRAG</td>
-                        <td class="price">$22,110</td>
-                        <td class="stock">389</td>
+                    <tr data-category="medio" data-search="zakor mebendazol 100 mg x 6 tab">
+                        <td>
+                            <div class="product-name">ZAKOR MEBENDAZOL 100 MG X 6 TAB</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$7,275</td>
+                        <td class="stock">198</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$8,600,790</td>
-                        <td><span class="discount">12%</span></td>
+                        <td class="inventory-value">$1,440,450</td>
                     </tr>
-                    <tr data-category="medio" data-search="alka seltzer acido acetilsalicilico 324 mg x 10 tab efervescentes">
-                        <td class="product-name">ALKA SELTZER ACIDO ACETILSALICILICO 324 MG X 10 TAB EFERVESCENTES</td>
-                        <td class="price">$16,789</td>
-                        <td class="stock">298</td>
+                    <tr data-category="medio" data-search="asmopro ipratropio 0.4 mg/ml inhalador x 200 dosis">
+                        <td>
+                            <div class="product-name">ASMOPRO IPRATROPIO 0.4 MG/ML INHALADOR X 200 DOSIS</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$19,105</td>
+                        <td class="stock">188</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$5,003,122</td>
-                        <td><span class="discount">9%</span></td>
+                        <td class="inventory-value">$3,591,740</td>
                     </tr>
-                    <tr data-category="poco" data-search="tapsin acetaminofen 500 mg x 20 tab">
-                        <td class="product-name">TAPSIN ACETAMINOFEN 500 MG X 20 TAB</td>
-                        <td class="price">$8,456</td>
-                        <td class="stock">89</td>
+                    <tr data-category="medio" data-search="multidol ibuprofeno 400 mg x 428 cap">
+                        <td>
+                            <div class="product-name">MULTIDOL IBUPROFENO 400 MG X 428 CAP</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$42,910</td>
+                        <td class="stock">182</td>
+                        <td><span class="status-badge badge-medio">Medio</span></td>
+                        <td class="inventory-value">$7,809,620</td>
+                    </tr>
+                    <tr data-category="medio" data-search="trigentax clotrimazol/neomicina/betametasona 0.04/1/0.0.5 gr locion x 50 ml">
+                        <td>
+                            <div class="product-name">TRIGENTAX CLOTRIMAZOL/NEOMICINA/BETAMETASONA 0.04/1/0.0.5 GR LOCION X 50 ML</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$53,662</td>
+                        <td class="stock">148</td>
+                        <td><span class="status-badge badge-medio">Medio</span></td>
+                        <td class="inventory-value">$7,941,976</td>
+                    </tr>
+                    <tr data-category="medio" data-search="clobezan clobetasol 0.05% locion x 60 ml">
+                        <td>
+                            <div class="product-name">CLOBEZAN CLOBETASOL 0.05% LOCION X 60 ML</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$66,443</td>
+                        <td class="stock">119</td>
+                        <td><span class="status-badge badge-medio">Medio</span></td>
+                        <td class="inventory-value">$7,906,717</td>
+                    </tr>
+                    <tr data-category="medio" data-search="descongel gripa acetaminofen/loratadina/fenilefrina gotas x 15 ml">
+                        <td>
+                            <div class="product-name">DESCONGEL GRIPA ACETAMINOFEN/LORATADINA/FENILEFRINA GOTAS X 15 ML</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$18,687</td>
+                        <td class="stock">118</td>
+                        <td><span class="status-badge badge-medio">Medio</span></td>
+                        <td class="inventory-value">$2,205,066</td>
+                    </tr>
+                    <tr data-category="medio" data-search="duopas ibuprofeno/hioscina 400/20 mg x 10 cap">
+                        <td>
+                            <div class="product-name">DUOPAS IBUPROFENO/HIOSCINA 400/20 MG X 10 CAP</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$45,329</td>
+                        <td class="stock">116</td>
+                        <td><span class="status-badge badge-medio">Medio</span></td>
+                        <td class="inventory-value">$5,258,164</td>
+                    </tr>
+                    <tr data-category="medio" data-search="estermax estrogenos conjugados crema vaginal x 42.8 gr">
+                        <td>
+                            <div class="product-name">ESTERMAX ESTROGENOS CONJUGADOS CREMA VAGINAL X 42.8 GR</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$28,133</td>
+                        <td class="stock">103</td>
+                        <td><span class="status-badge badge-medio">Medio</span></td>
+                        <td class="inventory-value">$2,897,699</td>
+                    </tr>
+                    <tr data-category="poco" data-search="flezinit facetaminofen/cetirizina/fenilefrina x 10 tab">
+                        <td>
+                            <div class="product-name">FLEZINIT FACETAMINOFEN/CETIRIZINA/FENILEFRINA X 10 TAB</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$31,969</td>
+                        <td class="stock">88</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$752,584</td>
-                        <td><span class="discount">6%</span></td>
+                        <td class="inventory-value">$2,813,272</td>
                     </tr>
-                    <tr data-category="poco" data-search="mejoral cafeina acido acetilsalicilico 12 tab">
-                        <td class="product-name">MEJORAL CAFEINA ACIDO ACETILSALICILICO 12 TAB</td>
-                        <td class="price">$11,234</td>
-                        <td class="stock">67</td>
+                    <tr data-category="poco" data-search="femtril estriol 0.1 gr crema vaginal x 20 gr x 5 aplicadores">
+                        <td>
+                            <div class="product-name">FEMTRIL ESTRIOL 0.1 GR CREMA VAGINAL X 20 GR X 5 APLICADORES</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$25,498</td>
+                        <td class="stock">72</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$752,678</td>
-                        <td><span class="discount">8%</span></td>
+                        <td class="inventory-value">$1,835,856</td>
+                    </tr>
+                    <tr data-category="poco" data-search="inflaor retard betametasona 6x/2ml x 1 amp + jer">
+                        <td>
+                            <div class="product-name">INFLAOR RETARD BETAMETASONA 6X/2ML X 1 AMP + JER</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$55,626</td>
+                        <td class="stock">72</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$4,005,072</td>
+                    </tr>
+                    <tr data-category="poco" data-search="neuropon gabapentina 3 x 100 cap">
+                        <td>
+                            <div class="product-name">NEUROPON GABAPENTINA 3 X 100 CAP</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$109,386</td>
+                        <td class="stock">71</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$7,766,406</td>
+                    </tr>
+                    <tr data-category="poco" data-search="flezinit facetaminofen/cetirizina/fenilefrina jarabe x 60 ml">
+                        <td>
+                            <div class="product-name">FLEZINIT FACETAMINOFEN/CETIRIZINA/FENILEFRINA JARABE X 60 ML</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$34,832</td>
+                        <td class="stock">51</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$1,776,432</td>
+                    </tr>
+                    <tr data-category="poco" data-search="estrogenos conjugados crema vaginal x 40 gr">
+                        <td>
+                            <div class="product-name">ESTROGENOS CONJUGADOS CREMA VAGINAL X 40 GR</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$30,547</td>
+                        <td class="stock">32</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$977,504</td>
+                    </tr>
+                    <tr data-category="poco" data-search="trigentax clotrimazol/neomicina/betametasona 0.04/1/0.0.5 gr crema x 20 gr">
+                        <td>
+                            <div class="product-name">TRIGENTAX CLOTRIMAZOL/NEOMICINA/BETAMETASONA 0.04/1/0.0.5 GR CREMA X 20 GR</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$25,539</td>
+                        <td class="stock">32</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$817,248</td>
+                    </tr>
+                    <tr data-category="poco" data-search="friotan hedera helix 65 mg x 10 cap">
+                        <td>
+                            <div class="product-name">FRIOTAN HEDERA HELIX 65 MG X 10 CAP</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$34,474</td>
+                        <td class="stock">21</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$723,954</td>
+                    </tr>
+                    <tr data-category="poco" data-search="vaginsol clotrimazol/cinamidina 200/100 mg x 3 ovulos">
+                        <td>
+                            <div class="product-name">VAGINSOL CLOTRIMAZOL/CINAMIDINA 200/100 MG X 3 OVULOS</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$95,429</td>
+                        <td class="stock">19</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$1,813,151</td>
+                    </tr>
+                    <tr data-category="poco" data-search="vaginsol clotrimazol/cinamidina 200/100 mg x 3 ovulos alt">
+                        <td>
+                            <div class="product-name">VAGINSOL CLOTRIMAZOL/CINAMIDINA 200/100 MG X 3 OVULOS (ALT)</div>
+                            <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
+                        </td>
+                        <td class="price">$96,622</td>
+                        <td class="stock">13</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$1,256,086</td>
                     </tr>
                 </tbody>
             </table>
@@ -591,17 +737,21 @@
             </div>
         </section>
 
-        <!-- Footer Compacto -->
+        <!-- Footer Actualizado -->
         <footer class="footer">
-            <h3><i class="fas fa-chart-bar"></i> Resumen UNIDROGAS</h3>
+            <h3><i class="fas fa-chart-bar"></i> Resumen LABS CHALVER</h3>
             <div class="footer-stats">
                 <div class="footer-stat">
                     <strong><i class="fas fa-trophy"></i> Mayor Stock:</strong><br>
-                    INFLACOR RETARD (1233 unidades)
+                    INFLAOR RETARD BETAMETASONA 3X/3ML (1233 unidades)
                 </div>
                 <div class="footer-stat">
                     <strong><i class="fas fa-gem"></i> Mayor Valor:</strong><br>
-                    INFLACOR RETARD ($45,681,417)
+                    INFLAOR RETARD BETAMETASONA 3X/3ML ($45,681,417)
+                </div>
+                <div class="footer-stat">
+                    <strong><i class="fas fa-exclamation-triangle"></i> Atención:</strong><br>
+                    5 productos en estado crítico (stock < 50)
                 </div>
             </div>
         </footer>
