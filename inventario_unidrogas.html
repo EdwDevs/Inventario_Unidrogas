@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario LABS CHALVER - Sistema Compacto</title>
+    <title>Inventario LABS CHALVER - Sistema Corregido</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -229,7 +229,7 @@
             text-align: center;
         }
 
-        /* Tabla Principal Optimizada */
+        /* Tabla Principal */
         .table-container {
             padding: 1.5rem;
             overflow-x: auto;
@@ -262,12 +262,6 @@
         .products-table th i {
             margin-right: 0.5rem;
         }
-
-        /* Columnas optimizadas sin valor inventario */
-        .products-table th:nth-child(1) { width: 50%; } /* Producto más amplio */
-        .products-table th:nth-child(2) { width: 15%; } /* Precio */
-        .products-table th:nth-child(3) { width: 15%; } /* Stock */
-        .products-table th:nth-child(4) { width: 20%; } /* Estado */
 
         .products-table tbody tr {
             transition: var(--transition);
@@ -365,7 +359,7 @@
             font-size: 0.85rem;
         }
 
-        /* Responsive Mejorado */
+        /* Responsive */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -403,12 +397,6 @@
             .products-table td {
                 padding: 0.5rem;
             }
-
-            /* Responsive de columnas */
-            .products-table th:nth-child(1) { width: 45%; }
-            .products-table th:nth-child(2) { width: 20%; }
-            .products-table th:nth-child(3) { width: 15%; }
-            .products-table th:nth-child(4) { width: 20%; }
         }
 
         /* Scrollbar */
@@ -437,7 +425,7 @@
             </div>
             <div class="header-info">
                 <div><i class="fas fa-building"></i> LABS CHALVER DE COLOMBIA</div>
-                <div><i class="fas fa-clock"></i> 10/06/2025 04:46</div>
+                <div><i class="fas fa-clock"></i> 10/06/2025 17:33</div>
             </div>
         </header>
 
@@ -487,7 +475,7 @@
             <i class="fas fa-info-circle"></i> Mostrando 23 productos
         </div>
 
-        <!-- Tabla Optimizada -->
+        <!-- Tabla Corregida -->
         <section class="table-container">
             <table class="products-table">
                 <thead>
@@ -499,9 +487,9 @@
                     </tr>
                 </thead>
                 <tbody id="productTableBody">
-                    <tr data-category="alto" data-search="inflaor retard betametasona 3x/3ml x 1 amp + jer">
+                    <tr data-category="alto" data-search="inflacor ret 3/3mg amp x 1ml (betametasona)">
                         <td>
-                            <div class="product-name">INFLAOR RETARD BETAMETASONA 3X/3ML X 1 AMP + JER</div>
+                            <div class="product-name">INFLACOR RET 3/3MG AMP X 1ML (BETAMETASONA)</div>
                             <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
                         </td>
                         <td class="price">$37,049</td>
@@ -535,18 +523,18 @@
                         <td class="stock">338</td>
                         <td><span class="status-badge badge-alto">Alto</span></td>
                     </tr>
-                    <tr data-category="medio" data-search="trigentax clotrimazol/neomicina/betametasona 0.04/1/0.0.5 gr crema x 40 gr">
+                    <tr data-category="medio" data-search="trigentax cr x 40gr (clotrimazol+neomicina+betametasona)">
                         <td>
-                            <div class="product-name">TRIGENTAX CLOTRIMAZOL/NEOMICINA/BETAMETASONA 0.04/1/0.0.5 GR CREMA X 40 GR</div>
+                            <div class="product-name">TRIGENTAX CR X 40GR (CLOTRIMAZOL+NEOMICINA+BETAMETASONA)</div>
                             <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
                         </td>
                         <td class="price">$44,106</td>
                         <td class="stock">210</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
                     </tr>
-                    <tr data-category="medio" data-search="zakor mebendazol 100 mg x 6 tab">
+                    <tr data-category="medio" data-search="zakor 100mg x 6 tbs (mebendazol)">
                         <td>
-                            <div class="product-name">ZAKOR MEBENDAZOL 100 MG X 6 TAB</div>
+                            <div class="product-name">ZAKOR 100MG X 6 TBS (MEBENDAZOL)</div>
                             <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
                         </td>
                         <td class="price">$7,275</td>
@@ -562,18 +550,18 @@
                         <td class="stock">188</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
                     </tr>
-                    <tr data-category="medio" data-search="multidol ibuprofeno 400 mg x 428 cap">
+                    <tr data-category="medio" data-search="multidol express 400mg x 48cbg (ibuprofeno)">
                         <td>
-                            <div class="product-name">MULTIDOL IBUPROFENO 400 MG X 428 CAP</div>
+                            <div class="product-name">MULTIDOL EXPRESS 400MG X 48CBG (IBUPROFENO)</div>
                             <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
                         </td>
                         <td class="price">$42,910</td>
                         <td class="stock">182</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
                     </tr>
-                    <tr data-category="medio" data-search="trigentax clotrimazol/neomicina/betametasona 0.04/1/0.0.5 gr locion x 50 ml">
+                    <tr data-category="medio" data-search="trigentax loc top. x 50ml (clotrimazol+neomicina+betametasona)">
                         <td>
-                            <div class="product-name">TRIGENTAX CLOTRIMAZOL/NEOMICINA/BETAMETASONA 0.04/1/0.0.5 GR LOCION X 50 ML</div>
+                            <div class="product-name">TRIGENTAX LOC TOP. X 50ML (CLOTRIMAZOL+NEOMICINA+BETAMETASONA)</div>
                             <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
                         </td>
                         <td class="price">$53,662</td>
@@ -634,18 +622,18 @@
                         <td class="stock">72</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
                     </tr>
-                    <tr data-category="poco" data-search="inflaor retard betametasona 6x/2ml x 1 amp + jer">
+                    <tr data-category="poco" data-search="inflacor ret 6/6mg amp x 2ml (betametasona)">
                         <td>
-                            <div class="product-name">INFLAOR RETARD BETAMETASONA 6X/2ML X 1 AMP + JER</div>
+                            <div class="product-name">INFLACOR RET 6/6MG AMP X 2ML (BETAMETASONA)</div>
                             <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
                         </td>
                         <td class="price">$55,626</td>
                         <td class="stock">72</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
                     </tr>
-                    <tr data-category="poco" data-search="neuropon gabapentina 3 x 100 cap">
+                    <tr data-category="poco" data-search="neuropron iny 2ml x 3amp">
                         <td>
-                            <div class="product-name">NEUROPON GABAPENTINA 3 X 100 CAP</div>
+                            <div class="product-name">NEUROPRON INY 2ML X 3AMP</div>
                             <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
                         </td>
                         <td class="price">$109,386</td>
@@ -670,9 +658,9 @@
                         <td class="stock">32</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
                     </tr>
-                    <tr data-category="poco" data-search="trigentax clotrimazol/neomicina/betametasona 0.04/1/0.0.5 gr crema x 20 gr">
+                    <tr data-category="poco" data-search="trigentax cr x 20gr (clotrimazol+neomicina+betametasona)">
                         <td>
-                            <div class="product-name">TRIGENTAX CLOTRIMAZOL/NEOMICINA/BETAMETASONA 0.04/1/0.0.5 GR CREMA X 20 GR</div>
+                            <div class="product-name">TRIGENTAX CR X 20GR (CLOTRIMAZOL+NEOMICINA+BETAMETASONA)</div>
                             <div class="laboratorio">LABS CHALVER DE COLOMBIA</div>
                         </td>
                         <td class="price">$25,539</td>
@@ -721,7 +709,7 @@
             <div class="footer-stats">
                 <div class="footer-stat">
                     <strong><i class="fas fa-trophy"></i> Mayor Stock:</strong><br>
-                    INFLAOR RETARD BETAMETASONA 3X/3ML (1233 unidades)
+                    INFLACOR RET 3/3MG AMP X 1ML (1233 unidades)
                 </div>
                 <div class="footer-stat">
                     <strong><i class="fas fa-gem"></i> Precio Más Alto:</strong><br>
