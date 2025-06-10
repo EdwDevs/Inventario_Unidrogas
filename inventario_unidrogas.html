@@ -229,7 +229,7 @@
             text-align: center;
         }
 
-        /* Tabla Principal */
+        /* Tabla Principal Optimizada */
         .table-container {
             padding: 1.5rem;
             overflow-x: auto;
@@ -263,6 +263,12 @@
             margin-right: 0.5rem;
         }
 
+        /* Columnas optimizadas sin valor inventario */
+        .products-table th:nth-child(1) { width: 50%; } /* Producto más amplio */
+        .products-table th:nth-child(2) { width: 15%; } /* Precio */
+        .products-table th:nth-child(3) { width: 15%; } /* Stock */
+        .products-table th:nth-child(4) { width: 20%; } /* Estado */
+
         .products-table tbody tr {
             transition: var(--transition);
             border-bottom: 1px solid var(--border);
@@ -286,8 +292,8 @@
         .product-name {
             font-weight: 600;
             color: var(--primary);
-            max-width: 350px;
             line-height: 1.4;
+            margin-bottom: 0.5rem;
         }
 
         .laboratorio {
@@ -304,12 +310,6 @@
 
         .stock {
             font-weight: 700;
-            font-size: 1rem;
-        }
-
-        .inventory-value {
-            font-weight: 700;
-            color: var(--secondary);
             font-size: 1rem;
         }
 
@@ -365,7 +365,7 @@
             font-size: 0.85rem;
         }
 
-        /* Responsive */
+        /* Responsive Mejorado */
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
@@ -404,9 +404,11 @@
                 padding: 0.5rem;
             }
 
-            .product-name {
-                max-width: 200px;
-            }
+            /* Responsive de columnas */
+            .products-table th:nth-child(1) { width: 45%; }
+            .products-table th:nth-child(2) { width: 20%; }
+            .products-table th:nth-child(3) { width: 15%; }
+            .products-table th:nth-child(4) { width: 20%; }
         }
 
         /* Scrollbar */
@@ -427,7 +429,7 @@
 </head>
 <body>
     <div class="container">
-        <!-- Header Actualizado -->
+        <!-- Header -->
         <header class="header">
             <div>
                 <h1><i class="fas fa-pills"></i> INVENTARIO LABS CHALVER</h1>
@@ -439,7 +441,7 @@
             </div>
         </header>
 
-        <!-- Dashboard Actualizado -->
+        <!-- Dashboard -->
         <section class="dashboard">
             <div class="stats-grid">
                 <div class="stat-card total">
@@ -485,7 +487,7 @@
             <i class="fas fa-info-circle"></i> Mostrando 23 productos
         </div>
 
-        <!-- Tabla de Productos Actualizada -->
+        <!-- Tabla Optimizada -->
         <section class="table-container">
             <table class="products-table">
                 <thead>
@@ -494,7 +496,6 @@
                         <th><i class="fas fa-dollar-sign"></i> Precio</th>
                         <th><i class="fas fa-cube"></i> Stock</th>
                         <th><i class="fas fa-signal"></i> Estado</th>
-                        <th><i class="fas fa-calculator"></i> Valor Inventario</th>
                     </tr>
                 </thead>
                 <tbody id="productTableBody">
@@ -506,7 +507,6 @@
                         <td class="price">$37,049</td>
                         <td class="stock">1233</td>
                         <td><span class="status-badge badge-alto">Alto</span></td>
-                        <td class="inventory-value">$45,681,417</td>
                     </tr>
                     <tr data-category="alto" data-search="airmax salbutamol 100 mcg inhalador x 200 dosis">
                         <td>
@@ -516,7 +516,6 @@
                         <td class="price">$14,601</td>
                         <td class="stock">381</td>
                         <td><span class="status-badge badge-alto">Alto</span></td>
-                        <td class="inventory-value">$5,562,981</td>
                     </tr>
                     <tr data-category="alto" data-search="descongel gripa acetaminofen/loratadina/fenilefrina x 100 cap">
                         <td>
@@ -526,7 +525,6 @@
                         <td class="price">$117,010</td>
                         <td class="stock">345</td>
                         <td><span class="status-badge badge-alto">Alto</span></td>
-                        <td class="inventory-value">$40,368,450</td>
                     </tr>
                     <tr data-category="alto" data-search="cutamizol clotrimazol 1% crema x 20 gr">
                         <td>
@@ -536,7 +534,6 @@
                         <td class="price">$15,507</td>
                         <td class="stock">338</td>
                         <td><span class="status-badge badge-alto">Alto</span></td>
-                        <td class="inventory-value">$5,241,366</td>
                     </tr>
                     <tr data-category="medio" data-search="trigentax clotrimazol/neomicina/betametasona 0.04/1/0.0.5 gr crema x 40 gr">
                         <td>
@@ -546,7 +543,6 @@
                         <td class="price">$44,106</td>
                         <td class="stock">210</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$9,262,260</td>
                     </tr>
                     <tr data-category="medio" data-search="zakor mebendazol 100 mg x 6 tab">
                         <td>
@@ -556,7 +552,6 @@
                         <td class="price">$7,275</td>
                         <td class="stock">198</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$1,440,450</td>
                     </tr>
                     <tr data-category="medio" data-search="asmopro ipratropio 0.4 mg/ml inhalador x 200 dosis">
                         <td>
@@ -566,7 +561,6 @@
                         <td class="price">$19,105</td>
                         <td class="stock">188</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$3,591,740</td>
                     </tr>
                     <tr data-category="medio" data-search="multidol ibuprofeno 400 mg x 428 cap">
                         <td>
@@ -576,7 +570,6 @@
                         <td class="price">$42,910</td>
                         <td class="stock">182</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$7,809,620</td>
                     </tr>
                     <tr data-category="medio" data-search="trigentax clotrimazol/neomicina/betametasona 0.04/1/0.0.5 gr locion x 50 ml">
                         <td>
@@ -586,7 +579,6 @@
                         <td class="price">$53,662</td>
                         <td class="stock">148</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$7,941,976</td>
                     </tr>
                     <tr data-category="medio" data-search="clobezan clobetasol 0.05% locion x 60 ml">
                         <td>
@@ -596,7 +588,6 @@
                         <td class="price">$66,443</td>
                         <td class="stock">119</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$7,906,717</td>
                     </tr>
                     <tr data-category="medio" data-search="descongel gripa acetaminofen/loratadina/fenilefrina gotas x 15 ml">
                         <td>
@@ -606,7 +597,6 @@
                         <td class="price">$18,687</td>
                         <td class="stock">118</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$2,205,066</td>
                     </tr>
                     <tr data-category="medio" data-search="duopas ibuprofeno/hioscina 400/20 mg x 10 cap">
                         <td>
@@ -616,7 +606,6 @@
                         <td class="price">$45,329</td>
                         <td class="stock">116</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$5,258,164</td>
                     </tr>
                     <tr data-category="medio" data-search="estermax estrogenos conjugados crema vaginal x 42.8 gr">
                         <td>
@@ -626,7 +615,6 @@
                         <td class="price">$28,133</td>
                         <td class="stock">103</td>
                         <td><span class="status-badge badge-medio">Medio</span></td>
-                        <td class="inventory-value">$2,897,699</td>
                     </tr>
                     <tr data-category="poco" data-search="flezinit facetaminofen/cetirizina/fenilefrina x 10 tab">
                         <td>
@@ -636,7 +624,6 @@
                         <td class="price">$31,969</td>
                         <td class="stock">88</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$2,813,272</td>
                     </tr>
                     <tr data-category="poco" data-search="femtril estriol 0.1 gr crema vaginal x 20 gr x 5 aplicadores">
                         <td>
@@ -646,7 +633,6 @@
                         <td class="price">$25,498</td>
                         <td class="stock">72</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$1,835,856</td>
                     </tr>
                     <tr data-category="poco" data-search="inflaor retard betametasona 6x/2ml x 1 amp + jer">
                         <td>
@@ -656,7 +642,6 @@
                         <td class="price">$55,626</td>
                         <td class="stock">72</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$4,005,072</td>
                     </tr>
                     <tr data-category="poco" data-search="neuropon gabapentina 3 x 100 cap">
                         <td>
@@ -666,7 +651,6 @@
                         <td class="price">$109,386</td>
                         <td class="stock">71</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$7,766,406</td>
                     </tr>
                     <tr data-category="poco" data-search="flezinit facetaminofen/cetirizina/fenilefrina jarabe x 60 ml">
                         <td>
@@ -676,7 +660,6 @@
                         <td class="price">$34,832</td>
                         <td class="stock">51</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$1,776,432</td>
                     </tr>
                     <tr data-category="poco" data-search="estrogenos conjugados crema vaginal x 40 gr">
                         <td>
@@ -686,7 +669,6 @@
                         <td class="price">$30,547</td>
                         <td class="stock">32</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$977,504</td>
                     </tr>
                     <tr data-category="poco" data-search="trigentax clotrimazol/neomicina/betametasona 0.04/1/0.0.5 gr crema x 20 gr">
                         <td>
@@ -696,7 +678,6 @@
                         <td class="price">$25,539</td>
                         <td class="stock">32</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$817,248</td>
                     </tr>
                     <tr data-category="poco" data-search="friotan hedera helix 65 mg x 10 cap">
                         <td>
@@ -706,7 +687,6 @@
                         <td class="price">$34,474</td>
                         <td class="stock">21</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$723,954</td>
                     </tr>
                     <tr data-category="poco" data-search="vaginsol clotrimazol/cinamidina 200/100 mg x 3 ovulos">
                         <td>
@@ -716,7 +696,6 @@
                         <td class="price">$95,429</td>
                         <td class="stock">19</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$1,813,151</td>
                     </tr>
                     <tr data-category="poco" data-search="vaginsol clotrimazol/cinamidina 200/100 mg x 3 ovulos alt">
                         <td>
@@ -726,7 +705,6 @@
                         <td class="price">$96,622</td>
                         <td class="stock">13</td>
                         <td><span class="status-badge badge-poco">Crítico</span></td>
-                        <td class="inventory-value">$1,256,086</td>
                     </tr>
                 </tbody>
             </table>
@@ -737,7 +715,7 @@
             </div>
         </section>
 
-        <!-- Footer Actualizado -->
+        <!-- Footer -->
         <footer class="footer">
             <h3><i class="fas fa-chart-bar"></i> Resumen LABS CHALVER</h3>
             <div class="footer-stats">
@@ -746,12 +724,12 @@
                     INFLAOR RETARD BETAMETASONA 3X/3ML (1233 unidades)
                 </div>
                 <div class="footer-stat">
-                    <strong><i class="fas fa-gem"></i> Mayor Valor:</strong><br>
-                    INFLAOR RETARD BETAMETASONA 3X/3ML ($45,681,417)
+                    <strong><i class="fas fa-gem"></i> Precio Más Alto:</strong><br>
+                    DESCONGEL GRIPA CAP ($117,010)
                 </div>
                 <div class="footer-stat">
                     <strong><i class="fas fa-exclamation-triangle"></i> Atención:</strong><br>
-                    5 productos en estado crítico (stock < 50)
+                    10 productos en estado crítico (stock < 100)
                 </div>
             </div>
         </footer>
