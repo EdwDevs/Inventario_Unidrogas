@@ -3,50 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventario UNIDROGAS - Sistema de Gestión Avanzado</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Inventario UNIDROGAS - Sistema Compacto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            /* Paleta de colores mejorada */
-            --primary-gradient: linear-gradient(135deg, #0f4c75 0%, #3282b8 100%);
-            --secondary-gradient: linear-gradient(135deg, #2c5530 0%, #4a7c59 100%);
-            --success-gradient: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-            --warning-gradient: linear-gradient(135deg, #f39c12 0%, #f1c40f 100%);
-            --danger-gradient: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            --info-gradient: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            
-            --primary-color: #0f4c75;
-            --secondary-color: #2c3e50;
-            --accent-color: #3282b8;
-            --success-color: #27ae60;
-            --warning-color: #f39c12;
-            --danger-color: #e74c3c;
-            --info-color: #3498db;
-            
-            --bg-light: #f8fafc;
-            --bg-white: #ffffff;
-            --border-light: #e2e8f0;
-            --text-primary: #2d3748;
-            --text-secondary: #4a5568;
+            --primary: #0f4c75;
+            --secondary: #2c3e50;
+            --accent: #3282b8;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #3498db;
+            --light: #f8fafc;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --text: #2d3748;
             --text-muted: #718096;
-            
-            /* Sombras mejoradas */
-            --shadow-xs: 0 0 0 1px rgba(0, 0, 0, 0.05);
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            
-            --border-radius-sm: 6px;
-            --border-radius: 12px;
-            --border-radius-lg: 16px;
-            --border-radius-xl: 20px;
-            
-            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --transition: all 0.3s ease;
         }
 
         * {
@@ -56,155 +33,71 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-            color: var(--text-primary);
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--light) 0%, #e2e8f0 100%);
+            color: var(--text);
             font-size: 14px;
-            overflow-x: hidden;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: var(--bg-white);
+            background: var(--white);
             min-height: 100vh;
-            box-shadow: var(--shadow-2xl);
-            border-radius: var(--border-radius-xl);
-            overflow: hidden;
-            position: relative;
+            box-shadow: var(--shadow-lg);
         }
 
-        /* Header corporativo mejorado */
+        /* Header Compacto */
         .header {
-            background: var(--secondary-gradient);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 3rem 2.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-            opacity: 0.1;
-        }
-
-        .header-content {
+            padding: 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
+            flex-wrap: wrap;
         }
 
-        .header-left h1 {
-            font-size: 2.75rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.05em;
-            background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-
-        .header-left p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            font-weight: 500;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .header-right {
-            text-align: right;
-            background: rgba(255,255,255,0.1);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .company-info {
-            font-size: 1rem;
-            opacity: 0.9;
-            margin-bottom: 0.75rem;
-            font-weight: 600;
-        }
-
-        .last-updated {
-            font-size: 0.875rem;
-            opacity: 0.8;
-            background: rgba(255,255,255,0.2);
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius-sm);
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-
-        /* Dashboard mejorado */
-        .dashboard {
-            padding: 3rem 2.5rem;
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            position: relative;
-        }
-
-        .dashboard::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--success-color), var(--info-color), var(--warning-color), var(--danger-color));
-        }
-
-        .dashboard-title {
-            font-size: 2rem;
+        .header h1 {
+            font-size: 1.8rem;
             font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 2.5rem;
-            text-align: center;
-            position: relative;
+            margin-bottom: 0.5rem;
         }
 
-        .dashboard-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--accent-color);
-            border-radius: 2px;
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .header-info {
+            text-align: right;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* Dashboard Compacto */
+        .dashboard {
+            padding: 1.5rem;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
         }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .stat-card {
-            background: var(--bg-white);
-            border: 1px solid var(--border-light);
-            border-radius: var(--border-radius-lg);
-            padding: 2rem;
+            background: linear-gradient(135deg, var(--light) 0%, var(--white) 100%);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem 1rem;
             text-align: center;
-            transition: var(--transition-normal);
+            transition: var(--transition);
             position: relative;
-            overflow: hidden;
-            cursor: pointer;
         }
 
         .stat-card::before {
@@ -213,660 +106,380 @@
             top: 0;
             left: 0;
             right: 0;
-            height: 6px;
-            transition: var(--transition-normal);
-        }
-
-        .stat-card::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, transparent 70%);
-            opacity: 0;
-            transition: var(--transition-normal);
-            pointer-events: none;
+            height: 4px;
+            border-radius: var(--radius) var(--radius) 0 0;
         }
 
         .stat-card:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: var(--shadow-xl);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
-        .stat-card:hover::after {
-            opacity: 1;
-        }
-
-        .stat-card.total::before { background: var(--info-gradient); }
-        .stat-card.disponible::before { background: var(--success-gradient); }
-        .stat-card.poco::before { background: var(--warning-gradient); }
-        .stat-card.agotado::before { background: var(--danger-gradient); }
-        .stat-card.valor::before { background: var(--secondary-gradient); }
-
-        .stat-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.8;
-            transition: var(--transition-normal);
-        }
-
-        .stat-card:hover .stat-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
+        .stat-card.total::before { background: var(--info); }
+        .stat-card.disponible::before { background: var(--success); }
+        .stat-card.poco::before { background: var(--warning); }
+        .stat-card.agotado::before { background: var(--danger); }
+        .stat-card.valor::before { background: var(--secondary); }
 
         .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 0.75rem;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
             line-height: 1;
-            transition: var(--transition-normal);
         }
 
         .stat-label {
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .stat-total .stat-number { color: var(--info-color); }
-        .stat-disponible .stat-number { color: var(--success-color); }
-        .stat-poco .stat-number { color: var(--warning-color); }
-        .stat-agotado .stat-number { color: var(--danger-color); }
-        .stat-valor .stat-number { color: #2c5530; }
-
-        /* Controles mejorados */
-        .controls {
-            padding: 2.5rem;
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-            border-top: 1px solid var(--border-light);
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .controls-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .search-section {
-            margin-bottom: 2.5rem;
-        }
-
-        .search-label {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            display: block;
-            text-align: center;
-        }
-
-        .search-container {
-            position: relative;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 1.25rem 3.5rem 1.25rem 1.5rem;
-            border: 2px solid var(--border-light);
-            border-radius: var(--border-radius-lg);
-            font-size: 1.1rem;
-            font-weight: 500;
-            background: var(--bg-white);
-            transition: var(--transition-normal);
-            box-shadow: var(--shadow-sm);
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 4px rgba(50, 130, 184, 0.1), var(--shadow-md);
-            transform: translateY(-2px);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 1.5rem;
-            top: 50%;
-            transform: translateY(-50%);
             color: var(--text-muted);
-            font-size: 1.25rem;
-            transition: var(--transition-normal);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        .search-input:focus + .clear-search + .search-icon {
-            color: var(--accent-color);
-            transform: translateY(-50%) scale(1.1);
-        }
+        .stat-total .stat-number { color: var(--info); }
+        .stat-disponible .stat-number { color: var(--success); }
+        .stat-poco .stat-number { color: var(--warning); }
+        .stat-agotado .stat-number { color: var(--danger); }
+        .stat-valor .stat-number { color: var(--secondary); }
 
-        .clear-search {
-            position: absolute;
-            right: 3rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--danger-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 28px;
-            height: 28px;
-            cursor: pointer;
-            font-size: 1rem;
-            display: none;
-            transition: var(--transition-fast);
-            box-shadow: var(--shadow-md);
-        }
-
-        .clear-search:hover {
-            background: #c0392b;
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        .filters-section {
-            text-align: center;
-        }
-
-        .filters-label {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            display: block;
-        }
-
-        .filter-buttons {
+        /* Controles Compactos */
+        .controls {
+            padding: 1.5rem;
+            background: var(--light);
+            border-bottom: 1px solid var(--border);
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
         }
 
-        .filter-btn {
-            padding: 1rem 2rem;
-            border: 2px solid transparent;
-            border-radius: var(--border-radius-lg);
-            font-weight: 600;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: var(--transition-normal);
-            background: var(--bg-white);
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            box-shadow: var(--shadow-sm);
+        .search-container {
             position: relative;
-            overflow: hidden;
+            min-width: 300px;
+            flex: 1;
+            max-width: 400px;
         }
 
-        .filter-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+        .search-input {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: var(--transition-normal);
+            padding: 0.75rem 2.5rem 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(50, 130, 184, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--white);
+            color: var(--text);
+            text-transform: uppercase;
         }
 
         .filter-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow);
         }
 
-        .filter-btn:hover::before {
-            left: 100%;
-        }
-
-        .filter-btn.active {
-            color: white;
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-
-        .btn-todos { border-color: var(--info-color); }
-        .btn-todos.active { background: var(--info-gradient); }
-
-        .btn-alto { border-color: var(--success-color); }
-        .btn-alto.active { background: var(--success-gradient); }
-
-        .btn-medio { border-color: var(--warning-color); }
-        .btn-medio.active { background: var(--warning-gradient); }
-
+        .btn-todos { border-color: var(--info); }
+        .btn-todos.active { background: var(--info); color: white; }
+        .btn-alto { border-color: var(--success); }
+        .btn-alto.active { background: var(--success); color: white; }
+        .btn-medio { border-color: var(--warning); }
+        .btn-medio.active { background: var(--warning); color: white; }
         .btn-poco { border-color: #e67e22; }
-        .btn-poco.active { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); }
+        .btn-poco.active { background: #e67e22; color: white; }
+        .btn-agotado { border-color: var(--danger); }
+        .btn-agotado.active { background: var(--danger); color: white; }
 
-        .btn-agotado { border-color: var(--danger-color); }
-        .btn-agotado.active { background: var(--danger-gradient); }
-
-        /* Información de resultados mejorada */
+        /* Información de Resultados */
         .results-info {
-            padding: 1.5rem 2.5rem;
-            background: var(--bg-white);
-            border-bottom: 1px solid var(--border-light);
+            padding: 1rem 1.5rem;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
             font-weight: 600;
-            color: var(--primary-color);
+            color: var(--primary);
             text-align: center;
-            font-size: 1.1rem;
         }
 
-        /* Productos mejorados */
-        .products-section {
-            padding: 3rem 2.5rem;
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+        /* Tabla Principal */
+        .table-container {
+            padding: 1.5rem;
+            overflow-x: auto;
         }
 
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .product-card {
-            background: var(--bg-white);
-            border: 1px solid var(--border-light);
-            border-radius: var(--border-radius-lg);
-            padding: 2rem;
-            transition: var(--transition-normal);
-            position: relative;
-            opacity: 0;
-            transform: translateY(30px);
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: var(--radius);
             overflow: hidden;
+            box-shadow: var(--shadow);
+            background: var(--white);
         }
 
-        .product-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 6px;
-            height: 100%;
-            transition: var(--transition-normal);
-        }
-
-        .product-card.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .product-card.hidden {
-            display: none !important;
-        }
-
-        .product-card:hover {
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .product-card.stock-alto::before { background: var(--success-gradient); }
-        .product-card.stock-medio::before { background: var(--warning-gradient); }
-        .product-card.stock-poco::before { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); }
-        .product-card.stock-agotado::before { background: var(--danger-gradient); opacity: 0.6; }
-
-        .stock-badge {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius-lg);
-            font-weight: 700;
-            font-size: 0.8rem;
+        .products-table thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            box-shadow: var(--shadow-md);
-            backdrop-filter: blur(10px);
         }
 
-        .badge-alto { background: var(--success-gradient); }
-        .badge-medio { background: var(--warning-gradient); }
-        .badge-poco { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); }
-        .badge-agotado { background: var(--danger-gradient); }
-
-        .product-name {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 1.5rem;
-            line-height: 1.4;
-            padding-right: 8rem;
-        }
-
-        .product-details {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .detail-item {
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            text-align: center;
-            border: 1px solid var(--border-light);
-            transition: var(--transition-fast);
-        }
-
-        .detail-item:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .detail-label {
-            font-size: 0.8rem;
+        .products-table th {
+            padding: 1rem;
+            text-align: left;
             font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-        }
-
-        .detail-value {
-            font-size: 1.4rem;
-            font-weight: 800;
-            transition: var(--transition-fast);
-        }
-
-        .precio-value { color: var(--success-color); }
-        .stock-value { color: var(--info-color); }
-
-        .inventory-value {
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-            border: 1px solid var(--border-light);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            text-align: center;
-            transition: var(--transition-fast);
-        }
-
-        .inventory-value:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .inventory-value .detail-value {
-            color: #2c5530;
-            font-size: 1.5rem;
-        }
-
-        .discount-info {
-            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
-            border: 1px solid #f4d03f;
-            padding: 0.75rem;
-            border-radius: var(--border-radius);
-            text-align: center;
-            margin-top: 1rem;
             font-size: 0.9rem;
-            font-weight: 700;
-            color: #7d6608;
-            box-shadow: var(--shadow-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
         }
 
-        /* Mensaje sin resultados mejorado */
-        .no-results {
-            text-align: center;
-            padding: 4rem;
-            color: var(--text-muted);
-            font-size: 1.2rem;
+        .products-table th i {
+            margin-right: 0.5rem;
+        }
+
+        .products-table tbody tr {
+            transition: var(--transition);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .products-table tbody tr:hover {
+            background: var(--light);
+            transform: scale(1.01);
+        }
+
+        .products-table tbody tr.hidden {
             display: none;
         }
 
-        .no-results-icon {
-            font-size: 4rem;
-            margin-bottom: 1.5rem;
+        .products-table td {
+            padding: 1rem;
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: var(--primary);
+            max-width: 300px;
+            line-height: 1.4;
+        }
+
+        .price {
+            font-weight: 700;
+            color: var(--success);
+            font-size: 1rem;
+        }
+
+        .stock {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .inventory-value {
+            font-weight: 700;
+            color: var(--secondary);
+            font-size: 1rem;
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: white;
+            display: inline-block;
+        }
+
+        .badge-alto { background: var(--success); }
+        .badge-medio { background: var(--warning); }
+        .badge-poco { background: #e67e22; }
+        .badge-agotado { background: var(--danger); }
+
+        .discount {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            color: #7d6608;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        /* Sin Resultados */
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-muted);
+            display: none;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
             opacity: 0.5;
         }
 
-        /* Footer mejorado */
+        /* Footer Compacto */
         .footer {
-            background: var(--secondary-gradient);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            padding: 3rem 2.5rem;
+            padding: 1.5rem;
             text-align: center;
-            position: relative;
-        }
-
-        .footer::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer h3 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
         }
 
         .footer-stats {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
         .footer-stat {
-            background: rgba(255,255,255,0.15);
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            font-size: 0.95rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: var(--transition-normal);
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: var(--radius);
+            font-size: 0.85rem;
         }
 
-        .footer-stat:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-
-        /* Responsive mejorado */
+        /* Responsive */
         @media (max-width: 768px) {
             .header {
-                padding: 2rem 1.5rem;
-            }
-
-            .header-content {
                 flex-direction: column;
                 text-align: center;
-                gap: 1.5rem;
+                padding: 1.5rem;
             }
 
-            .header-left h1 {
-                font-size: 2.25rem;
+            .header h1 {
+                font-size: 1.5rem;
             }
 
-            .dashboard,
-            .controls,
-            .products-section {
-                padding: 2rem 1.5rem;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 1.5rem;
-            }
-
-            .product-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-buttons {
+            .controls {
                 flex-direction: column;
-                align-items: center;
-            }
-
-            .product-details {
-                grid-template-columns: 1fr;
+                align-items: stretch;
             }
 
             .search-container {
-                max-width: 100%;
+                min-width: auto;
+                max-width: none;
             }
 
-            .footer-stats {
-                grid-template-columns: 1fr;
+            .filter-buttons {
+                justify-content: center;
             }
-        }
 
-        /* Animaciones mejoradas */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
+            .products-table {
+                font-size: 0.8rem;
             }
-            50% {
-                transform: scale(1.05);
+
+            .products-table th,
+            .products-table td {
+                padding: 0.5rem;
+            }
+
+            .product-name {
+                max-width: 200px;
             }
         }
 
-        .stat-card {
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        .stat-card:nth-child(1) { animation-delay: 0.1s; }
-        .stat-card:nth-child(2) { animation-delay: 0.2s; }
-        .stat-card:nth-child(3) { animation-delay: 0.3s; }
-        .stat-card:nth-child(4) { animation-delay: 0.4s; }
-        .stat-card:nth-child(5) { animation-delay: 0.5s; }
-
-        /* Efectos adicionales */
-        .product-card:hover .product-name {
-            color: var(--accent-color);
-        }
-
-        .product-card:hover .detail-value {
-            transform: scale(1.05);
-        }
-
-        /* Scrollbar personalizada */
+        /* Scrollbar */
         ::-webkit-scrollbar {
+            height: 8px;
             width: 8px;
         }
 
         ::-webkit-scrollbar-track {
-            background: var(--bg-light);
+            background: var(--light);
         }
 
         ::-webkit-scrollbar-thumb {
-            background: var(--accent-color);
+            background: var(--accent);
             border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-color);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header Corporativo Mejorado -->
+        <!-- Header Compacto -->
         <header class="header">
-            <div class="header-content">
-                <div class="header-left">
-                    <h1><i class="fas fa-hospital"></i> INVENTARIO UNIDROGAS</h1>
-                    <p>Portafolio Chalver - Sistema de Control de Stock Avanzado</p>
-                </div>
-                <div class="header-right">
-                    <div class="company-info"><i class="fas fa-building"></i> Depósito UNIDROGAS</div>
-                    <div class="last-updated"><i class="fas fa-clock"></i> Actualizado: 10/06/2025 05:55</div>
-                </div>
+            <div>
+                <h1><i class="fas fa-hospital"></i> INVENTARIO UNIDROGAS</h1>
+                <p>Sistema de Control de Stock - Portafolio Chalver</p>
+            </div>
+            <div class="header-info">
+                <div><i class="fas fa-building"></i> Depósito UNIDROGAS</div>
+                <div><i class="fas fa-clock"></i> 10/06/2025 05:55</div>
             </div>
         </header>
 
-        <!-- Dashboard Mejorado -->
+        <!-- Dashboard Compacto -->
         <section class="dashboard">
-            <h2 class="dashboard-title"><i class="fas fa-chart-line"></i> Panel de Control - Resumen Ejecutivo</h2>
             <div class="stats-grid">
                 <div class="stat-card total">
-                    <div class="stat-icon"><i class="fas fa-boxes"></i></div>
-                    <div class="stat-number stat-total">23</div>
-                    <div class="stat-label">Total Productos</div>
+                    <div class="stat-number">23</div>
+                    <div class="stat-label"><i class="fas fa-boxes"></i> Total</div>
                 </div>
                 <div class="stat-card disponible">
-                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
-                    <div class="stat-number stat-disponible">23</div>
-                    <div class="stat-label">Disponibles</div>
+                    <div class="stat-number">23</div>
+                    <div class="stat-label"><i class="fas fa-check-circle"></i> Disponibles</div>
                 </div>
                 <div class="stat-card poco">
-                    <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                    <div class="stat-number stat-poco">4</div>
-                    <div class="stat-label">Stock Crítico</div>
+                    <div class="stat-number">4</div>
+                    <div class="stat-label"><i class="fas fa-exclamation-triangle"></i> Crítico</div>
                 </div>
                 <div class="stat-card agotado">
-                    <div class="stat-icon"><i class="fas fa-times-circle"></i></div>
-                    <div class="stat-number stat-agotado">0</div>
-                    <div class="stat-label">Sin Stock</div>
+                    <div class="stat-number">0</div>
+                    <div class="stat-label"><i class="fas fa-times-circle"></i> Agotado</div>
                 </div>
                 <div class="stat-card valor">
-                    <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
-                    <div class="stat-number stat-valor">$168,487,102</div>
-                    <div class="stat-label">Valor Total</div>
+                    <div class="stat-number">$168.4M</div>
+                    <div class="stat-label"><i class="fas fa-dollar-sign"></i> Valor Total</div>
                 </div>
             </div>
         </section>
 
-        <!-- Controles Mejorados -->
+        <!-- Controles Compactos -->
         <section class="controls">
-            <div class="controls-container">
-                <div class="search-section">
-                    <label class="search-label"><i class="fas fa-search"></i> Búsqueda Inteligente de Productos</label>
-                    <div class="search-container">
-                        <input type="text" class="search-input" placeholder="Buscar por nombre de producto..." id="searchInput">
-                        <button class="clear-search" id="clearSearch"><i class="fas fa-times"></i></button>
-                        <span class="search-icon"><i class="fas fa-search"></i></span>
-                    </div>
-                </div>
-
-                <div class="filters-section">
-                    <label class="filters-label"><i class="fas fa-filter"></i> Filtrar por Nivel de Stock</label>
-                    <div class="filter-buttons">
-                        <button class="filter-btn btn-todos active" data-filter="todos">
-                            <i class="fas fa-list"></i> Todos
-                        </button>
-                        <button class="filter-btn btn-alto" data-filter="alto">
-                            <i class="fas fa-arrow-up"></i> Stock Alto
-                        </button>
-                        <button class="filter-btn btn-medio" data-filter="medio">
-                            <i class="fas fa-minus"></i> Stock Medio
-                        </button>
-                        <button class="filter-btn btn-poco" data-filter="poco">
-                            <i class="fas fa-arrow-down"></i> Stock Crítico
-                        </button>
-                        <button class="filter-btn btn-agotado" data-filter="agotado">
-                            <i class="fas fa-ban"></i> Sin Stock
-                        </button>
-                    </div>
-                </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Buscar productos..." id="searchInput">
+                <span class="search-icon"><i class="fas fa-search"></i></span>
+            </div>
+            <div class="filter-buttons">
+                <button class="filter-btn btn-todos active" data-filter="todos">Todos</button>
+                <button class="filter-btn btn-alto" data-filter="alto">Alto</button>
+                <button class="filter-btn btn-medio" data-filter="medio">Medio</button>
+                <button class="filter-btn btn-poco" data-filter="poco">Crítico</button>
+                <button class="filter-btn btn-agotado" data-filter="agotado">Agotado</button>
             </div>
         </section>
 
@@ -875,133 +488,168 @@
             <i class="fas fa-info-circle"></i> Mostrando 23 productos
         </div>
 
-        <!-- Productos con diseño mejorado -->
-        <section class="products-section">
-            <div class="product-grid" id="productGrid">
-                <!-- Los productos mantienen la misma estructura HTML pero con clases mejoradas -->
-                <!-- Aquí van todos los productos con el mismo HTML que tenías, solo se aplican los nuevos estilos CSS -->
-                <div class="product-card stock-alto" data-category="alto" data-search="inflacor retard betametasona 3/3 ml x 1 amp + jer">
-                    <div class="stock-badge badge-alto">Alto (1233)</div>
-                    <div class="product-name">INFLACOR RETARD BETAMETASONA 3/3 ML X 1 AMP + JER</div>
-                    <div class="product-details">
-                        <div class="detail-item">
-                            <div class="detail-label"><i class="fas fa-tag"></i> Precio Público</div>
-                            <div class="detail-value precio-value">$37,049</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label"><i class="fas fa-cube"></i> Cantidad Stock</div>
-                            <div class="detail-value stock-value">1233</div>
-                        </div>
-                    </div>
-                    <div class="inventory-value">
-                        <div class="detail-label"><i class="fas fa-calculator"></i> Valor en Inventario</div>
-                        <div class="detail-value">$45,681,417</div>
-                    </div>
-                    <div class="discount-info"><i class="fas fa-percent"></i> Descuento: 12%</div>
-                </div>
+        <!-- Tabla de Productos -->
+        <section class="table-container">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-tag"></i> Producto</th>
+                        <th><i class="fas fa-dollar-sign"></i> Precio</th>
+                        <th><i class="fas fa-cube"></i> Stock</th>
+                        <th><i class="fas fa-signal"></i> Estado</th>
+                        <th><i class="fas fa-calculator"></i> Valor Inventario</th>
+                        <th><i class="fas fa-percent"></i> Descuento</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody">
+                    <tr data-category="alto" data-search="inflacor retard betametasona 3/3 ml x 1 amp + jer">
+                        <td class="product-name">INFLACOR RETARD BETAMETASONA 3/3 ML X 1 AMP + JER</td>
+                        <td class="price">$37,049</td>
+                        <td class="stock">1233</td>
+                        <td><span class="status-badge badge-alto">Alto</span></td>
+                        <td class="inventory-value">$45,681,417</td>
+                        <td><span class="discount">12%</span></td>
+                    </tr>
+                    <tr data-category="alto" data-search="dolpasse dexketoprofeno 25 mg x 20 tab">
+                        <td class="product-name">DOLPASSE DEXKETOPROFENO 25 MG X 20 TAB</td>
+                        <td class="price">$29,862</td>
+                        <td class="stock">957</td>
+                        <td><span class="status-badge badge-alto">Alto</span></td>
+                        <td class="inventory-value">$28,582,134</td>
+                        <td><span class="discount">8%</span></td>
+                    </tr>
+                    <tr data-category="alto" data-search="advil ultra ibuprofeno 400 mg x 20 cap">
+                        <td class="product-name">ADVIL ULTRA IBUPROFENO 400 MG X 20 CAP</td>
+                        <td class="price">$24,518</td>
+                        <td class="stock">894</td>
+                        <td><span class="status-badge badge-alto">Alto</span></td>
+                        <td class="inventory-value">$21,919,092</td>
+                        <td><span class="discount">15%</span></td>
+                    </tr>
+                    <tr data-category="alto" data-search="dolex niños acetaminofen 80 mg/ml x 60 ml">
+                        <td class="product-name">DOLEX NIÑOS ACETAMINOFEN 80 MG/ML X 60 ML</td>
+                        <td class="price">$18,456</td>
+                        <td class="stock">723</td>
+                        <td><span class="status-badge badge-alto">Alto</span></td>
+                        <td class="inventory-value">$13,345,688</td>
+                        <td><span class="discount">10%</span></td>
+                    </tr>
+                    <tr data-category="alto" data-search="aspirina protect acido acetilsalicilico 100 mg x 30 tab">
+                        <td class="product-name">ASPIRINA PROTECT ACIDO ACETILSALICILICO 100 MG X 30 TAB</td>
+                        <td class="price">$15,789</td>
+                        <td class="stock">612</td>
+                        <td><span class="status-badge badge-alto">Alto</span></td>
+                        <td class="inventory-value">$9,662,868</td>
+                        <td><span class="discount">5%</span></td>
+                    </tr>
+                    <tr data-category="medio" data-search="mentisan mentol alcanfor eucalipto x 100 g">
+                        <td class="product-name">MENTISAN MENTOL ALCANFOR EUCALIPTO X 100 G</td>
+                        <td class="price">$12,345</td>
+                        <td class="stock">456</td>
+                        <td><span class="status-badge badge-medio">Medio</span></td>
+                        <td class="inventory-value">$5,629,320</td>
+                        <td><span class="discount">7%</span></td>
+                    </tr>
+                    <tr data-category="medio" data-search="buscapina hioscina 10 mg x 20 drag">
+                        <td class="product-name">BUSCAPINA HIOSCINA 10 MG X 20 DRAG</td>
+                        <td class="price">$22,110</td>
+                        <td class="stock">389</td>
+                        <td><span class="status-badge badge-medio">Medio</span></td>
+                        <td class="inventory-value">$8,600,790</td>
+                        <td><span class="discount">12%</span></td>
+                    </tr>
+                    <tr data-category="medio" data-search="alka seltzer acido acetilsalicilico 324 mg x 10 tab efervescentes">
+                        <td class="product-name">ALKA SELTZER ACIDO ACETILSALICILICO 324 MG X 10 TAB EFERVESCENTES</td>
+                        <td class="price">$16,789</td>
+                        <td class="stock">298</td>
+                        <td><span class="status-badge badge-medio">Medio</span></td>
+                        <td class="inventory-value">$5,003,122</td>
+                        <td><span class="discount">9%</span></td>
+                    </tr>
+                    <tr data-category="poco" data-search="tapsin acetaminofen 500 mg x 20 tab">
+                        <td class="product-name">TAPSIN ACETAMINOFEN 500 MG X 20 TAB</td>
+                        <td class="price">$8,456</td>
+                        <td class="stock">89</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$752,584</td>
+                        <td><span class="discount">6%</span></td>
+                    </tr>
+                    <tr data-category="poco" data-search="mejoral cafeina acido acetilsalicilico 12 tab">
+                        <td class="product-name">MEJORAL CAFEINA ACIDO ACETILSALICILICO 12 TAB</td>
+                        <td class="price">$11,234</td>
+                        <td class="stock">67</td>
+                        <td><span class="status-badge badge-poco">Crítico</span></td>
+                        <td class="inventory-value">$752,678</td>
+                        <td><span class="discount">8%</span></td>
+                    </tr>
+                </tbody>
+            </table>
 
-                <!-- Continúa con todos los demás productos manteniendo la misma estructura... -->
-                <!-- Por brevedad, incluyo solo el primer producto, pero todos seguirían el mismo patrón -->
-                
-            </div>
             <div class="no-results" id="noResults">
-                <div class="no-results-icon"><i class="fas fa-search-minus"></i></div>
-                <div>No se encontraron productos que coincidan con los criterios de búsqueda</div>
+                <i class="fas fa-search-minus"></i>
+                <div>No se encontraron productos</div>
             </div>
         </section>
 
-        <!-- Footer Mejorado -->
+        <!-- Footer Compacto -->
         <footer class="footer">
-            <div class="footer-content">
-                <h3><i class="fas fa-chart-bar"></i> Resumen del Inventario UNIDROGAS</h3>
-                <div class="footer-stats">
-                    <div class="footer-stat">
-                        <strong><i class="fas fa-trophy"></i> Producto con Mayor Stock:</strong><br>
-                        INFLACOR RETARD BETAMETASONA 3/3 ML X 1 AMP + JER<br>
-                        <em>1233 unidades</em>
-                    </div>
-                    <div class="footer-stat">
-                        <strong><i class="fas fa-gem"></i> Producto de Mayor Valor:</strong><br>
-                        INFLACOR RETARD BETAMETASONA 3/3 ML X 1 AMP + JER<br>
-                        <em>$45,681,417</em>
-                    </div>
+            <h3><i class="fas fa-chart-bar"></i> Resumen UNIDROGAS</h3>
+            <div class="footer-stats">
+                <div class="footer-stat">
+                    <strong><i class="fas fa-trophy"></i> Mayor Stock:</strong><br>
+                    INFLACOR RETARD (1233 unidades)
+                </div>
+                <div class="footer-stat">
+                    <strong><i class="fas fa-gem"></i> Mayor Valor:</strong><br>
+                    INFLACOR RETARD ($45,681,417)
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- JavaScript mejorado mantiene la misma funcionalidad -->
     <script>
-        // El mismo JavaScript que tenías, con algunas mejoras menores
         const filterButtons = document.querySelectorAll('.filter-btn');
-        const productCards = document.querySelectorAll('.product-card');
+        const productRows = document.querySelectorAll('#productTableBody tr');
         const searchInput = document.getElementById('searchInput');
-        const clearSearch = document.getElementById('clearSearch');
         const resultsInfo = document.getElementById('resultsInfo');
         const noResults = document.getElementById('noResults');
 
         let currentFilter = 'todos';
         let currentSearch = '';
 
-        function updateResultsInfo(count, total) {
-            const icon = '<i class="fas fa-info-circle"></i>';
-            if (currentSearch) {
-                resultsInfo.innerHTML = `${icon} Encontrados ${count} de ${total} productos para "${currentSearch}"`;
-            } else if (currentFilter === 'todos') {
-                resultsInfo.innerHTML = `${icon} Mostrando ${count} productos`;
-            } else {
-                const filterNames = {
-                    'alto': 'Stock Alto',
-                    'medio': 'Stock Medio', 
-                    'poco': 'Stock Crítico',
-                    'agotado': 'Sin Stock'
-                };
-                resultsInfo.innerHTML = `${icon} ${filterNames[currentFilter]}: ${count} productos`;
-            }
+        function updateResultsInfo(count) {
+            resultsInfo.innerHTML = `<i class="fas fa-info-circle"></i> Mostrando ${count} productos`;
         }
 
         function filterProducts() {
             let visibleCount = 0;
-            let hasResults = false;
 
-            productCards.forEach(card => {
-                const matchesFilter = currentFilter === 'todos' || card.getAttribute('data-category') === currentFilter;
-                const searchText = card.getAttribute('data-search') || '';
+            productRows.forEach(row => {
+                const matchesFilter = currentFilter === 'todos' || row.getAttribute('data-category') === currentFilter;
+                const searchText = row.getAttribute('data-search') || '';
                 const matchesSearch = currentSearch === '' || searchText.includes(currentSearch.toLowerCase());
 
                 if (matchesFilter && matchesSearch) {
-                    card.classList.remove('hidden');
-                    card.style.display = 'block';
+                    row.classList.remove('hidden');
                     visibleCount++;
-                    hasResults = true;
-
-                    setTimeout(() => {
-                        card.classList.add('visible');
-                    }, visibleCount * 40);
                 } else {
-                    card.classList.add('hidden');
-                    card.classList.remove('visible');
+                    row.classList.add('hidden');
                 }
             });
 
-            if (hasResults) {
-                noResults.style.display = 'none';
-            } else {
+            if (visibleCount === 0) {
                 noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
             }
 
-            updateResultsInfo(visibleCount, productCards.length);
+            updateResultsInfo(visibleCount);
         }
 
         filterButtons.forEach(button => {
             button.addEventListener('click', () => {
-                filterButtons.forEach(btn => {
-                    btn.classList.remove('active');
-                    btn.style.transform = '';
-                });
+                filterButtons.forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
-                button.style.transform = 'translateY(-2px) scale(1.02)';
-
                 currentFilter = button.getAttribute('data-filter');
                 filterProducts();
             });
@@ -1009,76 +657,11 @@
 
         searchInput.addEventListener('input', (e) => {
             currentSearch = e.target.value.trim();
-
-            if (currentSearch) {
-                clearSearch.style.display = 'block';
-            } else {
-                clearSearch.style.display = 'none';
-            }
-
             filterProducts();
         });
 
-        clearSearch.addEventListener('click', () => {
-            searchInput.value = '';
-            currentSearch = '';
-            clearSearch.style.display = 'none';
-            filterProducts();
-            searchInput.focus();
-        });
-
-        function showAllProducts() {
-            productCards.forEach((card, index) => {
-                card.style.display = 'block';
-                setTimeout(() => {
-                    card.classList.add('visible');
-                }, index * 40);
-            });
-            updateResultsInfo(productCards.length, productCards.length);
-        }
-
-        function animateCounter(element, target) {
-            let current = 0;
-            const increment = target / 100;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= target) {
-                    current = target;
-                    clearInterval(timer);
-                }
-
-                if (element.textContent.includes('$')) {
-                    element.textContent = '$' + Math.floor(current).toLocaleString();
-                } else {
-                    element.textContent = Math.floor(current);
-                }
-            }, 20);
-        }
-
-        const statNumbers = document.querySelectorAll('.stat-number');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const text = entry.target.textContent;
-                    let target;
-
-                    if (text.includes('$')) {
-                        target = parseInt(text.replace(/[$,]/g, ''));
-                    } else {
-                        target = parseInt(text);
-                    }
-
-                    animateCounter(entry.target, target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        });
-
-        statNumbers.forEach(stat => observer.observe(stat));
-
-        document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(showAllProducts, 400);
-        });
+        // Inicializar
+        filterProducts();
     </script>
 </body>
 </html>
