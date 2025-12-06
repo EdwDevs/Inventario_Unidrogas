@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Pharma - Gestor Manual</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Calculadora Pharma Móvil</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -12,86 +12,69 @@
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     
-    <!-- Babel para compilar JSX en el navegador -->
+    <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .scrollbar-hide::-webkit-scrollbar { display: none; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        /* Ocultar scrollbar pero permitir scroll */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 h-screen flex flex-col overflow-hidden">
+<body class="bg-gray-50 text-gray-800 h-[100dvh] flex flex-col overflow-hidden">
     <div id="root" class="h-full flex flex-col"></div>
 
     <script type="text/babel">
-        const { useState, useMemo, useEffect } = React;
+        const { useState, useMemo, useEffect, useRef } = React;
 
         // --- ICONOS SVG ---
-        const Icon = ({ path, className }) => (
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
-                {path}
-            </svg>
-        );
-
+        const Icon = ({ path, className }) => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>{path}</svg>;
+        
         const Icons = {
-            Search: <Icon path={<><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></>} />,
-            Cart: <Icon path={<><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></>} />,
-            Trash: <Icon path={<><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></>} />,
-            Refresh: <Icon path={<><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></>} />,
-            Chart: <Icon path={<><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></>} />,
-            Layers: <Icon path={<><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></>} />,
-            Check: <Icon path={<><polyline points="20 6 9 17 4 12"></polyline></>} />,
-            Plus: <Icon path={<><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></>} />,
-            X: <Icon path={<><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></>} />,
-            Store: <Icon path={<><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path><path d="M2 7h20"></path><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"></path></>} />
+            Search: <Icon className="w-5 h-5" path={<><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></>} />,
+            Cart: <Icon className="w-5 h-5" path={<><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></>} />,
+            Trash: <Icon className="w-4 h-4" path={<><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></>} />,
+            Refresh: <Icon className="w-4 h-4" path={<><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></>} />,
+            Chart: <Icon className="w-5 h-5" path={<><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></>} />,
+            Layers: <Icon className="w-5 h-5" path={<><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></>} />,
+            Check: <Icon className="w-4 h-4" path={<><polyline points="20 6 9 17 4 12"></polyline></>} />,
+            Plus: <Icon className="w-4 h-4" path={<><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></>} />,
+            X: <Icon className="w-4 h-4" path={<><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></>} />,
+            Store: <Icon className="w-5 h-5" path={<><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path><path d="M2 7h20"></path><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"></path></>} />,
+            WhatsApp: <Icon className="w-5 h-5" path={<><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></>} />,
+            ChevronDown: <Icon className="w-4 h-4" path={<><polyline points="6 9 12 15 18 9"></polyline></>} />,
+            ChevronUp: <Icon className="w-4 h-4" path={<><polyline points="18 15 12 9 6 15"></polyline></>} />
         };
 
-        const GROUP_COLORS = [
-            "bg-red-100 border-red-200 text-red-800",
-            "bg-orange-100 border-orange-200 text-orange-800",
-            "bg-amber-100 border-amber-200 text-amber-800",
-            "bg-yellow-100 border-yellow-200 text-yellow-800",
-            "bg-lime-100 border-lime-200 text-lime-800",
-            "bg-green-100 border-green-200 text-green-800",
-            "bg-emerald-100 border-emerald-200 text-emerald-800",
-            "bg-teal-100 border-teal-200 text-teal-800",
-            "bg-cyan-100 border-cyan-200 text-cyan-800",
-            "bg-sky-100 border-sky-200 text-sky-800",
-            "bg-blue-100 border-blue-200 text-blue-800",
-            "bg-indigo-100 border-indigo-200 text-indigo-800",
-            "bg-violet-100 border-violet-200 text-violet-800",
-            "bg-purple-100 border-purple-200 text-purple-800",
-            "bg-fuchsia-100 border-fuchsia-200 text-fuchsia-800",
-            "bg-pink-100 border-pink-200 text-pink-800",
-            "bg-rose-100 border-rose-200 text-rose-800",
-        ];
+        const GROUP_COLORS = ["bg-red-100 border-red-200 text-red-800", "bg-orange-100 border-orange-200 text-orange-800", "bg-amber-100 border-amber-200 text-amber-800", "bg-green-100 border-green-200 text-green-800", "bg-emerald-100 border-emerald-200 text-emerald-800", "bg-teal-100 border-teal-200 text-teal-800", "bg-cyan-100 border-cyan-200 text-cyan-800", "bg-blue-100 border-blue-200 text-blue-800", "bg-indigo-100 border-indigo-200 text-indigo-800", "bg-purple-100 border-purple-200 text-purple-800", "bg-pink-100 border-pink-200 text-pink-800"];
 
         const App = () => {
-            const [view, setView] = useState('catalog'); // 'catalog', 'grouping', 'compare_table'
+            const [view, setView] = useState('catalog'); 
             const [supplier, setSupplier] = useState('Unidrogas');
             const [searchTerm, setSearchTerm] = useState('');
             const [cart, setCart] = useState({});
-            
-            // Estado para el agrupamiento manual
             const [manualGroups, setManualGroups] = useState([]);
             const [selectedForGroup, setSelectedForGroup] = useState([]);
+            
+            // Mobile state
+            const [showMobileCart, setShowMobileCart] = useState(false);
 
-            // Persistencia
             useEffect(() => {
-                const savedCart = localStorage.getItem('pharmaCart_v4');
-                const savedGroups = localStorage.getItem('pharmaGroups_v1');
+                const savedCart = localStorage.getItem('pharmaCart_v6');
+                const savedGroups = localStorage.getItem('pharmaGroups_v2');
                 if (savedCart) setCart(JSON.parse(savedCart));
                 if (savedGroups) setManualGroups(JSON.parse(savedGroups));
             }, []);
 
             useEffect(() => {
-                if (Object.keys(cart).length > 0) localStorage.setItem('pharmaCart_v4', JSON.stringify(cart));
-                localStorage.setItem('pharmaGroups_v1', JSON.stringify(manualGroups));
+                if (Object.keys(cart).length > 0) localStorage.setItem('pharmaCart_v6', JSON.stringify(cart));
+                localStorage.setItem('pharmaGroups_v2', JSON.stringify(manualGroups));
             }, [cart, manualGroups]);
 
             const UNIDROGAS_DISCOUNT_RATE = 0.12;
 
-            // DATOS BASE
+            // --- DATASETS (Mismos datos, comprimidos para legibilidad) ---
             const productsUnidrogas = [
                 { id: 'u1', name: "Airmax Salbutamol 100 Mcg Inhalador X 200 Dosis", price: 28628.82, hasDiscount: true },
                 { id: 'u2', name: "Airmax Salbutamol 100 Mcg Inhalador X 200 Dosis 1+2", price: 28643.82, hasDiscount: true },
@@ -134,115 +117,15 @@
                 { id: 'u39', name: "Vaginsol F Crema Vaginal X 20 Gr", price: 95429.43, hasDiscount: true },
                 { id: 'u40', name: "Zakor Mebendazol 20mg/ml Suspension X 30 Ml", price: 10616.52, hasDiscount: true },
             ];
-
             const productsDrosan = [
-                { id: 'd1', name: "AIRMAX AEROSOL HFC X 200DOSIS (1+1)", price: 27609, finalPrice: 27609 },
-                { id: 'd2', name: "AIRMAX AEROSOL HFC X 200DOSIS", price: 27608, finalPrice: 27608 },
-                { id: 'd3', name: "ASPROMIO AEROSOL X 200 DOSIS", price: 21983, finalPrice: 21983 },
-                { id: 'd4', name: "BIFIDOLAC 170MG X 6SOB", price: 65948, finalPrice: 65948 },
-                { id: 'd5', name: "BUSTEROL AEROSOL HFC X 200 DOSIS", price: 173688, finalPrice: 173688 },
-                { id: 'd6', name: "CLOBEZAN CR X 25GR", price: 43483, finalPrice: 43483 },
-                { id: 'd7', name: "CLOBEZAN UNG X 25GR", price: 55803, finalPrice: 55803 },
-                { id: 'd8', name: "CUTAMYCON 500 X 1CBG", price: 40463, finalPrice: 40463 },
-                { id: 'd9', name: "CUTAMYCON CR TOPICA X 20GR", price: 15702, finalPrice: 13504 },
-                { id: 'd10', name: "DESCONGEL F JBE X 60ML", price: 17393, finalPrice: 13914 },
-                { id: 'd11', name: "DESCONGEL GRIPA X 10CBG", price: 16632, finalPrice: 14304 },
-                { id: 'd12', name: "DESCONGEL LS X 100CAP", price: 131643, finalPrice: 105314 },
-                { id: 'd13', name: "DESCONGELITO F GOTAS X 15ML", price: 17030, finalPrice: 13624 },
-                { id: 'd14', name: "DESLORAN 5 MG X 10TBS", price: 79355, finalPrice: 79355 },
-                { id: 'd15', name: "DESLORAN JBE 0.05% X 60ML", price: 80684, finalPrice: 80684 },
-                { id: 'd16', name: "DOLFENAX 200MG X 10CAPS", price: 46985, finalPrice: 46985 },
-                { id: 'd17', name: "DUOPAS 400/200MG X 10TBS GTS USA TEST", price: 45906, finalPrice: 39479 },
-                { id: 'd18', name: "DUOPAS 400/20MG X 10TBS", price: 45898, finalPrice: 39472 },
-                { id: 'd19', name: "ESTERMAX 0.625MG CR VAG X40GR", price: 35148, finalPrice: 35148 },
-                { id: 'd20', name: "ESTERMAX 0.625MG X28TBS", price: 32370, finalPrice: 32370 },
-                { id: 'd21', name: "FEMTRIOL CR VAG X 20GR", price: 29955, finalPrice: 29955 },
-                { id: 'd22', name: "FLUTURAN X 10CBG", price: 35511, finalPrice: 35511 },
-                { id: 'd23', name: "FLUZETRIN F GOTAS PED X 15ML", price: 24241, finalPrice: 24241 },
-                { id: 'd24', name: "FLUZETRIN F JBE X 60ML", price: 31742, finalPrice: 31742 },
-                { id: 'd25', name: "FLUZETRIN F X 10CAP", price: 29133, finalPrice: 29133 },
-                { id: 'd26', name: "FRIOTAN 65MG X 10CAPS", price: 34906, finalPrice: 34906 },
-                { id: 'd27', name: "FRIOTAN JBE X 120ML", price: 28988, finalPrice: 28988 },
-                { id: 'd28', name: "INFLABON 200MCG HFC AEROSOL", price: 147840, finalPrice: 147840 },
-                { id: 'd29', name: "INFLABON 50MCG HFC AEROSOL", price: 125615, finalPrice: 125615 },
-                { id: 'd30', name: "INFLACOR 4 MG AMP X 1ML", price: 20292, finalPrice: 20292 },
-                { id: 'd31', name: "INFLACOR 8 MG AMP X 2ML", price: 37564, finalPrice: 32305 },
-                { id: 'd32', name: "INFLACOR RET 6/6MG AMP X 2ML", price: 58804, finalPrice: 58804 },
-                { id: 'd33', name: "LACTULAX JBE X240ML", price: 103005, finalPrice: 103005 },
-                { id: 'd34', name: "LACTULAX X 12S/S", price: 103512, finalPrice: 103512 },
-                { id: 'd35', name: "MULTIDOL 800MG X 30CBG", price: 82737, finalPrice: 82737 },
-                { id: 'd36', name: "MULTIDOL EXPRESS 400MG X 48CBG", price: 63895, finalPrice: 63895 },
-                { id: 'd37', name: "MULTIDOL EXPRESS 400MG X 48CBG GTS", price: 63902, finalPrice: 63902 },
-                { id: 'd38', name: "NEUROPRON INY 2ML X 3AMP", price: 99683, finalPrice: 79747 },
-                { id: 'd39', name: "SIMPAUSE 100MG X 30CBG", price: 98923, finalPrice: 98923 },
-                { id: 'd40', name: "TEREX CR VAG X 20GR", price: 76698, finalPrice: 76698 },
-                { id: 'd41', name: "TIBONELLA 2.5MG X 28TBS", price: 37564, finalPrice: 37564 },
-                { id: 'd42', name: "TRIGENTAX CR X 20GR", price: 29894, finalPrice: 23915 },
-                { id: 'd43', name: "TRIGENTAX CR X 40GR", price: 46200, finalPrice: 36960 },
-                { id: 'd44', name: "TRIGENTAX LOC TOP. X 50ML", price: 54788, finalPrice: 47118 },
-                { id: 'd45', name: "VAGINSOL F 100+200MG X 3 OVULOS", price: 97835, finalPrice: 97835 },
-                { id: 'd46', name: "VAGINSOL F CR VAG X 20GR", price: 96627, finalPrice: 96627 },
-                { id: 'd47', name: "ZAKOR 100MG X 6 TBS", price: 7368, finalPrice: 7368 },
+                { id: 'd1', name: "AIRMAX AEROSOL HFC X 200DOSIS (1+1)", price: 27609, finalPrice: 27609 }, { id: 'd2', name: "AIRMAX AEROSOL HFC X 200DOSIS", price: 27608, finalPrice: 27608 }, { id: 'd3', name: "ASPROMIO AEROSOL X 200 DOSIS", price: 21983, finalPrice: 21983 }, { id: 'd4', name: "BIFIDOLAC 170MG X 6SOB", price: 65948, finalPrice: 65948 }, { id: 'd5', name: "BUSTEROL AEROSOL HFC X 200 DOSIS", price: 173688, finalPrice: 173688 }, { id: 'd6', name: "CLOBEZAN CR X 25GR", price: 43483, finalPrice: 43483 }, { id: 'd7', name: "CLOBEZAN UNG X 25GR", price: 55803, finalPrice: 55803 }, { id: 'd8', name: "CUTAMYCON 500 X 1CBG", price: 40463, finalPrice: 40463 }, { id: 'd9', name: "CUTAMYCON CR TOPICA X 20GR", price: 15702, finalPrice: 13504 }, { id: 'd10', name: "DESCONGEL F JBE X 60ML", price: 17393, finalPrice: 13914 }, { id: 'd11', name: "DESCONGEL GRIPA X 10CBG", price: 16632, finalPrice: 14304 }, { id: 'd12', name: "DESCONGEL LS X 100CAP", price: 131643, finalPrice: 105314 }, { id: 'd13', name: "DESCONGELITO F GOTAS X 15ML", price: 17030, finalPrice: 13624 }, { id: 'd14', name: "DESLORAN 5 MG X 10TBS", price: 79355, finalPrice: 79355 }, { id: 'd15', name: "DESLORAN JBE 0.05% X 60ML", price: 80684, finalPrice: 80684 }, { id: 'd16', name: "DOLFENAX 200MG X 10CAPS", price: 46985, finalPrice: 46985 }, { id: 'd17', name: "DUOPAS 400/200MG X 10TBS GTS USA TEST", price: 45906, finalPrice: 39479 }, { id: 'd18', name: "DUOPAS 400/20MG X 10TBS", price: 45898, finalPrice: 39472 }, { id: 'd19', name: "ESTERMAX 0.625MG CR VAG X40GR", price: 35148, finalPrice: 35148 }, { id: 'd20', name: "ESTERMAX 0.625MG X28TBS", price: 32370, finalPrice: 32370 }, { id: 'd21', name: "FEMTRIOL CR VAG X 20GR", price: 29955, finalPrice: 29955 }, { id: 'd22', name: "FLUTURAN X 10CBG", price: 35511, finalPrice: 35511 }, { id: 'd23', name: "FLUZETRIN F GOTAS PED X 15ML", price: 24241, finalPrice: 24241 }, { id: 'd24', name: "FLUZETRIN F JBE X 60ML", price: 31742, finalPrice: 31742 }, { id: 'd25', name: "FLUZETRIN F X 10CAP", price: 29133, finalPrice: 29133 }, { id: 'd26', name: "FRIOTAN 65MG X 10CAPS", price: 34906, finalPrice: 34906 }, { id: 'd27', name: "FRIOTAN JBE X 120ML", price: 28988, finalPrice: 28988 }, { id: 'd28', name: "INFLABON 200MCG HFC AEROSOL", price: 147840, finalPrice: 147840 }, { id: 'd29', name: "INFLABON 50MCG HFC AEROSOL", price: 125615, finalPrice: 125615 }, { id: 'd30', name: "INFLACOR 4 MG AMP X 1ML", price: 20292, finalPrice: 20292 }, { id: 'd31', name: "INFLACOR 8 MG AMP X 2ML", price: 37564, finalPrice: 32305 }, { id: 'd32', name: "INFLACOR RET 6/6MG AMP X 2ML", price: 58804, finalPrice: 58804 }, { id: 'd33', name: "LACTULAX JBE X240ML", price: 103005, finalPrice: 103005 }, { id: 'd34', name: "LACTULAX X 12S/S", price: 103512, finalPrice: 103512 }, { id: 'd35', name: "MULTIDOL 800MG X 30CBG", price: 82737, finalPrice: 82737 }, { id: 'd36', name: "MULTIDOL EXPRESS 400MG X 48CBG", price: 63895, finalPrice: 63895 }, { id: 'd37', name: "MULTIDOL EXPRESS 400MG X 48CBG GTS", price: 63902, finalPrice: 63902 }, { id: 'd38', name: "NEUROPRON INY 2ML X 3AMP", price: 99683, finalPrice: 79747 }, { id: 'd39', name: "SIMPAUSE 100MG X 30CBG", price: 98923, finalPrice: 98923 }, { id: 'd40', name: "TEREX CR VAG X 20GR", price: 76698, finalPrice: 76698 }, { id: 'd41', name: "TIBONELLA 2.5MG X 28TBS", price: 37564, finalPrice: 37564 }, { id: 'd42', name: "TRIGENTAX CR X 20GR", price: 29894, finalPrice: 23915 }, { id: 'd43', name: "TRIGENTAX CR X 40GR", price: 46200, finalPrice: 36960 }, { id: 'd44', name: "TRIGENTAX LOC TOP. X 50ML", price: 54788, finalPrice: 47118 }, { id: 'd45', name: "VAGINSOL F 100+200MG X 3 OVULOS", price: 97835, finalPrice: 97835 }, { id: 'd46', name: "VAGINSOL F CR VAG X 20GR", price: 96627, finalPrice: 96627 }, { id: 'd47', name: "ZAKOR 100MG X 6 TBS", price: 7368, finalPrice: 7368 },
             ];
-
             const productsCopidrogas = [
-                { id: 'c1', name: "3 DESCONGELITO F GOTAS 15 ML", price: 46932, finalPrice: 46932, stock: 69 },
-                { id: 'c2', name: "AIRMAX INH. 100 MC 200 DOSIS (OFERTA)", price: 27931, finalPrice: 9310, stock: 920 },
-                { id: 'c3', name: "AIRMAX INH. 100 MC 200 DOSIS", price: 27931, finalPrice: 26601, stock: 240 },
-                { id: 'c4', name: "ASPROMIO INHALADOR 200 DOSIS", price: 17809, finalPrice: 17809, stock: 53 },
-                { id: 'c5', name: "BIFIDOLAC 170 MG 6 SBS", price: 66724, finalPrice: 66724, stock: 0 },
-                { id: 'c6', name: "BUSTEROL INHALADOR 200 DOSIS", price: 159383, finalPrice: 159383, stock: 4 },
-                { id: 'c7', name: "CLOBEZAN CREMA 25 GR", price: 41896, finalPrice: 41896, stock: 6 },
-                { id: 'c8', name: "CLOBEZAN LOCION CAPILAR 60 ML", price: 64839, finalPrice: 64839, stock: 0 },
-                { id: 'c9', name: "CLOBEZAN UNGUENTO 25 GR", price: 57081, finalPrice: 57081, stock: 0 },
-                { id: 'c10', name: "CUTAMYCON 500 MG 1 CAP.BLANDA VAGINAL", price: 33441, finalPrice: 33441, stock: 16 },
-                { id: 'c11', name: "CUTAMYCON CREMA TOPICA 20 GR", price: 13016, finalPrice: 13016, stock: 141 },
-                { id: 'c12', name: "DESCONGEL F GRIPA JARABE 60 ML", price: 15961, finalPrice: 15961, stock: 25 },
-                { id: 'c13', name: "DESCONGEL GRIPA 10 CAP.BLANDA GELATIN.", price: 15295, finalPrice: 15295, stock: 29 },
-                { id: 'c14', name: "DESCONGEL GRIPA 100 CAP.BLANDA GELAT.", price: 120843, finalPrice: 120843, stock: 0 },
-                { id: 'c15', name: "DESLORAN 5 MG 10 TABLETAS", price: 76477, finalPrice: 76477, stock: 11 },
-                { id: 'c16', name: "DESLORAN JARABE 60 ML", price: 77696, finalPrice: 77696, stock: 10 },
-                { id: 'c17', name: "DOLFENAX 200 MG 10 CAPSULAS", price: 45221, finalPrice: 45221, stock: 0 },
-                { id: 'c18', name: "DUOPAS 400/20 MG 10 CAP BLAN.DE GELATINA", price: 44224, finalPrice: 38475, stock: 115 },
-                { id: 'c19', name: "ESTERMAX 0.625 MG 28 TBS", price: 25460, finalPrice: 25460, stock: 0 },
-                { id: 'c20', name: "ESTERMAX CVAG. 40 GR 4 APL.", price: 27645, finalPrice: 27645, stock: 0 },
-                { id: 'c21', name: "FEMTRIOL CVAG.20GR 5 APLI.", price: 23560, finalPrice: 23560, stock: 0 },
-                { id: 'c22', name: "FLUTURAN 400 MG 10 CAPSULAS", price: 34249, finalPrice: 34249, stock: 0 },
-                { id: 'c23', name: "FLUZETRIN F 500 MG 10 CAPSULAS CBG", price: 31145, finalPrice: 31145, stock: 387 },
-                { id: 'c24', name: "FLUZETRIN F GOTAS 15 MILILITROS", price: 25936, finalPrice: 25936, stock: 0 },
-                { id: 'c25', name: "FLUZETRIN F JARABE 60 ML", price: 34027, finalPrice: 34027, stock: 51 },
-                { id: 'c26', name: "FRIOTAN HEDERA HELIX 65MG (OFERTA)", price: 33584, finalPrice: 26867, stock: 2 },
-                { id: 'c27', name: "FRIOTAN HEDERA HELIX 65MG (NORMAL)", price: 33584, finalPrice: 33584, stock: 19 },
-                { id: 'c28', name: "FRIOTAN HEDERA HELIX JARABE 120 ML", price: 29372, finalPrice: 23497, stock: 12 },
-                { id: 'c29', name: "FYNEXIN GEL 5% TUBO 20 GR", price: 25049, finalPrice: 25049, stock: 0 },
-                { id: 'c30', name: "INFLABON INHALADOR 200 MCG 200 DOSIS", price: 142425, finalPrice: 142425, stock: 14 },
-                { id: 'c31', name: "INFLABON INHALADOR 50 MCG 200 DOSIS", price: 121034, finalPrice: 117403, stock: 101 },
-                { id: 'c32', name: "INFLACOR 4 MG 1 ML AMPOLLA", price: 19507, finalPrice: 19507, stock: 0 },
-                { id: 'c33', name: "INFLACOR 8 MG 2 ML AMPOLLA", price: 36244, finalPrice: 36244, stock: 0 },
-                { id: 'c34', name: "INFLACOR RETARD 3+3 MG 1 ML AMPOLLA", price: 41564, finalPrice: 41564, stock: 0 },
-                { id: 'c35', name: "INFLACOR RETARD 6+6 MG 2 ML AMPOLLA", price: 62401, finalPrice: 62401, stock: 0 },
-                { id: 'c36', name: "LACTULAX 12 SBS JARABE 15 ML", price: 99753, finalPrice: 96760, stock: 137 },
-                { id: 'c37', name: "LACTULAX JARABE 240 ML", price: 102191, finalPrice: 99125, stock: 32 },
-                { id: 'c38', name: "MULTIDOL 800 MG 30 CAP.BLANDA GELATINOSA", price: 79691, finalPrice: 79691, stock: 0 },
-                { id: 'c39', name: "MULTIDOL EXPRESS 400 MG 48 CBG", price: 61514, finalPrice: 61514, stock: 17 },
-                { id: 'c40', name: "NEUROPRON 10.000 JERINGA PRELLENADA", price: 22611, finalPrice: 22611, stock: 0 },
-                { id: 'c41', name: "NEUROPRON 10.000 SOL.INY.2 ML 3 UND", price: 106736, finalPrice: 103534, stock: 0 },
-                { id: 'c42', name: "PARAXIN 500 MG 6 TABLETAS", price: 82130, finalPrice: 82130, stock: 0 },
-                { id: 'c43', name: "PARAXIN SUSPENSION 30 ML", price: 56416, finalPrice: 56416, stock: 0 },
-                { id: 'c44', name: "SIMPAUSE 100 MG 30 CAPSULA BLANDA", price: 100972, finalPrice: 97943, stock: 0 },
-                { id: 'c45', name: "TEREX-3 CREMA VAGINAL 20 GR", price: 70381, finalPrice: 70381, stock: 33 },
-                { id: 'c46', name: "TIBONELLA 2.5 MG 28 TBS", price: 29545, finalPrice: 29545, stock: 0 },
-                { id: 'c47', name: "TRIGENTAX CREMA 20 GR", price: 27456, finalPrice: 23887, stock: 292 },
-                { id: 'c48', name: "TRIGENTAX CREMA 40 GR", price: 42371, finalPrice: 36863, stock: 35 },
-                { id: 'c49', name: "TRIGENTAX LOCION 50 ML", price: 51777, finalPrice: 51777, stock: 0 },
-                { id: 'c50', name: "VAGINSOL F 200100 MG OVULOS 3 UNDS", price: 94322, finalPrice: 91492, stock: 0 },
-                { id: 'c51', name: "VAGINSOL F CREMA VAG.20 GR 3 APL.", price: 93103, finalPrice: 90310, stock: 0 },
-                { id: 'c52', name: "ZAKOR 100 MG 6 TABLETAS", price: 7094, finalPrice: 7094, stock: 0 },
+                { id: 'c1', name: "3 DESCONGELITO F GOTAS 15 ML", price: 46932, finalPrice: 46932, stock: 69 }, { id: 'c2', name: "AIRMAX INH. 100 MC 200 DOSIS (OFERTA)", price: 27931, finalPrice: 9310, stock: 920 }, { id: 'c3', name: "AIRMAX INH. 100 MC 200 DOSIS", price: 27931, finalPrice: 26601, stock: 240 }, { id: 'c4', name: "ASPROMIO INHALADOR 200 DOSIS", price: 17809, finalPrice: 17809, stock: 53 }, { id: 'c5', name: "BIFIDOLAC 170 MG 6 SBS", price: 66724, finalPrice: 66724, stock: 0 }, { id: 'c6', name: "BUSTEROL INHALADOR 200 DOSIS", price: 159383, finalPrice: 159383, stock: 4 }, { id: 'c7', name: "CLOBEZAN CREMA 25 GR", price: 41896, finalPrice: 41896, stock: 6 }, { id: 'c8', name: "CLOBEZAN LOCION CAPILAR 60 ML", price: 64839, finalPrice: 64839, stock: 0 }, { id: 'c9', name: "CLOBEZAN UNGUENTO 25 GR", price: 57081, finalPrice: 57081, stock: 0 }, { id: 'c10', name: "CUTAMYCON 500 MG 1 CAP.BLANDA VAGINAL", price: 33441, finalPrice: 33441, stock: 16 }, { id: 'c11', name: "CUTAMYCON CREMA TOPICA 20 GR", price: 13016, finalPrice: 13016, stock: 141 }, { id: 'c12', name: "DESCONGEL F GRIPA JARABE 60 ML", price: 15961, finalPrice: 15961, stock: 25 }, { id: 'c13', name: "DESCONGEL GRIPA 10 CAP.BLANDA GELATIN.", price: 15295, finalPrice: 15295, stock: 29 }, { id: 'c14', name: "DESCONGEL GRIPA 100 CAP.BLANDA GELAT.", price: 120843, finalPrice: 120843, stock: 0 }, { id: 'c15', name: "DESLORAN 5 MG 10 TABLETAS", price: 76477, finalPrice: 76477, stock: 11 }, { id: 'c16', name: "DESLORAN JARABE 60 ML", price: 77696, finalPrice: 77696, stock: 10 }, { id: 'c17', name: "DOLFENAX 200 MG 10 CAPSULAS", price: 45221, finalPrice: 45221, stock: 0 }, { id: 'c18', name: "DUOPAS 400/20 MG 10 CAP BLAN.DE GELATINA", price: 44224, finalPrice: 38475, stock: 115 }, { id: 'c19', name: "ESTERMAX 0.625 MG 28 TBS", price: 25460, finalPrice: 25460, stock: 0 }, { id: 'c20', name: "ESTERMAX CVAG. 40 GR 4 APL.", price: 27645, finalPrice: 27645, stock: 0 }, { id: 'c21', name: "FEMTRIOL CVAG.20GR 5 APLI.", price: 23560, finalPrice: 23560, stock: 0 }, { id: 'c22', name: "FLUTURAN 400 MG 10 CAPSULAS", price: 34249, finalPrice: 34249, stock: 0 }, { id: 'c23', name: "FLUZETRIN F 500 MG 10 CAPSULAS CBG", price: 31145, finalPrice: 31145, stock: 387 }, { id: 'c24', name: "FLUZETRIN F GOTAS 15 MILILITROS", price: 25936, finalPrice: 25936, stock: 0 }, { id: 'c25', name: "FLUZETRIN F JARABE 60 ML", price: 34027, finalPrice: 34027, stock: 51 }, { id: 'c26', name: "FRIOTAN HEDERA HELIX 65MG (OFERTA)", price: 33584, finalPrice: 26867, stock: 2 }, { id: 'c27', name: "FRIOTAN HEDERA HELIX 65MG (NORMAL)", price: 33584, finalPrice: 33584, stock: 19 }, { id: 'c28', name: "FRIOTAN HEDERA HELIX JARABE 120 ML", price: 29372, finalPrice: 23497, stock: 12 }, { id: 'c29', name: "FYNEXIN GEL 5% TUBO 20 GR", price: 25049, finalPrice: 25049, stock: 0 }, { id: 'c30', name: "INFLABON INHALADOR 200 MCG 200 DOSIS", price: 142425, finalPrice: 142425, stock: 14 }, { id: 'c31', name: "INFLABON INHALADOR 50 MCG 200 DOSIS", price: 121034, finalPrice: 117403, stock: 101 }, { id: 'c32', name: "INFLACOR 4 MG 1 ML AMPOLLA", price: 19507, finalPrice: 19507, stock: 0 }, { id: 'c33', name: "INFLACOR 8 MG 2 ML AMPOLLA", price: 36244, finalPrice: 36244, stock: 0 }, { id: 'c34', name: "INFLACOR RETARD 3+3 MG 1 ML AMPOLLA", price: 41564, finalPrice: 41564, stock: 0 }, { id: 'c35', name: "INFLACOR RETARD 6+6 MG 2 ML AMPOLLA", price: 62401, finalPrice: 62401, stock: 0 }, { id: 'c36', name: "LACTULAX 12 SBS JARABE 15 ML", price: 99753, finalPrice: 96760, stock: 137 }, { id: 'c37', name: "LACTULAX JARABE 240 ML", price: 102191, finalPrice: 99125, stock: 32 }, { id: 'c38', name: "MULTIDOL 800 MG 30 CAP.BLANDA GELATINOSA", price: 79691, finalPrice: 79691, stock: 0 }, { id: 'c39', name: "MULTIDOL EXPRESS 400 MG 48 CBG", price: 61514, finalPrice: 61514, stock: 17 }, { id: 'c40', name: "NEUROPRON 10.000 JERINGA PRELLENADA", price: 22611, finalPrice: 22611, stock: 0 }, { id: 'c41', name: "NEUROPRON 10.000 SOL.INY.2 ML 3 UND", price: 106736, finalPrice: 103534, stock: 0 }, { id: 'c42', name: "PARAXIN 500 MG 6 TABLETAS", price: 82130, finalPrice: 82130, stock: 0 }, { id: 'c43', name: "PARAXIN SUSPENSION 30 ML", price: 56416, finalPrice: 56416, stock: 0 }, { id: 'c44', name: "SIMPAUSE 100 MG 30 CAPSULA BLANDA", price: 100972, finalPrice: 97943, stock: 0 }, { id: 'c45', name: "TEREX-3 CREMA VAGINAL 20 GR", price: 70381, finalPrice: 70381, stock: 33 }, { id: 'c46', name: "TIBONELLA 2.5 MG 28 TBS", price: 29545, finalPrice: 29545, stock: 0 }, { id: 'c47', name: "TRIGENTAX CREMA 20 GR", price: 27456, finalPrice: 23887, stock: 292 }, { id: 'c48', name: "TRIGENTAX CREMA 40 GR", price: 42371, finalPrice: 36863, stock: 35 }, { id: 'c49', name: "TRIGENTAX LOCION 50 ML", price: 51777, finalPrice: 51777, stock: 0 }, { id: 'c50', name: "VAGINSOL F 200100 MG OVULOS 3 UNDS", price: 94322, finalPrice: 91492, stock: 0 }, { id: 'c51', name: "VAGINSOL F CREMA VAG.20 GR 3 APL.", price: 93103, finalPrice: 90310, stock: 0 }, { id: 'c52', name: "ZAKOR 100 MG 6 TABLETAS", price: 7094, finalPrice: 7094, stock: 0 },
             ];
 
             const formatCOP = (val) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(val);
 
-            // Preparar lista maestra para el agrupador
             const masterList = useMemo(() => {
                 const list = [];
                 productsUnidrogas.forEach(p => list.push({...p, supplier: 'Unidrogas', key: 'u'}));
@@ -251,147 +134,95 @@
                 return list;
             }, []);
 
-            // Filtrado en el agrupador
             const filteredMaster = useMemo(() => {
                 return masterList.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
             }, [masterList, searchTerm]);
 
-            // Crear Grupo
             const handleCreateGroup = () => {
                 if (selectedForGroup.length === 0) return;
-                
-                const newGroup = {
-                    id: Date.now(),
-                    color: GROUP_COLORS[manualGroups.length % GROUP_COLORS.length],
-                    items: selectedForGroup
-                };
-
+                const newGroup = { id: Date.now(), color: GROUP_COLORS[manualGroups.length % GROUP_COLORS.length], items: selectedForGroup };
                 setManualGroups([...manualGroups, newGroup]);
                 setSelectedForGroup([]);
             };
 
-            // Eliminar Grupo
-            const handleDeleteGroup = (groupId) => {
-                setManualGroups(manualGroups.filter(g => g.id !== groupId));
-            };
+            const handleDeleteGroup = (groupId) => setManualGroups(manualGroups.filter(g => g.id !== groupId));
 
-            // Toggle selección
             const toggleSelect = (productKey, productId) => {
                 const uniqueId = `${productKey}-${productId}`;
-                if (selectedForGroup.includes(uniqueId)) {
-                    setSelectedForGroup(selectedForGroup.filter(id => id !== uniqueId));
-                } else {
-                    setSelectedForGroup([...selectedForGroup, uniqueId]);
-                }
+                if (selectedForGroup.includes(uniqueId)) setSelectedForGroup(selectedForGroup.filter(id => id !== uniqueId));
+                else setSelectedForGroup([...selectedForGroup, uniqueId]);
             };
 
-            // Obtener el grupo de un producto (para mostrar color)
             const getProductGroup = (productKey, productId) => {
                 const uniqueId = `${productKey}-${productId}`;
                 return manualGroups.find(g => g.items.includes(uniqueId));
             };
 
-            // --- VISTA AGRUPADOR ---
+            // --- VISTA AGRUPADOR (Móvil optimizado) ---
             if (view === 'grouping') {
                 return (
                     <div className="flex flex-col h-full bg-gray-50">
-                        <header className="bg-white p-4 shadow border-b z-10 flex justify-between items-center">
+                        <header className="bg-white p-3 shadow border-b z-10 flex justify-between items-center">
                             <div className="flex items-center gap-2">
-                                <div className="bg-indigo-600 p-2 rounded text-white">{Icons.Layers}</div>
-                                <h1 className="text-lg font-bold">Gestor de Agrupamiento Manual</h1>
+                                <div className="bg-indigo-600 p-1.5 rounded text-white">{Icons.Layers}</div>
+                                <div>
+                                    <h1 className="text-base font-bold leading-tight">Agrupar Productos</h1>
+                                    <p className="text-xs text-gray-500 hidden sm:block">Selecciona referencias idénticas</p>
+                                </div>
                             </div>
                             <div className="flex gap-2">
-                                <button onClick={() => setView('catalog')} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Volver</button>
-                                <button onClick={() => setView('compare_table')} className="px-4 py-2 bg-indigo-600 text-white rounded font-bold shadow hover:bg-indigo-700 flex items-center gap-2">
-                                    {Icons.Chart} Ver Tabla Comparativa
+                                <button onClick={() => setView('catalog')} className="px-3 py-1.5 text-gray-600 hover:bg-gray-100 rounded text-sm">Volver</button>
+                                <button onClick={() => setView('compare_table')} className="px-3 py-1.5 bg-indigo-600 text-white rounded font-bold shadow text-sm flex items-center gap-1">
+                                    {Icons.Chart} <span className="hidden sm:inline">Comparar</span>
                                 </button>
                             </div>
                         </header>
 
-                        <div className="flex-grow flex overflow-hidden">
-                            {/* Panel Izquierdo: Lista de Productos */}
-                            <div className="w-2/3 p-4 flex flex-col border-r bg-white">
-                                <div className="mb-4 relative">
+                        <div className="flex-grow flex flex-col md:flex-row overflow-hidden">
+                            {/* Panel Izquierdo: Lista */}
+                            <div className="flex-1 p-3 flex flex-col border-b md:border-b-0 md:border-r bg-white overflow-hidden">
+                                <div className="mb-3 relative">
                                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{Icons.Search}</div>
-                                    <input 
-                                        type="text" 
-                                        placeholder="Buscar producto para agrupar..." 
-                                        className="w-full pl-10 pr-4 py-2 border rounded shadow-sm outline-none focus:ring-2 focus:ring-indigo-500"
-                                        value={searchTerm}
-                                        onChange={e => setSearchTerm(e.target.value)}
-                                    />
+                                    <input type="text" placeholder="Buscar..." className="w-full pl-9 pr-3 py-2 border rounded text-sm outline-none focus:ring-2 focus:ring-indigo-500" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
                                 </div>
-                                <div className="flex-grow overflow-y-auto space-y-2">
+                                <div className="flex-grow overflow-y-auto space-y-2 pb-20 md:pb-0">
                                     {filteredMaster.map(p => {
                                         const uniqueId = `${p.key}-${p.id}`;
                                         const group = getProductGroup(p.key, p.id);
                                         const isSelected = selectedForGroup.includes(uniqueId);
-
                                         return (
-                                            <div 
-                                                key={uniqueId} 
-                                                className={`p-3 border rounded flex items-center gap-3 cursor-pointer transition-colors ${isSelected ? 'bg-indigo-50 border-indigo-300 ring-1 ring-indigo-300' : 'hover:bg-gray-50'} ${group ? 'opacity-60 bg-gray-50' : ''}`}
-                                                onClick={() => !group && toggleSelect(p.key, p.id)}
-                                            >
-                                                <div className={`w-5 h-5 rounded border flex items-center justify-center ${isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-gray-300'}`}>
-                                                    {isSelected && <div className="w-2 h-2">{Icons.Check}</div>}
+                                            <div key={uniqueId} className={`p-2.5 border rounded flex items-center gap-3 cursor-pointer transition-colors ${isSelected ? 'bg-indigo-50 border-indigo-300' : ''} ${group ? 'opacity-50 bg-gray-50' : ''}`} onClick={() => !group && toggleSelect(p.key, p.id)}>
+                                                <div className={`w-5 h-5 rounded border flex items-center justify-center flex-shrink-0 ${isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-gray-300'}`}>{isSelected && <div className="w-3 h-3">{Icons.Check}</div>}</div>
+                                                <div className="flex-grow min-w-0">
+                                                    <div className="font-bold text-sm text-gray-800 truncate">{p.name}</div>
+                                                    <div className="text-xs text-gray-500 flex gap-2 mt-0.5"><span className={`px-1.5 rounded text-[10px] uppercase font-bold ${p.key === 'u' ? 'bg-blue-100 text-blue-800' : p.key === 'd' ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'}`}>{p.supplier.substring(0,4)}</span><span>{formatCOP(p.price)}</span></div>
                                                 </div>
-                                                <div className="flex-grow">
-                                                    <div className="font-bold text-sm text-gray-800">{p.name}</div>
-                                                    <div className="text-xs text-gray-500 flex gap-2">
-                                                        <span className={`px-1.5 rounded ${p.key === 'u' ? 'bg-blue-100 text-blue-800' : p.key === 'd' ? 'bg-emerald-100 text-emerald-800' : 'bg-indigo-100 text-indigo-800'}`}>
-                                                            {p.supplier}
-                                                        </span>
-                                                        <span>{formatCOP(p.price)}</span>
-                                                    </div>
-                                                </div>
-                                                {group && (
-                                                    <div className={`px-2 py-1 rounded text-xs font-bold ${group.color}`}>
-                                                        Agrupado
-                                                    </div>
-                                                )}
+                                                {group && (<div className={`px-2 py-0.5 rounded text-[10px] font-bold ${group.color}`}>Grupo</div>)}
                                             </div>
                                         );
                                     })}
                                 </div>
-                                <div className="mt-4 pt-4 border-t flex justify-between items-center">
-                                    <span className="text-sm text-gray-500">{selectedForGroup.length} seleccionados</span>
-                                    <button 
-                                        onClick={handleCreateGroup}
-                                        disabled={selectedForGroup.length < 1}
-                                        className={`px-4 py-2 rounded font-bold text-white shadow ${selectedForGroup.length > 0 ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-300 cursor-not-allowed'}`}
-                                    >
-                                        {Icons.Plus} Crear Grupo
+                                {/* Botón flotante crear grupo en móvil */}
+                                <div className="absolute bottom-4 left-4 right-4 md:static md:mt-3 md:pt-3 md:border-t z-20">
+                                    <button onClick={handleCreateGroup} disabled={selectedForGroup.length < 1} className={`w-full py-3 rounded font-bold text-white shadow-lg flex justify-center items-center gap-2 ${selectedForGroup.length > 0 ? 'bg-indigo-600 active:bg-indigo-700' : 'bg-gray-300'}`}>
+                                        {Icons.Plus} Crear Grupo ({selectedForGroup.length})
                                     </button>
                                 </div>
                             </div>
 
-                            {/* Panel Derecho: Grupos Creados */}
-                            <div className="w-1/3 bg-gray-50 p-4 overflow-y-auto">
-                                <h2 className="font-bold text-gray-700 mb-4 flex items-center gap-2">Grupos Creados ({manualGroups.length})</h2>
-                                {manualGroups.length === 0 && (
-                                    <div className="text-center text-gray-400 py-10">
-                                        <p>No hay grupos definidos.</p>
-                                        <p className="text-xs">Selecciona productos y crea un grupo.</p>
-                                    </div>
-                                )}
-                                <div className="space-y-4">
+                            {/* Panel Derecho: Grupos (Bottom sheet en móvil?) */}
+                            <div className="md:w-1/3 bg-gray-50 p-3 overflow-y-auto border-t md:border-t-0 h-1/3 md:h-auto">
+                                <h2 className="font-bold text-gray-700 mb-3 text-sm flex items-center gap-2">Grupos ({manualGroups.length})</h2>
+                                <div className="space-y-3 pb-10">
+                                    {manualGroups.length === 0 && <p className="text-xs text-gray-400 text-center">Sin grupos.</p>}
                                     {manualGroups.map(g => (
-                                        <div key={g.id} className={`p-3 rounded border shadow-sm bg-white border-l-4 ${g.color.replace('bg-', 'border-').split(' ')[0]}`}>
-                                            <div className="flex justify-between items-start mb-2">
-                                                <span className={`text-xs font-bold px-2 py-0.5 rounded ${g.color}`}>Grupo #{g.id.toString().slice(-4)}</span>
-                                                <button onClick={() => handleDeleteGroup(g.id)} className="text-gray-400 hover:text-red-500">{Icons.X}</button>
-                                            </div>
-                                            <ul className="text-xs space-y-1">
-                                                {g.items.map(itemKey => {
-                                                    const [k, id] = itemKey.split('-');
-                                                    const list = k === 'u' ? productsUnidrogas : k === 'd' ? productsDrosan : productsCopidrogas;
-                                                    const p = list.find(x => x.id === id);
-                                                    return (
-                                                        <li key={itemKey} className="flex gap-1 text-gray-600 truncate">
-                                                            <strong className="uppercase w-3">{k}:</strong> {p?.name}
-                                                        </li>
-                                                    );
+                                        <div key={g.id} className={`p-2 rounded border bg-white border-l-4 ${g.color.replace('bg-', 'border-').split(' ')[0]}`}>
+                                            <div className="flex justify-between items-start mb-1"><span className={`text-[10px] font-bold px-1.5 rounded ${g.color}`}>#{g.id.toString().slice(-3)}</span><button onClick={() => handleDeleteGroup(g.id)} className="text-gray-400 p-1">{Icons.X}</button></div>
+                                            <ul className="text-[10px] space-y-1 text-gray-600">
+                                                {g.items.map(k => {
+                                                    const [key, id] = k.split('-');
+                                                    const list = key === 'u' ? productsUnidrogas : key === 'd' ? productsDrosan : productsCopidrogas;
+                                                    return <li key={k} className="truncate w-full">- {list.find(x => x.id === id)?.name}</li>
                                                 })}
                                             </ul>
                                         </div>
@@ -403,143 +234,62 @@
                 );
             }
 
-            // --- VISTA TABLA COMPARATIVA MANUAL ---
+            // --- VISTA COMPARATIVA ---
             if (view === 'compare_table') {
                 return (
                     <div className="flex flex-col h-full bg-gray-50">
-                        <header className="bg-white p-4 shadow border-b sticky top-0 z-10 flex justify-between items-center">
+                        <header className="bg-white p-3 shadow border-b sticky top-0 z-10 flex justify-between items-center">
                             <div className="flex items-center gap-2">
-                                <div className="bg-indigo-600 p-2 rounded text-white">{Icons.Chart}</div>
-                                <div>
-                                    <h1 className="text-lg font-bold">Tabla Comparativa (Manual)</h1>
-                                    <p className="text-xs text-gray-500">Basada en tus {manualGroups.length} grupos definidos</p>
-                                </div>
+                                <div className="bg-indigo-600 p-1.5 rounded text-white">{Icons.Chart}</div>
+                                <h1 className="text-base font-bold">Comparativa</h1>
                             </div>
-                            <button onClick={() => setView('grouping')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded font-medium">Volver a Agrupar</button>
+                            <button onClick={() => setView('grouping')} className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded text-sm">Editar</button>
                         </header>
-
-                        <div className="p-6 overflow-y-auto">
-                            <div className="bg-white rounded shadow border overflow-hidden">
-                                <table className="w-full text-left">
+                        <div className="flex-grow overflow-x-auto overflow-y-auto p-2">
+                            <div className="bg-white rounded shadow border min-w-[600px]"> {/* Min width force scroll */}
+                                <table className="w-full text-left text-sm">
                                     <thead className="bg-gray-100 border-b">
                                         <tr>
-                                            <th className="p-4 text-xs font-bold text-gray-500 uppercase">Referencia (Grupo)</th>
-                                            <th className="p-4 text-xs font-bold text-blue-600 uppercase border-l bg-blue-50">Unidrogas</th>
-                                            <th className="p-4 text-xs font-bold text-emerald-600 uppercase border-l bg-emerald-50">Drosan</th>
-                                            <th className="p-4 text-xs font-bold text-indigo-600 uppercase border-l bg-indigo-50">Copidrogas</th>
-                                            <th className="p-4 text-xs font-bold text-gray-600 uppercase border-l text-center">Mejor Opción</th>
+                                            <th className="p-3 font-bold text-gray-500">Producto</th>
+                                            <th className="p-3 font-bold text-blue-600 bg-blue-50">Unidrogas</th>
+                                            <th className="p-3 font-bold text-emerald-600 bg-emerald-50">Drosan</th>
+                                            <th className="p-3 font-bold text-indigo-600 bg-indigo-50">Copidrogas</th>
+                                            <th className="p-3 font-bold text-center">Mejor</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y">
                                         {manualGroups.map(g => {
-                                            // Extraer items del grupo
-                                            const uItemKey = g.items.find(k => k.startsWith('u-'));
-                                            const dItemKey = g.items.find(k => k.startsWith('d-'));
-                                            const cItemKey = g.items.find(k => k.startsWith('c-'));
+                                            const uItem = g.items.find(k => k.startsWith('u-'));
+                                            const dItem = g.items.find(k => k.startsWith('d-'));
+                                            const cItem = g.items.find(k => k.startsWith('c-'));
+                                            const u = uItem ? productsUnidrogas.find(p => p.id === uItem.split('-')[1]) : null;
+                                            const d = dItem ? productsDrosan.find(p => p.id === dItem.split('-')[1]) : null;
+                                            const c = cItem ? productsCopidrogas.find(p => p.id === cItem.split('-')[1]) : null;
+                                            
+                                            const pU = u ? (u.hasDiscount ? u.price * (1-UNIDROGAS_DISCOUNT_RATE) : u.price) : Infinity;
+                                            const pD = d ? d.finalPrice : Infinity;
+                                            const pC = c ? (c.stock > 0 ? c.finalPrice : Infinity) : Infinity;
+                                            
+                                            const min = Math.min(pU, pD, pC);
+                                            let winner = "-";
+                                            if(min !== Infinity) { if(min === pU) winner="UNI"; else if(min === pD) winner="DRO"; else winner="COP"; }
 
-                                            const u = uItemKey ? productsUnidrogas.find(p => p.id === uItemKey.split('-')[1]) : null;
-                                            const d = dItemKey ? productsDrosan.find(p => p.id === dItemKey.split('-')[1]) : null;
-                                            const c = cItemKey ? productsCopidrogas.find(p => p.id === cItemKey.split('-')[1]) : null;
-
-                                            // Calcular precios finales
-                                            const priceU = u ? (u.hasDiscount ? u.price * (1 - UNIDROGAS_DISCOUNT_RATE) : u.price) : Infinity;
-                                            const priceD = d ? d.finalPrice : Infinity;
-                                            const priceC = c ? (c.stock > 0 ? c.finalPrice : Infinity) : Infinity;
-
-                                            // Determinar tipo de coincidencia para el color
-                                            let matchCount = 0;
-                                            if (u) matchCount++;
-                                            if (d) matchCount++;
-                                            if (c) matchCount++;
-
-                                            let rowColor = "bg-white";
-                                            let badgeText = "";
-                                            let badgeColor = "";
-
-                                            if (matchCount === 3) {
-                                                rowColor = "bg-blue-50 hover:bg-blue-100"; // Coincidencia Total
-                                                badgeText = "Total";
-                                                badgeColor = "bg-blue-200 text-blue-800";
-                                            } else if (matchCount === 2) {
-                                                rowColor = "bg-green-50 hover:bg-green-100"; // Parcial
-                                                badgeText = "Parcial";
-                                                badgeColor = "bg-green-200 text-green-800";
-                                            } else {
-                                                rowColor = "bg-orange-50 hover:bg-orange-100"; // Única
-                                                badgeText = "Única";
-                                                badgeColor = "bg-orange-200 text-orange-800";
-                                            }
-
-                                            // Ganador
-                                            const min = Math.min(priceU, priceD, priceC);
-                                            let winner = "---";
-                                            if (min !== Infinity) {
-                                                if (min === priceU) winner = "Unidrogas";
-                                                else if (min === priceD) winner = "Drosan";
-                                                else winner = "Copidrogas";
-                                            }
-
-                                            // Nombre representativo (el primero que encuentre)
-                                            const displayName = u?.name || d?.name || c?.name || "Sin nombre";
+                                            let matchType = 0; if(u) matchType++; if(d) matchType++; if(c) matchType++;
+                                            const rowClass = matchType === 3 ? "bg-blue-50" : matchType === 2 ? "bg-green-50" : "bg-orange-50";
 
                                             return (
-                                                <tr key={g.id} className={rowColor}>
-                                                    <td className="p-4 border-r">
-                                                        <div className="font-bold text-sm">{displayName}</div>
-                                                        <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase mt-1 inline-block ${badgeColor}`}>
-                                                            {badgeText}
-                                                        </span>
+                                                <tr key={g.id} className={rowClass}>
+                                                    <td className="p-3 border-r max-w-[150px] truncate font-medium">
+                                                        {u?.name || d?.name || c?.name}
+                                                        <div className="text-[10px] opacity-70 uppercase font-bold mt-1">{matchType === 1 ? "Única" : matchType === 2 ? "Parcial" : "Total"}</div>
                                                     </td>
-                                                    <td className="p-4 border-r text-center">
-                                                        {u ? (
-                                                            <div>
-                                                                <div className="font-bold">{formatCOP(priceU)}</div>
-                                                                {u.hasDiscount && <div className="text-[10px] text-green-600">12% Dcto</div>}
-                                                            </div>
-                                                        ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
-                                                    </td>
-                                                    <td className="p-4 border-r text-center">
-                                                        {d ? (
-                                                            <div className="font-bold">{formatCOP(priceD)}</div>
-                                                        ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
-                                                    </td>
-                                                    <td className="p-4 border-r text-center">
-                                                        {c ? (
-                                                            <div>
-                                                                {c.stock > 0 ? (
-                                                                    <>
-                                                                        <div className="font-bold">{formatCOP(priceC)}</div>
-                                                                        <div className="text-[10px] text-green-600">Stock: {c.stock}</div>
-                                                                    </>
-                                                                ) : (
-                                                                    <>
-                                                                        <div className="text-gray-400 line-through text-xs">{formatCOP(priceC)}</div>
-                                                                        <div className="text-[10px] text-red-600 font-bold">AGOTADO</div>
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
-                                                    </td>
-                                                    <td className="p-4 text-center font-bold text-sm">
-                                                        {winner !== "---" && (
-                                                            <span className={`px-2 py-1 rounded text-white ${
-                                                                winner === 'Unidrogas' ? 'bg-blue-600' :
-                                                                winner === 'Drosan' ? 'bg-emerald-600' : 'bg-indigo-600'
-                                                            }`}>
-                                                                {winner}
-                                                            </span>
-                                                        )}
-                                                    </td>
+                                                    <td className="p-3 border-r text-center">{u ? <div className="font-bold">{formatCOP(pU)}</div> : <span className="text-xs text-gray-400">--</span>}</td>
+                                                    <td className="p-3 border-r text-center">{d ? <div className="font-bold">{formatCOP(pD)}</div> : <span className="text-xs text-gray-400">--</span>}</td>
+                                                    <td className="p-3 border-r text-center">{c ? (c.stock > 0 ? <div className="font-bold">{formatCOP(pC)}</div> : <div className="text-xs text-red-500 font-bold">AGOTADO</div>) : <span className="text-xs text-gray-400">--</span>}</td>
+                                                    <td className="p-3 text-center font-bold text-xs bg-white">{winner}</td>
                                                 </tr>
                                             );
                                         })}
-                                        {manualGroups.length === 0 && (
-                                            <tr>
-                                                <td colSpan="5" className="p-8 text-center text-gray-500">
-                                                    No has creado grupos aún. Ve a "Agrupar" para comenzar.
-                                                </td>
-                                            </tr>
-                                        )}
                                     </tbody>
                                 </table>
                             </div>
@@ -548,98 +298,80 @@
                 );
             }
 
-            // --- VISTA CATÁLOGO NORMAL (Código existente pero con navegación a grouping) ---
+            // --- VISTA CATÁLOGO (Normal) ---
             const currentProducts = supplier === 'Unidrogas' ? productsUnidrogas : supplier === 'Drosan' ? productsDrosan : productsCopidrogas;
             
             const addToCart = (id) => setCart(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
             const removeFromCart = (id) => setCart(prev => { const n = { ...prev }; if (n[id] > 1) n[id]--; else delete n[id]; return n; });
-            const clearCurrentViewCart = () => { if (confirm(`¿Limpiar carrito de ${supplier}?`)) setCart(prev => { const n = { ...prev }; currentProducts.forEach(p => delete n[p.id]); return n; }); };
-            const clearAllCache = () => { if (confirm("¿Borrar TODO?")) { setCart({}); setManualGroups([]); localStorage.removeItem('pharmaCart_v4'); localStorage.removeItem('pharmaGroups_v1'); } };
+            const clearCurrentViewCart = () => { if (confirm(`¿Limpiar carrito ${supplier}?`)) setCart(prev => { const n = { ...prev }; currentProducts.forEach(p => delete n[p.id]); return n; }); };
             
-            // Cálculos para el carrito lateral
             let subtotal = 0, savings = 0, total = 0, count = 0;
             Object.entries(cart).forEach(([id, qty]) => {
                 const p = currentProducts.find(x => x.id === id);
                 if (p) {
-                    const price = p.price * qty;
-                    let final = price;
-                    if (supplier === 'Unidrogas') final = p.hasDiscount ? price * (1 - UNIDROGAS_DISCOUNT_RATE) : price;
-                    else final = p.finalPrice * qty; // Drosan y Copi usan finalPrice
-                    
-                    subtotal += price;
-                    savings += (price - final);
-                    total += final;
+                    let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * (1 - UNIDROGAS_DISCOUNT_RATE) : p.price) : p.finalPrice;
+                    subtotal += p.price * qty;
+                    savings += (p.price - final) * qty;
+                    total += final * qty;
                     count += qty;
                 }
             });
 
+            const handleShareWhatsApp = () => {
+                if (Object.keys(cart).length === 0) return;
+                let msg = `*COTIZACIÓN ${supplier.toUpperCase()}*\n🗓️ ${new Date().toLocaleDateString()}\n\n`;
+                Object.entries(cart).forEach(([id, qty]) => {
+                    const p = currentProducts.find(x => x.id === id);
+                    if(p) {
+                         let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * (1 - UNIDROGAS_DISCOUNT_RATE) : p.price) : p.finalPrice;
+                         msg += `📦 ${p.name}\n   ${qty} x ${formatCOP(final)} = ${formatCOP(final*qty)}\n`;
+                    }
+                });
+                msg += `\n💰 *TOTAL: ${formatCOP(total)}*`;
+                window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+            };
+
             const theme = supplier === 'Unidrogas' ? 'blue' : supplier === 'Drosan' ? 'emerald' : 'indigo';
-            const themeClass = `text-${theme}-600 bg-${theme}-50 border-${theme}-200`;
 
             return (
-                <div className="flex flex-col h-full bg-gray-50 font-sans">
-                    <header className="bg-white shadow-sm border-b p-4 flex justify-between items-center z-10">
+                <div className="flex flex-col h-full bg-gray-50">
+                    <header className="bg-white shadow-sm border-b p-3 flex justify-between items-center z-10">
                         <div className="flex items-center gap-2">
-                            <div className={`p-2 rounded text-white bg-${theme}-600`}>{Icons.Store}</div>
-                            <div>
-                                <h1 className="text-xl font-bold">Catálogo {supplier}</h1>
-                                <p className="text-xs text-gray-500">Vista individual por depósito</p>
-                            </div>
+                            <div className={`p-1.5 rounded text-white bg-${theme}-600`}>{Icons.Store}</div>
+                            <div><h1 className="text-base font-bold leading-tight">{supplier}</h1></div>
                         </div>
                         <div className="flex gap-2">
-                            <button onClick={() => setView('grouping')} className="px-4 py-2 bg-indigo-600 text-white rounded font-bold shadow hover:bg-indigo-700 flex items-center gap-2">
-                                {Icons.Layers} AGRUPAR & COMPARAR
-                            </button>
-                             <button onClick={() => {
-                                let next = supplier === 'Unidrogas' ? 'Drosan' : supplier === 'Drosan' ? 'Copidrogas' : 'Unidrogas';
-                                setSupplier(next);
-                            }} className="px-4 py-2 border rounded hover:bg-gray-50 flex items-center gap-2">
-                                {Icons.Refresh} Cambiar Depósito
-                            </button>
+                            <button onClick={() => setView('grouping')} className="px-3 py-1.5 bg-indigo-600 text-white rounded shadow text-xs font-bold flex items-center gap-1">{Icons.Layers} Agrupar</button>
+                            <button onClick={() => { let next = supplier === 'Unidrogas' ? 'Drosan' : supplier === 'Drosan' ? 'Copidrogas' : 'Unidrogas'; setSupplier(next); }} className="px-3 py-1.5 border rounded bg-gray-50 text-xs font-bold flex items-center gap-1">{Icons.Refresh} Cambiar</button>
                         </div>
                     </header>
 
-                    <main className="flex-grow flex overflow-hidden">
-                        {/* Lista productos normal */}
-                        <div className="flex-grow overflow-y-auto p-4">
-                            <div className="mb-4 relative">
+                    <main className="flex-grow flex overflow-hidden relative">
+                        <div className="flex-grow overflow-y-auto p-3 pb-32 md:pb-3"> {/* Padding bottom extra para la barra flotante móvil */}
+                            <div className="mb-3 relative">
                                 <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{Icons.Search}</div>
-                                <input type="text" placeholder="Buscar..." className="w-full pl-10 pr-4 py-2 border rounded outline-none focus:ring-2 focus:ring-blue-500" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
+                                <input type="text" placeholder="Buscar..." className="w-full pl-9 pr-3 py-2 border rounded outline-none focus:ring-2 focus:ring-blue-500 text-sm" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} />
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {currentProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())).map(p => {
-                                    let price = p.price;
-                                    let final = supplier === 'Unidrogas' ? (p.hasDiscount ? price * (1 - UNIDROGAS_DISCOUNT_RATE) : price) : p.finalPrice;
+                                    let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * (1 - UNIDROGAS_DISCOUNT_RATE) : p.price) : p.finalPrice;
                                     let stock = supplier === 'Copidrogas' ? p.stock : 999;
                                     const qty = cart[p.id] || 0;
-
                                     return (
-                                        <div key={p.id} className="bg-white p-4 rounded shadow border flex flex-col justify-between">
+                                        <div key={p.id} className="bg-white p-3 rounded shadow border flex flex-col justify-between relative overflow-hidden">
+                                            {qty > 0 && <div className={`absolute top-0 right-0 px-2 py-0.5 text-[10px] font-bold text-white bg-${theme}-600 rounded-bl`}>{qty} en carrito</div>}
                                             <div>
-                                                <div className="flex justify-between items-start mb-2">
-                                                    <span className="text-[10px] bg-gray-100 text-gray-600 px-2 py-1 rounded font-bold">{p.category || 'GENERAL'}</span>
-                                                    {qty > 0 && <span className={`text-xs font-bold px-2 py-1 rounded-full text-white bg-${theme}-600`}>x{qty}</span>}
-                                                </div>
-                                                <div className="font-bold text-sm mb-2 h-10 line-clamp-2">{p.name}</div>
-                                                <div className="text-xs text-gray-400 mb-4">
-                                                    {supplier === 'Copidrogas' ? (stock > 0 ? `Stock: ${stock}` : 'AGOTADO') : 'Disponible'}
-                                                </div>
+                                                <div className="font-bold text-xs mb-1 h-8 line-clamp-2">{p.name}</div>
+                                                {supplier === 'Copidrogas' && <div className={`text-[10px] font-bold mb-2 ${stock > 0 ? 'text-green-600' : 'text-red-500'}`}>{stock > 0 ? `Disp: ${stock}` : 'AGOTADO'}</div>}
                                             </div>
-                                            
-                                            <div className="border-t pt-3 flex justify-between items-center">
+                                            <div className="flex justify-between items-end mt-2">
                                                 <div>
-                                                    <div className="text-xs text-gray-500 line-through">{formatCOP(price)}</div>
-                                                    <div className={`font-bold text-lg text-${theme}-700`}>{formatCOP(final)}</div>
+                                                    <div className="text-[10px] text-gray-400 line-through">{formatCOP(p.price)}</div>
+                                                    <div className={`font-bold text-sm text-${theme}-700`}>{formatCOP(final)}</div>
                                                 </div>
-                                                <div className="flex gap-2">
-                                                    {qty > 0 && <button onClick={() => removeFromCart(p.id)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100">-</button>}
-                                                    <button 
-                                                        onClick={() => addToCart(p.id)} 
-                                                        disabled={supplier === 'Copidrogas' && stock <= 0}
-                                                        className={`px-4 py-1 rounded text-white font-bold text-xs ${supplier === 'Copidrogas' && stock <= 0 ? 'bg-gray-400' : `bg-${theme}-600 hover:bg-${theme}-700`}`}
-                                                    >
-                                                        {qty === 0 ? 'AGREGAR' : '+'}
-                                                    </button>
+                                                <div className="flex items-center gap-2">
+                                                    {qty > 0 && <button onClick={() => removeFromCart(p.id)} className="w-7 h-7 rounded border flex items-center justify-center bg-gray-50 active:bg-gray-200">-</button>}
+                                                    <button onClick={() => addToCart(p.id)} disabled={supplier === 'Copidrogas' && stock <= 0} className={`h-7 px-3 rounded text-white font-bold text-xs flex items-center ${supplier === 'Copidrogas' && stock <= 0 ? 'bg-gray-300' : `bg-${theme}-600 active:bg-${theme}-700`}`}>{qty === 0 ? 'AGREGAR' : '+'}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -648,58 +380,55 @@
                             </div>
                         </div>
 
-                        {/* Carrito Lateral */}
-                        <div className="w-80 bg-white border-l flex flex-col shadow-xl z-20">
-                            <div className="p-4 border-b flex justify-between items-center bg-gray-50">
-                                <h2 className="font-bold flex items-center gap-2">{Icons.Cart} Pedido {supplier}</h2>
-                                {count > 0 && <button onClick={clearCurrentViewCart} className="text-red-500 hover:text-red-700">{Icons.Trash}</button>}
+                        {/* BARRA FLOTANTE MÓVIL */}
+                        <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t shadow-[0_-2px_10px_rgba(0,0,0,0.1)] p-3 z-50">
+                            <div className="flex justify-between items-center mb-2">
+                                <div className="text-xs text-gray-500">{count} ítems</div>
+                                <div className="font-bold text-lg text-gray-800">{formatCOP(total)}</div>
                             </div>
-                            <div className="flex-grow overflow-y-auto p-4 space-y-3">
-                                {count === 0 ? (
-                                    <div className="text-center text-gray-400 py-10">
-                                        <div className="mx-auto w-10 h-10 mb-2 opacity-50">{Icons.DollarSign}</div>
-                                        <p className="text-sm">Carrito vacío</p>
-                                    </div>
-                                ) : (
-                                    Object.entries(cart).map(([id, qty]) => {
-                                        const p = currentProducts.find(x => x.id === id);
-                                        if (!p) return null;
-                                        let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * 0.88 : p.price) : p.finalPrice;
-                                        return (
-                                            <div key={id} className="text-sm border-b pb-2">
-                                                <div className="flex justify-between font-bold">
-                                                    <span className="truncate w-40">{p.name}</span>
-                                                    <span>x{qty}</span>
-                                                </div>
-                                                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                                    <span>Unit: {formatCOP(final)}</span>
-                                                    <span className="font-bold text-gray-800">{formatCOP(final * qty)}</span>
-                                                </div>
-                                            </div>
-                                        );
-                                    })
-                                )}
-                            </div>
-                            <div className="p-4 bg-gray-50 border-t">
-                                <div className="flex justify-between text-sm mb-2">
-                                    <span>Subtotal</span>
-                                    <span>{formatCOP(subtotal)}</span>
-                                </div>
-                                {savings > 0 && (
-                                    <div className="flex justify-between text-sm text-green-600 font-bold mb-2">
-                                        <span>Ahorro</span>
-                                        <span>- {formatCOP(savings)}</span>
-                                    </div>
-                                )}
-                                <div className="flex justify-between text-xl font-bold border-t pt-2 mt-2">
-                                    <span>Total</span>
-                                    <span>{formatCOP(total)}</span>
-                                </div>
-                                <button className={`w-full mt-4 py-3 rounded font-bold text-white shadow bg-${theme}-600 hover:bg-${theme}-700`}>
-                                    Confirmar Pedido
-                                </button>
-                            </div>
+                            <button onClick={() => setShowMobileCart(true)} className={`w-full py-3 rounded font-bold text-white shadow flex justify-center items-center gap-2 bg-${theme}-600 active:bg-${theme}-700`}>
+                                {Icons.Cart} Ver Pedido
+                            </button>
                         </div>
+
+                        {/* MODAL/PANEL CARRITO (Adaptable) */}
+                        {(showMobileCart || window.innerWidth >= 768) && (
+                            <div className={`fixed inset-0 z-50 md:static md:inset-auto md:w-80 md:block bg-black/50 md:bg-transparent flex justify-end ${!showMobileCart ? 'hidden md:flex' : ''}`}>
+                                <div className="w-full md:w-full h-[80%] mt-auto md:mt-0 md:h-full bg-white rounded-t-xl md:rounded-none shadow-2xl flex flex-col animate-slide-up md:animate-none">
+                                    <div className="p-3 border-b flex justify-between items-center bg-gray-50 rounded-t-xl md:rounded-none">
+                                        <h2 className="font-bold flex items-center gap-2">{Icons.Cart} Pedido {supplier}</h2>
+                                        <div className="flex gap-3">
+                                            {count > 0 && <button onClick={clearCurrentViewCart} className="text-red-500">{Icons.Trash}</button>}
+                                            <button onClick={() => setShowMobileCart(false)} className="md:hidden text-gray-500">{Icons.ChevronDown}</button>
+                                        </div>
+                                    </div>
+                                    <div className="flex-grow overflow-y-auto p-3 space-y-3">
+                                        {count === 0 ? <div className="text-center text-gray-400 py-10"><p>Vacío</p></div> : 
+                                            Object.entries(cart).map(([id, qty]) => {
+                                                const p = currentProducts.find(x => x.id === id);
+                                                if (!p) return null;
+                                                let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * (1 - UNIDROGAS_DISCOUNT_RATE) : p.price) : p.finalPrice;
+                                                return (
+                                                    <div key={id} className="text-sm border-b pb-2 flex justify-between items-center">
+                                                        <div className="overflow-hidden mr-2">
+                                                            <div className="truncate font-medium">{p.name}</div>
+                                                            <div className="text-xs text-gray-500">{qty} x {formatCOP(final)}</div>
+                                                        </div>
+                                                        <div className="font-bold">{formatCOP(final * qty)}</div>
+                                                    </div>
+                                                );
+                                            })
+                                        }
+                                    </div>
+                                    <div className="p-3 bg-gray-50 border-t safe-area-pb">
+                                        <div className="flex justify-between text-xl font-bold mb-3"><span>Total</span><span>{formatCOP(total)}</span></div>
+                                        <button onClick={handleShareWhatsApp} className="w-full py-3 rounded font-bold text-white shadow bg-green-500 active:bg-green-600 flex justify-center items-center gap-2">
+                                            {Icons.WhatsApp} Enviar WhatsApp
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </main>
                 </div>
             );
