@@ -221,17 +221,9 @@
                 );
 
                 result.sort((a, b) => {
-                    const getFinalPrice = (product) => {
-                        if (supplier === 'Unidrogas') {
-                            return product.hasDiscount ? product.price * (1 - UNIDROGAS_DISCOUNT_RATE) : product.price;
-                        } else {
-                            return product.finalPrice;
-                        }
-                    };
-                    
-                    const priceA = getFinalPrice(a);
-                    const priceB = getFinalPrice(b);
-                    return sortOrder === 'asc' ? priceA - priceB : priceB - priceA;
+                    return sortOrder === 'asc' 
+                        ? a.name.localeCompare(b.name) 
+                        : b.name.localeCompare(a.name);
                 });
 
                 return result;
@@ -386,7 +378,7 @@
                                 <button 
                                     onClick={() => setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc')}
                                     className="p-2 border border-gray-300 rounded-lg hover:bg-gray-100 transition-colors"
-                                    title="Ordenar por precio final"
+                                    title="Ordenar alfabéticamente"
                                 >
                                     <ArrowUpDown className="w-5 h-5 text-gray-600" />
                                 </button>
