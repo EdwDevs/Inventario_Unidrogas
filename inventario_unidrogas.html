@@ -254,6 +254,75 @@
 
             const formatCOP = (val) => new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 }).format(val);
 
+            const getGroupComparison = (group) => {
+                const uItemKey = group.items.find(k => k.startsWith('u-'));
+                const dItemKey = group.items.find(k => k.startsWith('d-'));
+                const cItemKey = group.items.find(k => k.startsWith('c-'));
+
+                const u = uItemKey ? productsUnidrogas.find(p => p.id === uItemKey.split('-')[1]) : null;
+                const d = dItemKey ? productsDrosan.find(p => p.id === dItemKey.split('-')[1]) : null;
+                const c = cItemKey ? productsCopidrogas.find(p => p.id === cItemKey.split('-')[1]) : null;
+
+                const priceU = u ? (u.hasDiscount ? u.price * (1 - UNIDROGAS_DISCOUNT_RATE) : u.price) : Infinity;
+                const priceD = d ? d.finalPrice : Infinity;
+                const priceCForComparison = c ? (c.stock > 0 ? c.finalPrice : Infinity) : Infinity;
+                const priceCDisplay = c ? c.finalPrice : null;
+
+                let matchCount = 0;
+                if (u) matchCount++;
+                if (d) matchCount++;
+                if (c) matchCount++;
+
+                let rowColor = "bg-white";
+                let badgeText = "";
+                let badgeColor = "";
+
+                if (matchCount === 3) {
+                    rowColor = "bg-blue-50 hover:bg-blue-100";
+                    badgeText = "Total";
+                    badgeColor = "bg-blue-200 text-blue-800";
+                } else if (matchCount === 2) {
+                    rowColor = "bg-green-50 hover:bg-green-100";
+                    badgeText = "Parcial";
+                    badgeColor = "bg-green-200 text-green-800";
+                } else {
+                    rowColor = "bg-orange-50 hover:bg-orange-100";
+                    badgeText = "Única";
+                    badgeColor = "bg-orange-200 text-orange-800";
+                }
+
+                const min = Math.min(priceU, priceD, priceCForComparison);
+                let winner = "---";
+                if (min !== Infinity) {
+                    if (min === priceU) winner = "Unidrogas";
+                    else if (min === priceD) winner = "Drosan";
+                    else winner = "Copidrogas";
+                }
+
+                const displayName = u?.name || d?.name || c?.name || "Sin nombre";
+
+                return {
+                    id: group.id,
+                    displayName,
+                    badgeText,
+                    badgeColor,
+                    rowColor,
+                    winner,
+                    u,
+                    d,
+                    c,
+                    priceU,
+                    priceD,
+                    priceCForComparison,
+                    priceCDisplay,
+                };
+            };
+
+            const comparisonGroups = useMemo(
+                () => manualGroups.map(group => getGroupComparison(group)),
+                [manualGroups]
+            );
+
             // Preparar lista maestra para el agrupador
             const masterList = useMemo(() => {
                 const list = [];
@@ -435,7 +504,76 @@
                         </header>
 
                         <div className="p-6 overflow-y-auto">
-                            <div className="bg-white rounded shadow border overflow-hidden">
+                            <div className="block sm:hidden space-y-4">
+                                {comparisonGroups.map(group => (
+                                    <div key={group.id} className="bg-white rounded shadow border p-4 space-y-3">
+                                        <div className="flex items-start justify-between gap-3">
+                                            <div>
+                                                <div className="font-bold text-sm">{group.displayName}</div>
+                                                <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase mt-1 inline-block ${group.badgeColor}`}>
+                                                    {group.badgeText}
+                                                </span>
+                                            </div>
+                                            {group.winner !== "---" && (
+                                                <span className={`px-2 py-1 rounded text-white text-xs font-bold ${
+                                                    group.winner === 'Unidrogas' ? 'bg-blue-600' :
+                                                    group.winner === 'Drosan' ? 'bg-emerald-600' : 'bg-indigo-600'
+                                                }`}>
+                                                    {group.winner}
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div className="space-y-3 text-sm">
+                                            <div className="rounded border border-blue-100 bg-blue-50/40 p-3">
+                                                <div className="text-[10px] font-bold uppercase text-blue-600">Unidrogas</div>
+                                                {group.u ? (
+                                                    <div className="mt-1">
+                                                        <div className="font-bold">{formatCOP(group.priceU)}</div>
+                                                        {group.u.hasDiscount && <div className="text-[10px] text-green-600">12% Dcto</div>}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-gray-400 text-xs italic">No disp.</span>
+                                                )}
+                                            </div>
+                                            <div className="rounded border border-emerald-100 bg-emerald-50/40 p-3">
+                                                <div className="text-[10px] font-bold uppercase text-emerald-600">Drosan</div>
+                                                {group.d ? (
+                                                    <div className="mt-1 font-bold">{formatCOP(group.priceD)}</div>
+                                                ) : (
+                                                    <span className="text-gray-400 text-xs italic">No disp.</span>
+                                                )}
+                                            </div>
+                                            <div className="rounded border border-indigo-100 bg-indigo-50/40 p-3">
+                                                <div className="text-[10px] font-bold uppercase text-indigo-600">Copidrogas</div>
+                                                {group.c ? (
+                                                    <div className="mt-1">
+                                                        {group.c.stock > 0 ? (
+                                                            <>
+                                                                <div className="font-bold">{formatCOP(group.priceCDisplay)}</div>
+                                                                <div className="text-[10px] text-green-600">Stock: {group.c.stock}</div>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <div className="text-gray-400 line-through text-xs">{formatCOP(group.priceCDisplay)}</div>
+                                                                <div className="text-[10px] text-red-600 font-bold">AGOTADO</div>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-gray-400 text-xs italic">No disp.</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                                {comparisonGroups.length === 0 && (
+                                    <div className="bg-white rounded shadow border p-6 text-center text-gray-500">
+                                        No has creado grupos aún. Ve a "Agrupar" para comenzar.
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="hidden sm:block bg-white rounded shadow border overflow-hidden">
                                 <table className="w-full text-left">
                                     <thead className="bg-gray-100 border-b">
                                         <tr>
@@ -447,110 +585,57 @@
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y">
-                                        {manualGroups.map(g => {
-                                            // Extraer items del grupo
-                                            const uItemKey = g.items.find(k => k.startsWith('u-'));
-                                            const dItemKey = g.items.find(k => k.startsWith('d-'));
-                                            const cItemKey = g.items.find(k => k.startsWith('c-'));
-
-                                            const u = uItemKey ? productsUnidrogas.find(p => p.id === uItemKey.split('-')[1]) : null;
-                                            const d = dItemKey ? productsDrosan.find(p => p.id === dItemKey.split('-')[1]) : null;
-                                            const c = cItemKey ? productsCopidrogas.find(p => p.id === cItemKey.split('-')[1]) : null;
-
-                                            // Calcular precios finales
-                                            const priceU = u ? (u.hasDiscount ? u.price * (1 - UNIDROGAS_DISCOUNT_RATE) : u.price) : Infinity;
-                                            const priceD = d ? d.finalPrice : Infinity;
-                                            const priceCForComparison = c ? (c.stock > 0 ? c.finalPrice : Infinity) : Infinity;
-                                            const priceCDisplay = c ? c.finalPrice : null;
-
-                                            // Determinar tipo de coincidencia para el color
-                                            let matchCount = 0;
-                                            if (u) matchCount++;
-                                            if (d) matchCount++;
-                                            if (c) matchCount++;
-
-                                            let rowColor = "bg-white";
-                                            let badgeText = "";
-                                            let badgeColor = "";
-
-                                            if (matchCount === 3) {
-                                                rowColor = "bg-blue-50 hover:bg-blue-100"; // Coincidencia Total
-                                                badgeText = "Total";
-                                                badgeColor = "bg-blue-200 text-blue-800";
-                                            } else if (matchCount === 2) {
-                                                rowColor = "bg-green-50 hover:bg-green-100"; // Parcial
-                                                badgeText = "Parcial";
-                                                badgeColor = "bg-green-200 text-green-800";
-                                            } else {
-                                                rowColor = "bg-orange-50 hover:bg-orange-100"; // Única
-                                                badgeText = "Única";
-                                                badgeColor = "bg-orange-200 text-orange-800";
-                                            }
-
-                                            // Ganador
-                                            const min = Math.min(priceU, priceD, priceCForComparison);
-                                            let winner = "---";
-                                            if (min !== Infinity) {
-                                                if (min === priceU) winner = "Unidrogas";
-                                                else if (min === priceD) winner = "Drosan";
-                                                else winner = "Copidrogas";
-                                            }
-
-                                            // Nombre representativo (el primero que encuentre)
-                                            const displayName = u?.name || d?.name || c?.name || "Sin nombre";
-
-                                            return (
-                                                <tr key={g.id} className={rowColor}>
-                                                    <td className="p-4 border-r">
-                                                        <div className="font-bold text-sm">{displayName}</div>
-                                                        <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase mt-1 inline-block ${badgeColor}`}>
-                                                            {badgeText}
+                                        {comparisonGroups.map(group => (
+                                            <tr key={group.id} className={group.rowColor}>
+                                                <td className="p-4 border-r">
+                                                    <div className="font-bold text-sm">{group.displayName}</div>
+                                                    <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase mt-1 inline-block ${group.badgeColor}`}>
+                                                        {group.badgeText}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4 border-r text-center">
+                                                    {group.u ? (
+                                                        <div>
+                                                            <div className="font-bold">{formatCOP(group.priceU)}</div>
+                                                            {group.u.hasDiscount && <div className="text-[10px] text-green-600">12% Dcto</div>}
+                                                        </div>
+                                                    ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
+                                                </td>
+                                                <td className="p-4 border-r text-center">
+                                                    {group.d ? (
+                                                        <div className="font-bold">{formatCOP(group.priceD)}</div>
+                                                    ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
+                                                </td>
+                                                <td className="p-4 border-r text-center">
+                                                    {group.c ? (
+                                                        <div>
+                                                            {group.c.stock > 0 ? (
+                                                                <>
+                                                                    <div className="font-bold">{formatCOP(group.priceCDisplay)}</div>
+                                                                    <div className="text-[10px] text-green-600">Stock: {group.c.stock}</div>
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <div className="text-gray-400 line-through text-xs">{formatCOP(group.priceCDisplay)}</div>
+                                                                    <div className="text-[10px] text-red-600 font-bold">AGOTADO</div>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
+                                                </td>
+                                                <td className="p-4 text-center font-bold text-sm">
+                                                    {group.winner !== "---" && (
+                                                        <span className={`px-2 py-1 rounded text-white ${
+                                                            group.winner === 'Unidrogas' ? 'bg-blue-600' :
+                                                            group.winner === 'Drosan' ? 'bg-emerald-600' : 'bg-indigo-600'
+                                                        }`}>
+                                                            {group.winner}
                                                         </span>
-                                                    </td>
-                                                    <td className="p-4 border-r text-center">
-                                                        {u ? (
-                                                            <div>
-                                                                <div className="font-bold">{formatCOP(priceU)}</div>
-                                                                {u.hasDiscount && <div className="text-[10px] text-green-600">12% Dcto</div>}
-                                                            </div>
-                                                        ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
-                                                    </td>
-                                                    <td className="p-4 border-r text-center">
-                                                        {d ? (
-                                                            <div className="font-bold">{formatCOP(priceD)}</div>
-                                                        ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
-                                                    </td>
-                                                    <td className="p-4 border-r text-center">
-                                                        {c ? (
-                                                            <div>
-                                                                {c.stock > 0 ? (
-                                                                    <>
-                                                                        <div className="font-bold">{formatCOP(priceCDisplay)}</div>
-                                                                        <div className="text-[10px] text-green-600">Stock: {c.stock}</div>
-                                                                    </>
-                                                                ) : (
-                                                                    <>
-                                                                        <div className="text-gray-400 line-through text-xs">{formatCOP(priceCDisplay)}</div>
-                                                                        <div className="text-[10px] text-red-600 font-bold">AGOTADO</div>
-                                                                    </>
-                                                                )}
-                                                            </div>
-                                                        ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
-                                                    </td>
-                                                    <td className="p-4 text-center font-bold text-sm">
-                                                        {winner !== "---" && (
-                                                            <span className={`px-2 py-1 rounded text-white ${
-                                                                winner === 'Unidrogas' ? 'bg-blue-600' :
-                                                                winner === 'Drosan' ? 'bg-emerald-600' : 'bg-indigo-600'
-                                                            }`}>
-                                                                {winner}
-                                                            </span>
-                                                        )}
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                        {manualGroups.length === 0 && (
+                                                    )}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                        {comparisonGroups.length === 0 && (
                                             <tr>
                                                 <td colSpan="5" className="p-8 text-center text-gray-500">
                                                     No has creado grupos aún. Ve a "Agrupar" para comenzar.
