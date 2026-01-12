@@ -7,6 +7,9 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Inter Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
     
     <!-- React & ReactDOM -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -16,11 +19,24 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        :root {
+            --primary: #1e3a8a;
+            --accent: #64748b;
+            --surface: #ffffff;
+            --text: #0f172a;
+        }
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text);
+        }
+        .text-primary { color: var(--primary); }
+        .text-accent { color: var(--accent); }
+        .bg-surface { background-color: var(--surface); }
+        .bg-accent-soft { background-color: color-mix(in srgb, var(--accent) 8%, transparent); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 h-screen flex flex-col overflow-hidden">
+<body class="bg-slate-50 text-slate-800 h-screen flex flex-col overflow-hidden">
     <div id="root" class="h-full flex flex-col"></div>
 
     <script type="text/babel">
@@ -69,7 +85,7 @@
 
         const Toast = ({ message }) => (
             <div className="fixed bottom-6 right-6 z-50">
-                <div className="rounded-lg bg-gray-900 text-white px-4 py-3 shadow-lg text-sm">
+                <div className="rounded-lg bg-gray-900 text-white px-4 py-3 shadow-md text-sm">
                     {message}
                 </div>
             </div>
@@ -78,7 +94,7 @@
         const ConfirmationModal = ({ message, onConfirm, onCancel }) => (
             <div className="fixed inset-0 z-50 flex items-center justify-center">
                 <div className="absolute inset-0 bg-black/40" onClick={onCancel}></div>
-                <div className="relative bg-white rounded-lg shadow-xl w-full max-w-sm p-5">
+                <div className="relative bg-white rounded-lg shadow-md border border-gray-100 w-full max-w-sm p-5">
                     <div className="flex items-start justify-between">
                         <h3 className="text-base font-semibold text-gray-800">Confirmación</h3>
                         <button
@@ -95,7 +111,7 @@
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="rounded border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                            className="rounded border border-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-slate-50"
                         >
                             Cancelar
                         </button>
@@ -487,20 +503,20 @@
             // --- VISTA AGRUPADOR ---
             if (view === 'grouping') {
                 return (
-                    <div className="flex flex-col h-full bg-gray-50">
-                        <header className="bg-white p-4 shadow border-b z-10 flex flex-wrap justify-between items-center gap-4">
+                    <div className="flex flex-col h-full bg-slate-50">
+                        <header className="bg-white p-4 shadow-sm border-b border-gray-100 z-10 flex flex-wrap justify-between items-center gap-4">
                             <div className="flex items-center gap-2">
                                 <div className="bg-indigo-600 p-2 rounded text-white">{Icons.Layers}</div>
-                                <h1 className="text-base sm:text-lg lg:text-xl font-bold">Gestor de Agrupamiento Manual</h1>
+                                <h1 className="text-base sm:text-lg lg:text-xl font-bold text-primary">Gestor de Agrupamiento Manual</h1>
                             </div>
                             <TabBar />
                         </header>
 
                         <div className="flex-grow flex overflow-hidden">
                             {/* Panel Izquierdo: Lista de Productos */}
-                            <div className="w-2/3 flex flex-col border-r bg-white">
+                            <div className="w-2/3 flex flex-col border-r border-gray-100 bg-white">
                                 <div className="flex-grow overflow-y-auto">
-                                    <div className="sticky top-0 z-10 bg-gray-50/80 backdrop-blur px-4 pt-4 pb-2">
+                                    <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur px-4 pt-4 pb-2">
                                         <div className="relative">
                                             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{Icons.Search}</div>
                                             <input 
@@ -521,7 +537,7 @@
                                             return (
                                                 <div 
                                                     key={uniqueId} 
-                                                    className={`px-4 py-3 border rounded flex items-center gap-3 cursor-pointer transition-colors ${isSelected ? 'bg-indigo-50 border-indigo-300 ring-1 ring-indigo-300' : 'hover:bg-gray-50'} ${group ? 'border-indigo-200 bg-indigo-50/40' : ''}`}
+                                                    className={`px-4 py-3 border border-gray-100 rounded flex items-center gap-3 cursor-pointer transition-colors ${isSelected ? 'bg-indigo-50 border-indigo-300 ring-1 ring-indigo-300' : 'hover:bg-slate-50'} ${group ? 'border-indigo-200 bg-indigo-50/40' : ''}`}
                                                     onClick={() => !group && toggleSelect(p.key, p.id)}
                                                 >
                                                     <div className={`w-5 h-5 rounded border flex items-center justify-center ${isSelected ? 'bg-indigo-600 border-indigo-600 text-white' : 'border-gray-300'}`}>
@@ -546,12 +562,12 @@
                                         })}
                                     </div>
                                 </div>
-                                <div className="mt-4 pt-4 px-4 pb-4 border-t flex justify-between items-center">
+                                <div className="mt-4 pt-4 px-4 pb-4 border-t border-gray-100 flex justify-between items-center">
                                     <span className="text-xs sm:text-sm text-gray-500">{selectedForGroup.length} seleccionados</span>
                                     <button 
                                         onClick={handleCreateGroup}
                                         disabled={selectedForGroup.length < 1}
-                                        className={`px-4 py-2 rounded text-xs sm:text-sm font-bold text-white shadow transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${selectedForGroup.length > 0 ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-300 cursor-not-allowed'}`}
+                                        className={`px-4 py-2 rounded text-xs sm:text-sm font-bold text-white shadow-sm transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${selectedForGroup.length > 0 ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-300 cursor-not-allowed'}`}
                                     >
                                         {Icons.Plus} Crear Grupo
                                     </button>
@@ -559,8 +575,8 @@
                             </div>
 
                             {/* Panel Derecho: Grupos Creados */}
-                            <div className="w-1/3 bg-gray-50 p-4 overflow-y-auto">
-                                <h2 className="font-bold text-gray-700 mb-4 flex items-center gap-2">Grupos Creados ({manualGroups.length})</h2>
+                            <div className="w-1/3 bg-slate-50 p-4 overflow-y-auto">
+                                <h2 className="font-bold text-accent mb-4 flex items-center gap-2">Grupos Creados ({manualGroups.length})</h2>
                                 {manualGroups.length === 0 && (
                                     <div className="text-center text-gray-400 py-10">
                                         <p>No hay grupos definidos.</p>
@@ -569,7 +585,7 @@
                                 )}
                                 <div className="space-y-4">
                                     {manualGroups.map(g => (
-                                        <div key={g.id} className={`p-3 rounded border shadow-sm bg-white border-l-4 ${g.color.replace('bg-', 'border-').split(' ')[0]}`}>
+                                        <div key={g.id} className={`p-3 rounded border border-gray-100 shadow-sm bg-white border-l-4 ${g.color.replace('bg-', 'border-').split(' ')[0]}`}>
                                             <div className="flex justify-between items-start mb-2">
                                                 <span className={`text-xs font-bold px-2 py-0.5 rounded ${g.color}`}>Grupo #{g.id.toString().slice(-4)}</span>
                                                 <button onClick={() => handleDeleteGroup(g.id)} className="text-gray-400 hover:text-red-500">{Icons.X}</button>
@@ -599,12 +615,12 @@
             // --- VISTA TABLA COMPARATIVA MANUAL ---
             if (view === 'compare_table') {
                 return (
-                    <div className="flex flex-col h-full bg-gray-50">
-                        <header className="bg-white p-4 shadow border-b sticky top-0 z-10 flex flex-wrap justify-between items-center gap-4">
+                    <div className="flex flex-col h-full bg-slate-50">
+                        <header className="bg-white p-4 shadow-sm border-b border-gray-100 sticky top-0 z-10 flex flex-wrap justify-between items-center gap-4">
                             <div className="flex items-center gap-2">
                                 <div className="bg-indigo-600 p-2 rounded text-white">{Icons.Chart}</div>
                                 <div>
-                                    <h1 className="text-base sm:text-lg lg:text-xl font-bold">Tabla Comparativa (Manual)</h1>
+                                    <h1 className="text-base sm:text-lg lg:text-xl font-bold text-primary">Tabla Comparativa (Manual)</h1>
                                     <p className="text-xs sm:text-sm text-gray-500">Basada en tus {manualGroups.length} grupos definidos</p>
                                 </div>
                             </div>
@@ -614,7 +630,7 @@
                         <div className="p-6 overflow-y-auto">
                             <div className="block sm:hidden space-y-4">
                                 {comparisonGroups.map(group => (
-                                    <div key={group.id} className="bg-white rounded shadow border p-4 space-y-3">
+                                    <div key={group.id} className="bg-white rounded shadow-sm border border-gray-100 p-4 space-y-3">
                                         <div className="flex items-start justify-between gap-3">
                                             <div>
                                                 <div className="font-bold text-base sm:text-lg lg:text-xl">{group.displayName}</div>
@@ -675,33 +691,33 @@
                                     </div>
                                 ))}
                                 {comparisonGroups.length === 0 && (
-                                    <div className="bg-white rounded shadow border p-6 text-center text-gray-500">
+                                    <div className="bg-white rounded shadow-sm border border-gray-100 p-6 text-center text-gray-500">
                                         No has creado grupos aún. Ve a "Agrupar" para comenzar.
                                     </div>
                                 )}
                             </div>
 
-                            <div className="hidden sm:block bg-white rounded shadow border overflow-hidden">
+                            <div className="hidden sm:block bg-white rounded shadow-sm border border-gray-100 overflow-hidden">
                                 <table className="w-full text-left">
-                                    <thead className="bg-gray-100 border-b">
+                                    <thead className="bg-slate-50 border-b border-gray-100">
                                         <tr>
                                             <th className="p-4 text-xs font-bold text-gray-500 uppercase">Referencia (Grupo)</th>
-                                            <th className="p-4 text-xs font-bold text-blue-600 uppercase border-l bg-blue-50">Unidrogas</th>
-                                            <th className="p-4 text-xs font-bold text-emerald-600 uppercase border-l bg-emerald-50">Drosan</th>
-                                            <th className="p-4 text-xs font-bold text-indigo-600 uppercase border-l bg-indigo-50">Copidrogas</th>
-                                            <th className="p-4 text-xs font-bold text-gray-600 uppercase border-l text-center">Mejor Opción</th>
+                                            <th className="p-4 text-xs font-bold text-blue-600 uppercase border-l border-gray-100 bg-blue-50">Unidrogas</th>
+                                            <th className="p-4 text-xs font-bold text-emerald-600 uppercase border-l border-gray-100 bg-emerald-50">Drosan</th>
+                                            <th className="p-4 text-xs font-bold text-indigo-600 uppercase border-l border-gray-100 bg-indigo-50">Copidrogas</th>
+                                            <th className="p-4 text-xs font-bold text-gray-600 uppercase border-l border-gray-100 text-center">Mejor Opción</th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y">
                                         {comparisonGroups.map(group => (
                                             <tr key={group.id} className={group.rowColor}>
-                                                <td className="p-4 border-r">
+                                                <td className="p-4 border-r border-gray-100">
                                                     <div className="font-bold text-base sm:text-lg lg:text-xl">{group.displayName}</div>
                                                     <span className={`text-[10px] px-2 py-0.5 rounded font-bold uppercase mt-1 inline-block ${group.badgeColor}`}>
                                                         {group.badgeText}
                                                     </span>
                                                 </td>
-                                                <td className="p-4 border-r text-center">
+                                                <td className="p-4 border-r border-gray-100 text-center">
                                                     {group.u ? (
                                                         <div>
                                                             <div className="font-bold">{formatCOP(group.priceU)}</div>
@@ -709,12 +725,12 @@
                                                         </div>
                                                     ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
                                                 </td>
-                                                <td className="p-4 border-r text-center">
+                                                <td className="p-4 border-r border-gray-100 text-center">
                                                     {group.d ? (
                                                         <div className="font-bold">{formatCOP(group.priceD)}</div>
                                                     ) : <span className="text-gray-400 text-xs italic">No disp.</span>}
                                                 </td>
-                                                <td className="p-4 border-r text-center">
+                                                <td className="p-4 border-r border-gray-100 text-center">
                                                     {group.c ? (
                                                         <div>
                                                             {group.c.stock > 0 ? (
@@ -836,7 +852,7 @@
             const themeClass = `text-${theme}-600 bg-${theme}-50 border-${theme}-200`;
             const cartContents = (showClose = false) => (
                 <>
-                    <div className="p-4 border-b flex justify-between items-center bg-gray-50">
+                    <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-slate-50">
                         <h2 className="font-bold flex items-center gap-2">{Icons.Cart} Pedido {supplier}</h2>
                         <div className="flex items-center gap-2">
                             {count > 0 && <button onClick={clearCurrentViewCart} className="text-red-500 hover:text-red-700">{Icons.Trash}</button>}
@@ -860,7 +876,7 @@
                                         setIsCartOpen(false);
                                         requestAnimationFrame(() => searchInputRef.current?.focus());
                                     }}
-                                    className="mt-4 inline-flex items-center justify-center rounded-full border border-gray-300 px-4 py-2 text-xs font-semibold text-gray-700 transition hover:border-gray-400 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                    className="mt-4 inline-flex items-center justify-center rounded-full border border-gray-100 px-4 py-2 text-xs font-semibold text-gray-700 transition hover:border-gray-200 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                                 >
                                     Ver productos
                                 </button>
@@ -871,7 +887,7 @@
                                 if (!p) return null;
                                 let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * (1 - UNIDROGAS_DISCOUNT_RATE) : p.price) : p.finalPrice;
                                 return (
-                                    <div key={id} className="text-sm border-b pb-2">
+                                    <div key={id} className="text-sm border-b border-gray-100 pb-2">
                                         <div className="flex justify-between font-bold">
                                             <span className="truncate w-40">{p.name}</span>
                                             <span>x{qty}</span>
@@ -885,7 +901,7 @@
                             })
                         )}
                     </div>
-                    <div className="p-4 bg-gray-50 border-t">
+                    <div className="p-4 bg-slate-50 border-t border-gray-100">
                         <div className="flex justify-between text-sm mb-2">
                             <span>Subtotal</span>
                             <span>{formatCOP(subtotal)}</span>
@@ -896,7 +912,7 @@
                                 <span>- {formatCOP(savings)}</span>
                             </div>
                         )}
-                        <div className="flex justify-between text-xl font-bold border-t pt-2 mt-2">
+                        <div className="flex justify-between text-xl font-bold border-t border-gray-100 pt-2 mt-2">
                             <span>Total</span>
                             <span>{formatCOP(total)}</span>
                         </div>
@@ -904,7 +920,7 @@
                             <button
                                 type="button"
                                 onClick={() => window.open(whatsappUrl, "_blank")}
-                                className="w-full mt-4 py-3 rounded font-bold text-white shadow transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 bg-green-600 hover:bg-green-700"
+                                className="w-full mt-4 py-3 rounded font-bold text-white shadow-sm transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 bg-green-600 hover:bg-green-700"
                             >
                                 🟢 Enviar por WhatsApp
                             </button>
@@ -916,10 +932,12 @@
             return (
                 <div className="flex flex-col h-full bg-gray-50 font-sans">
                     <header className="sticky top-0 z-10 backdrop-blur bg-white/80 border-b p-4 flex flex-wrap justify-between items-center gap-4">
+                <div className="flex flex-col h-full bg-slate-50 font-sans">
+                    <header className="bg-white shadow-sm border-b border-gray-100 p-4 flex flex-wrap justify-between items-center gap-4 z-10">
                         <div className="flex items-center gap-2">
                             <div className={`p-2 rounded text-white bg-${theme}-600`}>{Icons.Store}</div>
                             <div>
-                                <h1 className="text-base sm:text-lg lg:text-xl font-bold">Catálogo {supplier}</h1>
+                                <h1 className="text-base sm:text-lg lg:text-xl font-bold text-primary">Catálogo {supplier}</h1>
                                 <p className="text-xs sm:text-sm text-gray-500">Vista individual por depósito</p>
                             </div>
                         </div>
@@ -928,7 +946,7 @@
                             <button onClick={() => {
                                 let next = supplier === 'Unidrogas' ? 'Drosan' : supplier === 'Drosan' ? 'Copidrogas' : 'Unidrogas';
                                 setSupplier(next);
-                            }} className="px-4 py-2 border rounded text-xs sm:text-sm hover:bg-gray-50 flex items-center gap-2 transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+                            }} className="px-4 py-2 border border-gray-100 rounded text-xs sm:text-sm hover:bg-slate-50 flex items-center gap-2 transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
                                 {Icons.Refresh} Cambiar Depósito
                             </button>
                         </div>
@@ -937,7 +955,7 @@
                     <main className="flex-grow flex overflow-hidden">
                         {/* Lista productos normal */}
                         <div className="flex-grow overflow-y-auto">
-                            <div className="sticky top-0 z-10 bg-gray-50/80 backdrop-blur px-4 pt-4 pb-2">
+                            <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur px-4 pt-4 pb-2">
                                 <div className="relative">
                                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{Icons.Search}</div>
                                     <input type="text" placeholder="Buscar..." className="w-full pl-10 pr-4 text-xs py-1.5 border rounded outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm sm:py-2" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} ref={searchInputRef} />
@@ -953,7 +971,7 @@
                                     const qty = cart[p.id] || 0;
 
                                     return (
-                                        <div key={p.id} className="bg-white p-4 rounded shadow border flex flex-col justify-between">
+                                        <div key={p.id} className="bg-white p-4 rounded shadow-sm border border-gray-100 flex flex-col justify-between">
                                             <div>
                                                 <div className="flex justify-between items-start mb-2">
                                                     <span className="text-[10px] bg-gray-100 text-gray-600 px-2 py-1 rounded font-bold">{p.category || 'GENERAL'}</span>
@@ -971,7 +989,7 @@
                                                     <div className={`text-xl font-extrabold text-${theme}-700`}>{formatCOP(final)}</div>
                                                 </div>
                                                 <div className="flex gap-2">
-                                                    {qty > 0 && <button onClick={() => removeFromCart(p.id)} className="w-8 h-8 rounded-full border flex items-center justify-center hover:bg-gray-100">-</button>}
+                                                    {qty > 0 && <button onClick={() => removeFromCart(p.id)} className="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center hover:bg-slate-50">-</button>}
                                                     <button 
                                                         onClick={() => addToCart(p.id)} 
                                                         disabled={supplier === 'Copidrogas' && stock <= 0}
@@ -988,14 +1006,14 @@
                         </div>
 
                         {/* Carrito Lateral */}
-                        <div className="hidden lg:flex w-80 bg-white border-l flex-col shadow-xl z-20">
+                        <div className="hidden lg:flex w-80 bg-white border-l border-gray-100 flex-col shadow-md z-20">
                             {cartContents()}
                         </div>
                     </main>
 
                     <button
                         onClick={() => setIsCartOpen(true)}
-                        className={`lg:hidden fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full px-4 py-3 text-white shadow-lg bg-${theme}-600 hover:bg-${theme}-700`}
+                        className={`lg:hidden fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full px-4 py-3 text-white shadow-md bg-${theme}-600 hover:bg-${theme}-700`}
                     >
                         {Icons.Cart}
                         <span className="font-semibold">Carrito</span>
@@ -1013,7 +1031,7 @@
                         ></div>
                         <div
                             onClick={(event) => event.stopPropagation()}
-                            className={`absolute inset-x-0 bottom-0 bg-white rounded-t-2xl shadow-xl transform transition-transform ${isCartOpen ? 'translate-y-0' : 'translate-y-full'}`}
+                            className={`absolute inset-x-0 bottom-0 bg-white rounded-t-2xl shadow-md transform transition-transform ${isCartOpen ? 'translate-y-0' : 'translate-y-full'}`}
                         >
                             <div className="max-h-[80vh] flex flex-col">
                                 {cartContents(true)}
