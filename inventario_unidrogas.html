@@ -371,7 +371,7 @@
                                     <button 
                                         onClick={handleCreateGroup}
                                         disabled={selectedForGroup.length < 1}
-                                        className={`px-4 py-2 rounded font-bold text-white shadow ${selectedForGroup.length > 0 ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-300 cursor-not-allowed'}`}
+                                        className={`px-4 py-2 rounded font-bold text-white shadow transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${selectedForGroup.length > 0 ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-gray-300 cursor-not-allowed'}`}
                                     >
                                         {Icons.Plus} Crear Grupo
                                     </button>
@@ -642,7 +642,7 @@
                             <span>Total</span>
                             <span>{formatCOP(total)}</span>
                         </div>
-                        <button className={`w-full mt-4 py-3 rounded font-bold text-white shadow bg-${theme}-600 hover:bg-${theme}-700`}>
+                        <button className={`w-full mt-4 py-3 rounded font-bold text-white shadow transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-${theme}-400 bg-${theme}-600 hover:bg-${theme}-700`}>
                             Confirmar Pedido
                         </button>
                     </div>
@@ -660,13 +660,13 @@
                             </div>
                         </div>
                         <div className="flex gap-2">
-                            <button onClick={() => setView('grouping')} className="px-4 py-2 bg-indigo-600 text-white rounded font-bold shadow hover:bg-indigo-700 flex items-center gap-2">
+                            <button onClick={() => setView('grouping')} className="px-4 py-2 bg-indigo-600 text-white rounded font-bold shadow hover:bg-indigo-700 flex items-center gap-2 transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
                                 {Icons.Layers} AGRUPAR & COMPARAR
                             </button>
                              <button onClick={() => {
                                 let next = supplier === 'Unidrogas' ? 'Drosan' : supplier === 'Drosan' ? 'Copidrogas' : 'Unidrogas';
                                 setSupplier(next);
-                            }} className="px-4 py-2 border rounded hover:bg-gray-50 flex items-center gap-2">
+                            }} className="px-4 py-2 border rounded hover:bg-gray-50 flex items-center gap-2 transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
                                 {Icons.Refresh} Cambiar Depósito
                             </button>
                         </div>
@@ -711,7 +711,7 @@
                                                     <button 
                                                         onClick={() => addToCart(p.id)} 
                                                         disabled={supplier === 'Copidrogas' && stock <= 0}
-                                                        className={`px-4 py-1 rounded text-white font-bold text-xs ${supplier === 'Copidrogas' && stock <= 0 ? 'bg-gray-400' : `bg-${theme}-600 hover:bg-${theme}-700`}`}
+                                                        className={`px-4 py-1 rounded text-white font-bold text-xs transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-${theme}-400 ${supplier === 'Copidrogas' && stock <= 0 ? 'bg-gray-400' : `bg-${theme}-600 hover:bg-${theme}-700`}`}
                                                     >
                                                         {qty === 0 ? 'AGREGAR' : '+'}
                                                     </button>
