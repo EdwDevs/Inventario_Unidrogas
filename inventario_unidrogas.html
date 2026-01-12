@@ -67,6 +67,50 @@
             "bg-rose-100 border-rose-200 text-rose-800",
         ];
 
+        const Toast = ({ message }) => (
+            <div className="fixed bottom-6 right-6 z-50">
+                <div className="rounded-lg bg-gray-900 text-white px-4 py-3 shadow-lg text-sm">
+                    {message}
+                </div>
+            </div>
+        );
+
+        const ConfirmationModal = ({ message, onConfirm, onCancel }) => (
+            <div className="fixed inset-0 z-50 flex items-center justify-center">
+                <div className="absolute inset-0 bg-black/40" onClick={onCancel}></div>
+                <div className="relative bg-white rounded-lg shadow-xl w-full max-w-sm p-5">
+                    <div className="flex items-start justify-between">
+                        <h3 className="text-base font-semibold text-gray-800">Confirmación</h3>
+                        <button
+                            type="button"
+                            onClick={onCancel}
+                            className="text-gray-400 hover:text-gray-600"
+                            aria-label="Cerrar"
+                        >
+                            {Icons.X}
+                        </button>
+                    </div>
+                    <p className="mt-3 text-sm text-gray-600">{message}</p>
+                    <div className="mt-5 flex justify-end gap-2">
+                        <button
+                            type="button"
+                            onClick={onCancel}
+                            className="rounded border border-gray-200 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                            type="button"
+                            onClick={onConfirm}
+                            className="rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700"
+                        >
+                            Confirmar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+
         const App = () => {
             const [view, setView] = useState('catalog'); // 'catalog', 'grouping', 'compare_table'
             const [supplier, setSupplier] = useState('Unidrogas');
@@ -74,6 +118,8 @@
             const [cart, setCart] = useState({});
             const [isCartOpen, setIsCartOpen] = useState(false);
             const searchInputRef = useRef(null);
+            const [toastMessage, setToastMessage] = useState('');
+            const [confirmConfig, setConfirmConfig] = useState(null);
             
             // Estado para el agrupamiento manual
             const [manualGroups, setManualGroups] = useState([]);
@@ -101,6 +147,40 @@
                     setIsCartOpen(false);
                 }
             }, [view]);
+
+            useEffect(() => {
+                if (!toastMessage) return;
+                const timeout = setTimeout(() => setToastMessage(''), 2500);
+                return () => clearTimeout(timeout);
+            }, [toastMessage]);
+
+            const openConfirmModal = (message, onConfirm) => {
+                setConfirmConfig({ message, onConfirm });
+            };
+
+            const closeConfirmModal = () => {
+                setConfirmConfig(null);
+            };
+
+            const handleConfirmAction = () => {
+                if (confirmConfig?.onConfirm) {
+                    confirmConfig.onConfirm();
+                }
+                closeConfirmModal();
+            };
+
+            const overlays = (
+                <>
+                    {toastMessage && <Toast message={toastMessage} />}
+                    {confirmConfig && (
+                        <ConfirmationModal
+                            message={confirmConfig.message}
+                            onConfirm={handleConfirmAction}
+                            onCancel={closeConfirmModal}
+                        />
+                    )}
+                </>
+            );
 
             const UNIDROGAS_DISCOUNT_RATE = 0.12;
             const viewTabs = [
@@ -379,11 +459,13 @@
 
                 setManualGroups([...manualGroups, newGroup]);
                 setSelectedForGroup([]);
+                setToastMessage('Grupo creado');
             };
 
             // Eliminar Grupo
             const handleDeleteGroup = (groupId) => {
                 setManualGroups(manualGroups.filter(g => g.id !== groupId));
+                setToastMessage('Grupo limpiado');
             };
 
             // Toggle selección
@@ -509,6 +591,7 @@
                                 </div>
                             </div>
                         </div>
+                        {overlays}
                     </div>
                 );
             }
@@ -671,6 +754,7 @@
                                 </table>
                             </div>
                         </div>
+                        {overlays}
                     </div>
                 );
             }
@@ -680,8 +764,29 @@
             
             const addToCart = (id) => setCart(prev => ({ ...prev, [id]: (prev[id] || 0) + 1 }));
             const removeFromCart = (id) => setCart(prev => { const n = { ...prev }; if (n[id] > 1) n[id]--; else delete n[id]; return n; });
-            const clearCurrentViewCart = () => { if (confirm(`¿Limpiar carrito de ${supplier}?`)) setCart(prev => { const n = { ...prev }; currentProducts.forEach(p => delete n[p.id]); return n; }); };
-            const clearAllCache = () => { if (confirm("¿Borrar TODO?")) { setCart({}); setManualGroups([]); localStorage.removeItem('pharmaCart_v4'); localStorage.removeItem('pharmaGroups_v1'); } };
+            const clearCurrentViewCart = () => {
+                openConfirmModal(`¿Limpiar carrito de ${supplier}?`, () => {
+                    setCart(prev => {
+                        const n = { ...prev };
+                        currentProducts.forEach(p => delete n[p.id]);
+                        return n;
+                    });
+                    setToastMessage('Carrito limpiado');
+                });
+            };
+            const clearAllCache = () => {
+                openConfirmModal("¿Borrar TODO?", () => {
+                    setCart({});
+                    setManualGroups([]);
+                    localStorage.removeItem('pharmaCart_v4');
+                    localStorage.removeItem('pharmaGroups_v1');
+                    if (Object.keys(cart).length > 0) {
+                        setToastMessage('Carrito limpiado');
+                    } else if (manualGroups.length > 0) {
+                        setToastMessage('Grupo limpiado');
+                    }
+                });
+            };
             
             // Cálculos para el carrito lateral
             let subtotal = 0, savings = 0, total = 0, count = 0;
@@ -882,6 +987,7 @@
                             </div>
                         </div>
                     </div>
+                    {overlays}
                 </div>
             );
         };
