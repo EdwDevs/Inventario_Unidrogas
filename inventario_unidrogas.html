@@ -102,6 +102,35 @@
             }, [view]);
 
             const UNIDROGAS_DISCOUNT_RATE = 0.12;
+            const viewTabs = [
+                { id: 'catalog', label: 'Catálogo' },
+                { id: 'grouping', label: 'Agrupar' },
+                { id: 'compare_table', label: 'Comparar' }
+            ];
+
+            const tabButtonClass = (tabId) => (
+                `pb-2 px-1 border-b-2 text-sm font-semibold transition ${
+                    view === tabId
+                        ? 'text-indigo-600 border-indigo-600'
+                        : 'text-gray-500 border-transparent hover:text-indigo-600 hover:border-indigo-300'
+                }`
+            );
+
+            const TabBar = () => (
+                <nav className="flex items-center gap-4" aria-label="Navegación de vistas">
+                    {viewTabs.map(tab => (
+                        <button
+                            key={tab.id}
+                            type="button"
+                            onClick={() => setView(tab.id)}
+                            className={tabButtonClass(tab.id)}
+                            aria-current={view === tab.id ? 'page' : undefined}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
+                </nav>
+            );
 
             // DATOS BASE
             const productsUnidrogas = [
@@ -376,17 +405,12 @@
             if (view === 'grouping') {
                 return (
                     <div className="flex flex-col h-full bg-gray-50">
-                        <header className="bg-white p-4 shadow border-b z-10 flex justify-between items-center">
+                        <header className="bg-white p-4 shadow border-b z-10 flex flex-wrap justify-between items-center gap-4">
                             <div className="flex items-center gap-2">
                                 <div className="bg-indigo-600 p-2 rounded text-white">{Icons.Layers}</div>
                                 <h1 className="text-lg font-bold">Gestor de Agrupamiento Manual</h1>
                             </div>
-                            <div className="flex gap-2">
-                                <button onClick={() => setView('catalog')} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Volver</button>
-                                <button onClick={() => setView('compare_table')} className="px-4 py-2 bg-indigo-600 text-white rounded font-bold shadow hover:bg-indigo-700 flex items-center gap-2">
-                                    {Icons.Chart} Ver Tabla Comparativa
-                                </button>
-                            </div>
+                            <TabBar />
                         </header>
 
                         <div className="flex-grow flex overflow-hidden">
@@ -492,7 +516,7 @@
             if (view === 'compare_table') {
                 return (
                     <div className="flex flex-col h-full bg-gray-50">
-                        <header className="bg-white p-4 shadow border-b sticky top-0 z-10 flex justify-between items-center">
+                        <header className="bg-white p-4 shadow border-b sticky top-0 z-10 flex flex-wrap justify-between items-center gap-4">
                             <div className="flex items-center gap-2">
                                 <div className="bg-indigo-600 p-2 rounded text-white">{Icons.Chart}</div>
                                 <div>
@@ -500,7 +524,7 @@
                                     <p className="text-xs text-gray-500">Basada en tus {manualGroups.length} grupos definidos</p>
                                 </div>
                             </div>
-                            <button onClick={() => setView('grouping')} className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded font-medium">Volver a Agrupar</button>
+                            <TabBar />
                         </header>
 
                         <div className="p-6 overflow-y-auto">
@@ -740,7 +764,7 @@
 
             return (
                 <div className="flex flex-col h-full bg-gray-50 font-sans">
-                    <header className="bg-white shadow-sm border-b p-4 flex justify-between items-center z-10">
+                    <header className="bg-white shadow-sm border-b p-4 flex flex-wrap justify-between items-center gap-4 z-10">
                         <div className="flex items-center gap-2">
                             <div className={`p-2 rounded text-white bg-${theme}-600`}>{Icons.Store}</div>
                             <div>
@@ -748,11 +772,9 @@
                                 <p className="text-xs text-gray-500">Vista individual por depósito</p>
                             </div>
                         </div>
-                        <div className="flex gap-2">
-                            <button onClick={() => setView('grouping')} className="px-4 py-2 bg-indigo-600 text-white rounded font-bold shadow hover:bg-indigo-700 flex items-center gap-2 transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
-                                {Icons.Layers} AGRUPAR & COMPARAR
-                            </button>
-                             <button onClick={() => {
+                        <div className="flex flex-wrap items-center gap-4">
+                            <TabBar />
+                            <button onClick={() => {
                                 let next = supplier === 'Unidrogas' ? 'Drosan' : supplier === 'Drosan' ? 'Copidrogas' : 'Unidrogas';
                                 setSupplier(next);
                             }} className="px-4 py-2 border rounded hover:bg-gray-50 flex items-center gap-2 transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
