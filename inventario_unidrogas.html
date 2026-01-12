@@ -516,13 +516,13 @@
                             {/* Panel Izquierdo: Lista de Productos */}
                             <div className="w-2/3 flex flex-col border-r border-gray-100 bg-white">
                                 <div className="flex-grow overflow-y-auto">
-                                    <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur px-4 pt-4 pb-2">
+                                    <div className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-gray-100 px-4 pt-3 pb-2">
                                         <div className="relative">
-                                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{Icons.Search}</div>
+                                            <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{Icons.Search}</div>
                                             <input 
                                                 type="text" 
-                                                placeholder="Buscar producto para agrupar..." 
-                                                className="w-full pl-10 pr-4 text-xs py-1.5 border rounded shadow-sm outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:py-2"
+                                                placeholder="Buscar producto..." 
+                                                className="w-full pl-10 pr-4 text-sm py-1 border rounded-lg shadow-sm outline-none focus:ring-2 focus:ring-indigo-500 sm:py-2"
                                                 value={searchTerm}
                                                 onChange={e => setSearchTerm(e.target.value)}
                                             />
@@ -990,10 +990,10 @@
                     <main className="flex-grow flex overflow-hidden">
                         {/* Lista productos normal */}
                         <div className="flex-grow overflow-y-auto">
-                            <div className="sticky top-0 z-10 bg-slate-50/80 backdrop-blur px-4 pt-4 pb-2">
+                            <div className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-gray-100 px-4 pt-3 pb-2">
                                 <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">{Icons.Search}</div>
-                                    <input type="text" placeholder="Buscar..." className="w-full pl-10 pr-4 text-xs py-1.5 border rounded outline-none focus:ring-2 focus:ring-blue-500 sm:text-sm sm:py-2" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} ref={searchInputRef} />
+                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{Icons.Search}</div>
+                                    <input type="text" placeholder="Buscar" className="w-full pl-10 pr-4 text-sm py-1 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 sm:py-2" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} ref={searchInputRef} />
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 pb-4">
