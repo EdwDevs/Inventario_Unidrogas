@@ -790,20 +790,47 @@
             
             // Cálculos para el carrito lateral
             let subtotal = 0, savings = 0, total = 0, count = 0;
+            const cartLineItems = [];
             Object.entries(cart).forEach(([id, qty]) => {
                 const p = currentProducts.find(x => x.id === id);
                 if (p) {
                     const price = p.price * qty;
-                    let final = price;
-                    if (supplier === 'Unidrogas') final = p.hasDiscount ? price * (1 - UNIDROGAS_DISCOUNT_RATE) : price;
-                    else final = p.finalPrice * qty; // Drosan y Copi usan finalPrice
+                    let unitPrice = p.price;
+                    if (supplier === 'Unidrogas') unitPrice = p.hasDiscount ? p.price * (1 - UNIDROGAS_DISCOUNT_RATE) : p.price;
+                    else unitPrice = p.finalPrice; // Drosan y Copi usan finalPrice
+                    const lineTotal = unitPrice * qty;
                     
                     subtotal += price;
-                    savings += (price - final);
-                    total += final;
+                    savings += (price - lineTotal);
+                    total += lineTotal;
                     count += qty;
+                    cartLineItems.push({ name: p.name, qty, unitPrice, lineTotal });
                 }
             });
+
+            const orderedCartItems = [...cartLineItems].sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
+            const buildWhatsAppMessage = ({ supplier, items, subtotal, savings, total }) => {
+                const lines = [
+                    `🧾 *Cotización - ${supplier}*`,
+                    '━━━━━━━━━━━━━━━━━━',
+                    ...items.flatMap((item, idx) => ([
+                        `${idx + 1}. ${item.name}`,
+                        `   • Cant: ${item.qty}`,
+                        `   • Unit: ${formatCOP(item.unitPrice)}`,
+                        `   • Total: ${formatCOP(item.lineTotal)}`,
+                        ''
+                    ])),
+                    '━━━━━━━━━━━━━━━━━━',
+                    `Subtotal: ${formatCOP(subtotal)}`,
+                    `Ahorro: ${formatCOP(savings)}`,
+                    `Total: ${formatCOP(total)}`,
+                    '',
+                    '📌 *Nota:* Valores sujetos a disponibilidad.'
+                ];
+                return lines.join('\n');
+            };
+            const message = buildWhatsAppMessage({ supplier, items: orderedCartItems, subtotal, savings, total });
+            const whatsappUrl = "https://wa.me/?text=" + encodeURIComponent(message);
 
             const theme = supplier === 'Unidrogas' ? 'blue' : supplier === 'Drosan' ? 'emerald' : 'indigo';
             const themeClass = `text-${theme}-600 bg-${theme}-50 border-${theme}-200`;
@@ -873,9 +900,15 @@
                             <span>Total</span>
                             <span>{formatCOP(total)}</span>
                         </div>
-                        <button className={`w-full mt-4 py-3 rounded font-bold text-white shadow transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-${theme}-400 bg-${theme}-600 hover:bg-${theme}-700`}>
-                            Confirmar Pedido
-                        </button>
+                        {count > 0 && (
+                            <button
+                                type="button"
+                                onClick={() => window.open(whatsappUrl, "_blank")}
+                                className="w-full mt-4 py-3 rounded font-bold text-white shadow transition active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 bg-green-600 hover:bg-green-700"
+                            >
+                                🟢 Enviar por WhatsApp
+                            </button>
+                        )}
                     </div>
                 </>
             );
