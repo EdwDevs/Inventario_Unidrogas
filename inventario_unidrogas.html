@@ -134,6 +134,7 @@
             const [cart, setCart] = useState({});
             const [isCartOpen, setIsCartOpen] = useState(false);
             const searchInputRef = useRef(null);
+            const groupingSearchInputRef = useRef(null);
             const [toastMessage, setToastMessage] = useState('');
             const [confirmConfig, setConfirmConfig] = useState(null);
             
@@ -525,6 +526,7 @@
                                                 className="w-full pl-10 pr-4 text-xs py-1.5 border rounded shadow-sm outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:py-2"
                                                 value={searchTerm}
                                                 onChange={e => setSearchTerm(e.target.value)}
+                                                ref={groupingSearchInputRef}
                                             />
                                         </div>
                                     </div>
@@ -579,8 +581,16 @@
                                 <h2 className="font-bold text-accent mb-4 flex items-center gap-2">Grupos Creados ({manualGroups.length})</h2>
                                 {manualGroups.length === 0 && (
                                     <div className="text-center text-gray-400 py-10">
-                                        <p>No hay grupos definidos.</p>
-                                        <p className="text-xs sm:text-sm">Selecciona productos y crea un grupo.</p>
+                                        <div className="mx-auto w-10 h-10 mb-2 text-gray-300">{Icons.Layers}</div>
+                                        <p className="text-sm font-light text-gray-500">Aún no tienes grupos</p>
+                                        <p className="text-xs sm:text-sm font-light text-gray-400">Selecciona productos para empezar.</p>
+                                        <button
+                                            type="button"
+                                            onClick={() => requestAnimationFrame(() => groupingSearchInputRef.current?.focus())}
+                                            className="mt-4 inline-flex items-center justify-center rounded-full border border-gray-100 px-4 py-2 text-xs font-light text-gray-700 transition-all duration-200 ease-out hover:border-gray-200 hover:text-gray-900 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                        >
+                                            Crear primer grupo
+                                        </button>
                                     </div>
                                 )}
                                 <div className="space-y-4">
@@ -704,8 +714,17 @@
                                     );
                                 })}
                                 {comparisonGroups.length === 0 && (
-                                    <div className="bg-white rounded shadow-sm border border-gray-100 p-6 text-center text-gray-500 transition-all duration-200 ease-out hover:shadow-md">
-                                        No has creado grupos aún. Ve a "Agrupar" para comenzar.
+                                    <div className="bg-white rounded shadow-sm border border-gray-100 p-6 text-center text-gray-400 transition-all duration-200 ease-out hover:shadow-md">
+                                        <div className="mx-auto w-10 h-10 mb-2 text-gray-300">{Icons.Layers}</div>
+                                        <p className="text-sm font-light text-gray-500">Aún no tienes grupos</p>
+                                        <p className="text-xs mt-2 text-gray-400 font-light">Agrupa productos para comparar proveedores.</p>
+                                        <button
+                                            type="button"
+                                            onClick={() => setView('grouping')}
+                                            className="mt-4 inline-flex items-center justify-center rounded-full border border-gray-100 px-4 py-2 text-xs font-light text-gray-700 transition-all duration-200 ease-out hover:border-gray-200 hover:text-gray-900 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                        >
+                                            Crear primer grupo
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -774,8 +793,17 @@
                                         ))}
                                         {comparisonGroups.length === 0 && (
                                             <tr>
-                                                <td colSpan="5" className="p-8 text-center text-gray-500">
-                                                    No has creado grupos aún. Ve a "Agrupar" para comenzar.
+                                                <td colSpan="5" className="p-8 text-center text-gray-400">
+                                                    <div className="mx-auto w-10 h-10 mb-2 text-gray-300">{Icons.Layers}</div>
+                                                    <p className="text-sm font-light text-gray-500">Aún no tienes grupos</p>
+                                                    <p className="text-xs mt-2 text-gray-400 font-light">Agrupa productos para comparar proveedores.</p>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setView('grouping')}
+                                                        className="mt-4 inline-flex items-center justify-center rounded-full border border-gray-100 px-4 py-2 text-xs font-light text-gray-700 transition-all duration-200 ease-out hover:border-gray-200 hover:text-gray-900 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                                    >
+                                                        Crear primer grupo
+                                                    </button>
                                                 </td>
                                             </tr>
                                         )}
@@ -881,9 +909,9 @@
                     <div className="flex-grow overflow-y-auto p-4 space-y-3">
                         {count === 0 ? (
                             <div className="text-center text-gray-400 py-10">
-                                <div className="mx-auto w-10 h-10 mb-2 opacity-50">{Icons.DollarSign}</div>
-                                <p className="text-sm">Carrito vacío</p>
-                                <p className="text-xs mt-2 text-gray-500">Usa el catálogo para encontrar y agregar productos al pedido.</p>
+                                <div className="mx-auto w-10 h-10 mb-2 text-gray-300">{Icons.Cart}</div>
+                                <p className="text-sm font-light text-gray-500">Agrega productos para cotizar</p>
+                                <p className="text-xs mt-2 text-gray-400 font-light">Explora el catálogo y arma tu lista.</p>
                                 <button
                                     type="button"
                                     onClick={() => {
@@ -891,9 +919,9 @@
                                         setIsCartOpen(false);
                                         requestAnimationFrame(() => searchInputRef.current?.focus());
                                     }}
-                                    className="mt-4 inline-flex items-center justify-center rounded-full border border-gray-100 px-4 py-2 text-xs font-semibold text-gray-700 transition-all duration-200 ease-out hover:border-gray-200 hover:text-gray-900 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                    className="mt-4 inline-flex items-center justify-center rounded-full border border-gray-100 px-4 py-2 text-xs font-light text-gray-700 transition-all duration-200 ease-out hover:border-gray-200 hover:text-gray-900 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
                                 >
-                                    Ver productos
+                                    Explorar catálogo
                                 </button>
                             </div>
                         ) : (
