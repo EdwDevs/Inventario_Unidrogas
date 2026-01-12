@@ -448,7 +448,8 @@
                                             // Calcular precios finales
                                             const priceU = u ? (u.hasDiscount ? u.price * (1 - UNIDROGAS_DISCOUNT_RATE) : u.price) : Infinity;
                                             const priceD = d ? d.finalPrice : Infinity;
-                                            const priceC = c ? (c.stock > 0 ? c.finalPrice : Infinity) : Infinity;
+                                            const priceCForComparison = c ? (c.stock > 0 ? c.finalPrice : Infinity) : Infinity;
+                                            const priceCDisplay = c ? c.finalPrice : null;
 
                                             // Determinar tipo de coincidencia para el color
                                             let matchCount = 0;
@@ -475,7 +476,7 @@
                                             }
 
                                             // Ganador
-                                            const min = Math.min(priceU, priceD, priceC);
+                                            const min = Math.min(priceU, priceD, priceCForComparison);
                                             let winner = "---";
                                             if (min !== Infinity) {
                                                 if (min === priceU) winner = "Unidrogas";
@@ -512,12 +513,12 @@
                                                             <div>
                                                                 {c.stock > 0 ? (
                                                                     <>
-                                                                        <div className="font-bold">{formatCOP(priceC)}</div>
+                                                                        <div className="font-bold">{formatCOP(priceCDisplay)}</div>
                                                                         <div className="text-[10px] text-green-600">Stock: {c.stock}</div>
                                                                     </>
                                                                 ) : (
                                                                     <>
-                                                                        <div className="text-gray-400 line-through text-xs">{formatCOP(priceC)}</div>
+                                                                        <div className="text-gray-400 line-through text-xs">{formatCOP(priceCDisplay)}</div>
                                                                         <div className="text-[10px] text-red-600 font-bold">AGOTADO</div>
                                                                     </>
                                                                 )}
