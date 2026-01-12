@@ -670,7 +670,7 @@
                                     Object.entries(cart).map(([id, qty]) => {
                                         const p = currentProducts.find(x => x.id === id);
                                         if (!p) return null;
-                                        let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * 0.88 : p.price) : p.finalPrice;
+                                        let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * (1 - UNIDROGAS_DISCOUNT_RATE) : p.price) : p.finalPrice;
                                         return (
                                             <div key={id} className="text-sm border-b pb-2">
                                                 <div className="flex justify-between font-bold">
