@@ -60,7 +60,9 @@
             Check: <Icon path={<><polyline points="20 6 9 17 4 12"></polyline></>} />,
             Plus: <Icon path={<><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></>} />,
             X: <Icon path={<><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></>} />,
-            Store: <Icon path={<><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path><path d="M2 7h20"></path><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"></path></>} />
+            Store: <Icon path={<><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"></path><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"></path><path d="M2 7h20"></path><path d="M22 7v3a2 2 0 0 1-2 2v0a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 16 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 12 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 8 12a2.7 2.7 0 0 1-1.59-.63.7.7 0 0 0-.82 0A2.7 2.7 0 0 1 4 12v0a2 2 0 0 1-2-2V7"></path></>} />,
+            Moon: <Icon path={<><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"></path></>} />,
+            Sun: <Icon path={<><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></>} />
         };
 
         const GROUP_COLORS = [
@@ -91,27 +93,27 @@
             </div>
         );
 
-        const ConfirmationModal = ({ message, onConfirm, onCancel }) => (
+        const ConfirmationModal = ({ message, onConfirm, onCancel, isDark }) => (
             <div className="fixed inset-0 z-50 flex items-center justify-center">
                 <div className="absolute inset-0 bg-black/40" onClick={onCancel}></div>
-                <div className="relative bg-white rounded-lg shadow-md border border-gray-100 w-full max-w-sm p-5">
+                <div className={`relative rounded-lg shadow-md border w-full max-w-sm p-5 ${isDark ? 'bg-slate-900 border-slate-700' : 'bg-white border-gray-100'}`}>
                     <div className="flex items-start justify-between">
-                        <h3 className="text-base font-semibold text-gray-800">Confirmación</h3>
+                        <h3 className={`text-base font-semibold ${isDark ? 'text-slate-100' : 'text-gray-800'}`}>Confirmación</h3>
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="text-gray-400 hover:text-gray-600 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                            className={`transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'text-slate-400 hover:text-slate-200' : 'text-gray-400 hover:text-gray-600'}`}
                             aria-label="Cerrar"
                         >
                             {Icons.X}
                         </button>
                     </div>
-                    <p className="mt-3 text-sm text-gray-600">{message}</p>
+                    <p className={`mt-3 text-sm ${isDark ? 'text-slate-300' : 'text-gray-600'}`}>{message}</p>
                     <div className="mt-5 flex justify-end gap-2">
                         <button
                             type="button"
                             onClick={onCancel}
-                            className="rounded border border-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-slate-50 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                            className={`rounded border px-4 py-2 text-sm font-semibold transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'border-slate-700 text-slate-200 hover:bg-slate-800' : 'border-gray-100 text-gray-700 hover:bg-slate-50'}`}
                         >
                             Cancelar
                         </button>
@@ -133,6 +135,7 @@
             const [searchTerm, setSearchTerm] = useState('');
             const [cart, setCart] = useState({});
             const [isCartOpen, setIsCartOpen] = useState(false);
+            const [isDark, setIsDark] = useState(false);
             const searchInputRef = useRef(null);
             const groupingSearchInputRef = useRef(null);
             const [toastMessage, setToastMessage] = useState('');
@@ -194,6 +197,7 @@
                             message={confirmConfig.message}
                             onConfirm={handleConfirmAction}
                             onCancel={closeConfirmModal}
+                            isDark={isDark}
                         />
                     )}
                 </>
@@ -210,7 +214,7 @@
                 `pb-2 px-1 text-xs sm:text-sm font-semibold transition-all duration-200 ease-out border-b active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${
                     view === tabId
                         ? 'text-indigo-600 border-b-2 border-indigo-600'
-                        : 'text-gray-500 border-transparent hover:text-indigo-600 hover:border-indigo-300'
+                        : `${isDark ? 'text-slate-300 border-transparent hover:text-slate-100 hover:border-slate-500' : 'text-gray-500 border-transparent hover:text-indigo-600 hover:border-indigo-300'}`
                 }`
             );
 
@@ -893,14 +897,14 @@
             const themeClass = `text-${theme}-600 bg-${theme}-50 border-${theme}-200`;
             const cartContents = (showClose = false) => (
                 <>
-                    <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-slate-50">
+                    <div className={`p-4 border-b flex justify-between items-center ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-gray-100'}`}>
                         <div>
                             <h2 className="font-bold flex items-center gap-2">{Icons.Cart} Resumen de cotización</h2>
-                            <p className="text-xs text-gray-500">Proveedor: {supplier}</p>
+                            <p className={`text-xs ${isDark ? 'text-slate-300' : 'text-gray-500'}`}>Proveedor: {supplier}</p>
                         </div>
                         <div className="flex items-center gap-2">
                             {showClose && (
-                                <button onClick={() => setIsCartOpen(false)} className="text-gray-500 hover:text-gray-700 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+                                <button onClick={() => setIsCartOpen(false)} className={`transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'text-slate-300 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}>
                                     {Icons.X}
                                 </button>
                             )}
@@ -930,22 +934,22 @@
                                 if (!p) return null;
                                 let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * (1 - UNIDROGAS_DISCOUNT_RATE) : p.price) : p.finalPrice;
                                 return (
-                                    <div key={id} className="text-sm border-b border-gray-100 pb-2">
+                                    <div key={id} className={`text-sm border-b pb-2 ${isDark ? 'border-slate-700' : 'border-gray-100'}`}>
                                         <div className="flex justify-between font-bold">
                                             <span className="truncate w-40">{p.name}</span>
                                             <span>x{qty}</span>
                                         </div>
-                                        <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                        <div className={`flex justify-between text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
                                             <span>Unit: {formatCOP(final)}</span>
-                                            <span className="font-bold text-gray-800">{formatCOP(final * qty)}</span>
+                                            <span className={`font-bold ${isDark ? 'text-slate-100' : 'text-gray-800'}`}>{formatCOP(final * qty)}</span>
                                         </div>
                                     </div>
                                 );
                             })
                         )}
                     </div>
-                    <div className="p-4 bg-white border-t border-gray-100">
-                        <div className="rounded-lg bg-slate-50 p-3">
+                    <div className={`p-4 border-t ${isDark ? 'bg-slate-900 border-slate-700' : 'bg-white border-gray-100'}`}>
+                        <div className={`rounded-lg p-3 ${isDark ? 'bg-slate-800' : 'bg-slate-50'}`}>
                             <div className="flex justify-between text-sm mb-2">
                                 <span>Subtotal</span>
                                 <span>{formatCOP(subtotal)}</span>
@@ -981,7 +985,7 @@
                                 <button
                                     type="button"
                                     onClick={clearCurrentViewCart}
-                                    className="w-full mt-2 inline-flex items-center justify-center gap-2 py-2 text-xs font-semibold text-gray-500 hover:text-gray-700 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300"
+                                    className={`w-full mt-2 inline-flex items-center justify-center gap-2 py-2 text-xs font-semibold transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 ${isDark ? 'text-slate-300 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
                                 >
                                     {Icons.Trash}
                                     Limpiar carrito
@@ -993,23 +997,29 @@
             );
 
             return (
-                <div className="flex flex-col h-full bg-gray-50 font-sans">
-                    <header className="sticky top-0 z-10 backdrop-blur bg-white/80 border-b p-4 flex flex-wrap justify-between items-center gap-4">
-                <div className="flex flex-col h-full bg-slate-50 font-sans">
-                    <header className="bg-white shadow-sm border-b border-gray-100 p-4 flex flex-wrap justify-between items-center gap-4 z-10">
+                <div className={`flex flex-col h-full font-sans ${isDark ? 'bg-slate-900 text-slate-100' : 'bg-gray-50 text-slate-800'}`}>
+                    <header className={`shadow-sm border-b p-4 flex flex-wrap justify-between items-center gap-4 z-10 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-100'}`}>
                         <div className="flex items-center gap-2">
                             <div className={`p-2 rounded text-white bg-${theme}-600`}>{Icons.Store}</div>
                             <div>
-                                <h1 className="text-base sm:text-lg lg:text-xl font-bold text-primary">Catálogo {supplier}</h1>
-                                <p className="text-xs sm:text-sm text-gray-500">Vista individual por depósito</p>
+                                <h1 className={`text-base sm:text-lg lg:text-xl font-bold ${isDark ? 'text-slate-100' : 'text-primary'}`}>Catálogo {supplier}</h1>
+                                <p className={`text-xs sm:text-sm ${isDark ? 'text-slate-300' : 'text-gray-500'}`}>Vista individual por depósito</p>
                             </div>
                         </div>
                         <div className="flex flex-wrap items-center gap-4">
                             <TabBar />
+                            <button
+                                type="button"
+                                onClick={() => setIsDark((prev) => !prev)}
+                                className={`px-3 py-2 border rounded text-xs sm:text-sm flex items-center gap-2 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'border-slate-700 hover:bg-slate-800 text-slate-100' : 'border-gray-100 hover:bg-slate-50 text-gray-700'}`}
+                                aria-label={isDark ? 'Activar modo claro' : 'Activar modo oscuro'}
+                            >
+                                {isDark ? Icons.Sun : Icons.Moon}
+                            </button>
                             <button onClick={() => {
                                 let next = supplier === 'Unidrogas' ? 'Drosan' : supplier === 'Drosan' ? 'Copidrogas' : 'Unidrogas';
                                 setSupplier(next);
-                            }} className="px-4 py-2 border border-gray-100 rounded text-xs sm:text-sm hover:bg-slate-50 flex items-center gap-2 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500">
+                            }} className={`px-4 py-2 border rounded text-xs sm:text-sm hover:bg-slate-50 flex items-center gap-2 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'border-slate-700 text-slate-100 hover:bg-slate-800' : 'border-gray-100 text-gray-700 hover:bg-slate-50'}`}>
                                 {Icons.Refresh} Cambiar Depósito
                             </button>
                         </div>
@@ -1018,10 +1028,17 @@
                     <main className="flex-grow flex overflow-hidden">
                         {/* Lista productos normal */}
                         <div className="flex-grow overflow-y-auto">
-                            <div className="sticky top-0 z-10 bg-white/70 backdrop-blur border-b border-gray-100 px-4 pt-3 pb-2">
+                            <div className={`sticky top-0 z-10 backdrop-blur border-b px-4 pt-3 pb-2 ${isDark ? 'bg-slate-900/80 border-slate-800' : 'bg-white/70 border-gray-100'}`}>
                                 <div className="relative">
-                                    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">{Icons.Search}</div>
-                                    <input type="text" placeholder="Buscar" className="w-full pl-10 pr-4 text-sm py-1 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 sm:py-2" value={searchTerm} onChange={e => setSearchTerm(e.target.value)} ref={searchInputRef} />
+                                    <div className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none ${isDark ? 'text-slate-400' : 'text-gray-400'}`}>{Icons.Search}</div>
+                                    <input
+                                        type="text"
+                                        placeholder="Buscar"
+                                        className={`w-full pl-10 pr-4 text-sm py-1 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 sm:py-2 ${isDark ? 'bg-slate-900 border-slate-700 text-slate-100 placeholder-slate-400' : 'bg-white border-gray-200 text-slate-800 placeholder-gray-400'}`}
+                                        value={searchTerm}
+                                        onChange={e => setSearchTerm(e.target.value)}
+                                        ref={searchInputRef}
+                                    />
                                 </div>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 pb-4">
@@ -1037,13 +1054,13 @@
                                     const hasSavings = savings > 0;
 
                                     return (
-                                        <div key={p.id} className="relative bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col justify-between space-y-2">
+                                        <div key={p.id} className={`relative p-4 rounded-xl shadow-sm border flex flex-col justify-between space-y-2 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'}`}>
                                             <span className={`absolute top-3 right-3 inline-flex items-center rounded-full px-2 py-1 text-[11px] font-semibold ${isOutOfStock ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
                                                 {stockLabel}
                                             </span>
                                             <div className="space-y-2">
                                                 <div className="flex items-start gap-2">
-                                                    <span className="text-[10px] bg-gray-100 text-gray-600 px-2 py-1 rounded font-bold">{p.category || 'GENERAL'}</span>
+                                                    <span className={`text-[10px] px-2 py-1 rounded font-bold ${isDark ? 'bg-slate-700 text-slate-200' : 'bg-gray-100 text-gray-600'}`}>{p.category || 'GENERAL'}</span>
                                                     {qty > 0 && <span className={`text-xs font-bold px-2 py-1 rounded-full text-white bg-${theme}-600`}>x{qty}</span>}
                                                 </div>
                                                 <div className="font-bold text-base sm:text-lg lg:text-xl h-10 line-clamp-2">{p.name}</div>
@@ -1056,11 +1073,11 @@
                                                             Ahorro {formatCOP(savings)}
                                                         </span>
                                                     )}
-                                                    <div className="text-xs text-gray-400 line-through">{formatCOP(price)}</div>
+                                                    <div className={`text-xs line-through ${isDark ? 'text-slate-400' : 'text-gray-400'}`}>{formatCOP(price)}</div>
                                                     <div className={`text-lg font-bold text-${theme}-700`}>{formatCOP(final)}</div>
                                                 </div>
                                                 <div className="flex gap-2">
-                                                    {qty > 0 && <button onClick={() => removeFromCart(p.id)} className="w-8 h-8 rounded-full border border-gray-100 flex items-center justify-center hover:bg-slate-50 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400">-</button>}
+                                                    {qty > 0 && <button onClick={() => removeFromCart(p.id)} className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${isDark ? 'border-slate-600 hover:bg-slate-700' : 'border-gray-100 hover:bg-slate-50'}`}>-</button>}
                                                     <button 
                                                         onClick={() => addToCart(p.id)} 
                                                         disabled={supplier === 'Copidrogas' && stock <= 0}
@@ -1077,7 +1094,7 @@
                         </div>
 
                         {/* Carrito Lateral */}
-                        <div className="hidden lg:flex w-80 bg-white border-l border-gray-100 flex-col shadow-md z-20">
+                        <div className={`hidden lg:flex w-80 border-l flex-col shadow-md z-20 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-100'}`}>
                             {cartContents()}
                         </div>
                     </main>
@@ -1102,7 +1119,7 @@
                         ></div>
                         <div
                             onClick={(event) => event.stopPropagation()}
-                            className={`absolute inset-x-0 bottom-0 bg-white rounded-t-2xl shadow-md transform transition-transform ${isCartOpen ? 'translate-y-0' : 'translate-y-full'}`}
+                            className={`absolute inset-x-0 bottom-0 rounded-t-2xl shadow-md transform transition-transform ${isCartOpen ? 'translate-y-0' : 'translate-y-full'} ${isDark ? 'bg-slate-900' : 'bg-white'}`}
                         >
                             <div className="max-h-[80vh] flex flex-col">
                                 {cartContents(true)}
