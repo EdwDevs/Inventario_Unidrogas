@@ -20,23 +20,152 @@
 
     <style>
         :root {
-            --primary: #1e3a8a;
-            --accent: #64748b;
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --accent: #06b6d4;
             --surface: #ffffff;
             --text: #0f172a;
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.18);
+        }
+        body.dark-mode {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --accent: #22d3ee;
+            --surface: #1e293b;
+            --text: #f1f5f9;
+            --glass-bg: rgba(30, 41, 59, 0.85);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
         body {
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: var(--text);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        body.dark-mode {
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
         }
         .text-primary { color: var(--primary); }
         .text-accent { color: var(--accent); }
         .bg-surface { background-color: var(--surface); }
         .bg-accent-soft { background-color: color-mix(in srgb, var(--accent) 8%, transparent); }
         .scrollbar-hide::-webkit-scrollbar { display: none; }
+        
+        /* Glassmorphism */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+        }
+        
+        /* Modern Card Shadows */
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 0 0 1px rgba(255, 255, 255, 0.05);
+        }
+        .card-shadow-hover:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(99, 102, 241, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        /* Smooth Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+        }
+        
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        
+        /* Modern Button Styles */
+        .btn-modern {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .btn-modern::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        .btn-modern:hover::before {
+            left: 100%;
+        }
+        .btn-modern:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .btn-modern:active {
+            transform: translateY(0);
+        }
+        
+        /* Input Modern Style */
+        .input-modern {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .input-modern:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #6366f1, #8b5cf6);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #4f46e5, #7c3aed);
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #6366f1, #06b6d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
+        }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 h-screen flex flex-col overflow-hidden">
+<body class="text-slate-800 h-screen flex flex-col overflow-hidden">
     <div id="root" class="h-full flex flex-col"></div>
 
     <script type="text/babel">
@@ -86,41 +215,44 @@
         ];
 
         const Toast = ({ message }) => (
-            <div className="fixed bottom-6 right-6 z-50">
-                <div className="rounded-lg bg-gray-900 text-white px-4 py-3 shadow-md text-sm">
+            <div className="fixed bottom-6 right-6 z-50 animate-slide-in">
+                <div className="rounded-xl glass text-white px-5 py-4 shadow-lg text-sm font-medium flex items-center gap-3 card-shadow">
+                    <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
                     {message}
                 </div>
             </div>
         );
 
         const ConfirmationModal = ({ message, onConfirm, onCancel, isDark }) => (
-            <div className="fixed inset-0 z-50 flex items-center justify-center">
-                <div className="absolute inset-0 bg-black/40" onClick={onCancel}></div>
-                <div className={`relative rounded-lg shadow-md border w-full max-w-sm p-5 ${isDark ? 'bg-slate-900 border-slate-700' : 'bg-white border-gray-100'}`}>
-                    <div className="flex items-start justify-between">
-                        <h3 className={`text-base font-semibold ${isDark ? 'text-slate-100' : 'text-gray-800'}`}>Confirmación</h3>
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in">
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={onCancel}></div>
+                <div className={`relative rounded-2xl shadow-2xl border w-full max-w-sm p-6 animate-fade-in glass ${isDark ? 'bg-slate-900/90 border-slate-700' : 'bg-white/90 border-white/20'}`}>
+                    <div className="flex items-start justify-between mb-4">
+                        <h3 className={`text-lg font-bold ${isDark ? 'text-slate-100' : 'text-gray-800'}`}>Confirmación</h3>
                         <button
                             type="button"
                             onClick={onCancel}
-                            className={`transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'text-slate-400 hover:text-slate-200' : 'text-gray-400 hover:text-gray-600'}`}
+                            className={`transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded-lg p-1 hover:bg-gray-100/20 ${isDark ? 'text-slate-400 hover:text-slate-200' : 'text-gray-400 hover:text-gray-600'}`}
                             aria-label="Cerrar"
                         >
                             {Icons.X}
                         </button>
                     </div>
-                    <p className={`mt-3 text-sm ${isDark ? 'text-slate-300' : 'text-gray-600'}`}>{message}</p>
-                    <div className="mt-5 flex justify-end gap-2">
+                    <p className={`mb-6 text-sm leading-relaxed ${isDark ? 'text-slate-300' : 'text-gray-600'}`}>{message}</p>
+                    <div className="flex justify-end gap-3">
                         <button
                             type="button"
                             onClick={onCancel}
-                            className={`rounded border px-4 py-2 text-sm font-semibold transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'border-slate-700 text-slate-200 hover:bg-slate-800' : 'border-gray-100 text-gray-700 hover:bg-slate-50'}`}
+                            className={`rounded-xl border px-5 py-2.5 text-sm font-semibold transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 btn-modern ${isDark ? 'border-slate-700 text-slate-200 hover:bg-slate-800' : 'border-gray-200 text-gray-700 hover:bg-slate-50'}`}
                         >
                             Cancelar
                         </button>
                         <button
                             type="button"
                             onClick={onConfirm}
-                            className="rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                            className="rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-5 py-2.5 text-sm font-semibold text-white hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 btn-modern shadow-lg"
                         >
                             Confirmar
                         </button>
@@ -897,25 +1029,30 @@
             const themeClass = `text-${theme}-600 bg-${theme}-50 border-${theme}-200`;
             const cartContents = (showClose = false) => (
                 <>
-                    <div className={`p-4 border-b flex justify-between items-center ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-slate-50 border-gray-100'}`}>
+                    <div className={`p-5 border-b flex justify-between items-center glass ${isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-gradient-to-r from-indigo-50 to-purple-50 border-white/20'}`}>
                         <div>
-                            <h2 className="font-bold flex items-center gap-2">{Icons.Cart} Resumen de cotización</h2>
-                            <p className={`text-xs ${isDark ? 'text-slate-300' : 'text-gray-500'}`}>Proveedor: {supplier}</p>
+                            <h2 className="font-bold text-lg flex items-center gap-2.5 gradient-text">
+                                <span className="p-1.5 rounded-lg bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-md">{Icons.Cart}</span>
+                                Resumen de cotización
+                            </h2>
+                            <p className={`text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>Proveedor: <span className="font-semibold">{supplier}</span></p>
                         </div>
                         <div className="flex items-center gap-2">
                             {showClose && (
-                                <button onClick={() => setIsCartOpen(false)} className={`transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'text-slate-300 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}>
+                                <button onClick={() => setIsCartOpen(false)} className={`p-2 rounded-xl transition-all duration-200 ease-out active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 hover:bg-gray-100/20 ${isDark ? 'text-slate-400 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}>
                                     {Icons.X}
                                 </button>
                             )}
                         </div>
                     </div>
-                    <div className="flex-grow overflow-y-auto p-4 space-y-3">
+                    <div className="flex-grow overflow-y-auto p-5 space-y-3">
                         {count === 0 ? (
-                            <div className="text-center text-gray-400 py-10">
-                                <div className="mx-auto w-10 h-10 mb-2 text-gray-300">{Icons.Cart}</div>
-                                <p className="text-sm font-light text-gray-500">Agrega productos para cotizar</p>
-                                <p className="text-xs mt-2 text-gray-400 font-light">Explora el catálogo y arma tu lista.</p>
+                            <div className="text-center py-12 animate-fade-in">
+                                <div className="mx-auto w-16 h-16 mb-4 rounded-full bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center text-indigo-400">
+                                    <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path></svg>
+                                </div>
+                                <p className="text-base font-semibold mb-2">Tu carrito está vacío</p>
+                                <p className="text-sm text-gray-500 mb-6">Explora el catálogo y agrega productos para comenzar tu cotización.</p>
                                 <button
                                     type="button"
                                     onClick={() => {
@@ -923,7 +1060,7 @@
                                         setIsCartOpen(false);
                                         requestAnimationFrame(() => searchInputRef.current?.focus());
                                     }}
-                                    className="mt-4 inline-flex items-center justify-center rounded-full border border-gray-100 px-4 py-2 text-xs font-light text-gray-700 transition-all duration-200 ease-out hover:border-gray-200 hover:text-gray-900 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                                    className="inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-200 ease-out hover:from-indigo-700 hover:to-purple-700 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 btn-modern"
                                 >
                                     Explorar catálogo
                                 </button>
@@ -934,33 +1071,42 @@
                                 if (!p) return null;
                                 let final = supplier === 'Unidrogas' ? (p.hasDiscount ? p.price * (1 - UNIDROGAS_DISCOUNT_RATE) : p.price) : p.finalPrice;
                                 return (
-                                    <div key={id} className={`text-sm border-b pb-2 ${isDark ? 'border-slate-700' : 'border-gray-100'}`}>
-                                        <div className="flex justify-between font-bold">
-                                            <span className="truncate w-40">{p.name}</span>
-                                            <span>x{qty}</span>
+                                    <div key={id} className={`group relative text-sm border-b pb-3 transition-all duration-200 hover:bg-gray-50/50 rounded-lg p-2 -mx-2 ${isDark ? 'border-slate-700 hover:bg-slate-800/50' : 'border-gray-100 hover:bg-white/50'}`}>
+                                        <div className="flex justify-between font-bold items-start gap-3">
+                                            <span className="truncate flex-1 leading-snug">{p.name}</span>
+                                            <span className="text-xs font-bold px-2 py-1 rounded-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white flex-shrink-0">x{qty}</span>
                                         </div>
-                                        <div className={`flex justify-between text-xs mt-1 ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
+                                        <div className={`flex justify-between text-xs mt-2 ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>
                                             <span>Unit: {formatCOP(final)}</span>
-                                            <span className={`font-bold ${isDark ? 'text-slate-100' : 'text-gray-800'}`}>{formatCOP(final * qty)}</span>
+                                            <span className={`font-bold ${isDark ? 'text-slate-200' : 'text-gray-800'}`}>{formatCOP(final * qty)}</span>
                                         </div>
+                                        <button 
+                                            onClick={() => removeFromCart(id)}
+                                            className={`absolute right-0 top-0 p-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-red-100 hover:text-red-600 ${isDark ? 'hover:bg-red-900/30' : ''}`}
+                                        >
+                                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                        </button>
                                     </div>
                                 );
                             })
                         )}
                     </div>
-                    <div className={`p-4 border-t ${isDark ? 'bg-slate-900 border-slate-700' : 'bg-white border-gray-100'}`}>
-                        <div className={`rounded-lg p-3 ${isDark ? 'bg-slate-800' : 'bg-slate-50'}`}>
+                    <div className={`p-5 border-t glass ${isDark ? 'bg-slate-900/80 border-slate-700' : 'bg-white/80 border-white/20'}`}>
+                        <div className={`rounded-2xl p-4 ${isDark ? 'bg-slate-800/50' : 'bg-gradient-to-br from-indigo-50 to-purple-50'}`}>
                             <div className="flex justify-between text-sm mb-2">
-                                <span>Subtotal</span>
-                                <span>{formatCOP(subtotal)}</span>
+                                <span className={isDark ? 'text-slate-400' : 'text-gray-600'}>Subtotal</span>
+                                <span className="font-semibold">{formatCOP(subtotal)}</span>
                             </div>
                             {savings > 0 && (
-                                <div className="flex justify-between text-sm text-green-600 font-bold mb-2">
-                                    <span>Ahorro</span>
+                                <div className="flex justify-between text-sm text-emerald-500 font-bold mb-2">
+                                    <span className="flex items-center gap-1">
+                                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                                        Ahorro
+                                    </span>
                                     <span>- {formatCOP(savings)}</span>
                                 </div>
                             )}
-                            <div className="flex justify-between text-xl font-bold border-t border-gray-100 pt-2 mt-2">
+                            <div className="flex justify-between text-2xl font-extrabold gradient-text border-t border-gray-100/20 pt-3 mt-3">
                                 <span>Total</span>
                                 <span>{formatCOP(total)}</span>
                             </div>
@@ -970,15 +1116,15 @@
                                 <button
                                     type="button"
                                     onClick={() => window.open(whatsappUrl, "_blank")}
-                                    className="w-full mt-4 inline-flex items-center justify-center gap-2 py-3 rounded font-bold text-white shadow-sm transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 bg-green-600 hover:bg-green-700"
+                                    className="w-full mt-4 inline-flex items-center justify-center gap-2.5 py-3.5 rounded-xl font-bold text-white shadow-lg transition-all duration-200 ease-out active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 btn-modern"
                                 >
-                                    {Icons.Check}
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                                     Enviar cotización WhatsApp
                                 </button>
                                 <button
                                     type="button"
                                     onClick={clearCurrentViewCart}
-                                    className={`w-full mt-2 inline-flex items-center justify-center gap-2 py-2 text-xs font-semibold transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 ${isDark ? 'text-slate-300 hover:text-white' : 'text-gray-500 hover:text-gray-700'}`}
+                                    className={`w-full mt-2 inline-flex items-center justify-center gap-2 py-2.5 text-xs font-semibold transition-all duration-200 ease-out active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-300 rounded-xl btn-modern ${isDark ? 'text-slate-400 hover:text-white hover:bg-slate-800' : 'text-gray-500 hover:text-gray-700 hover:bg-slate-100'}`}
                                 >
                                     {Icons.Trash}
                                     Limpiar carrito
@@ -990,21 +1136,23 @@
             );
 
             return (
-                <div className={`flex flex-col h-full font-sans ${isDark ? 'bg-slate-900 text-slate-100' : 'bg-gray-50 text-slate-800'}`}>
-                    <header className={`shadow-sm border-b p-4 flex flex-wrap justify-between items-center gap-4 z-10 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-100'}`}>
-                        <div className="flex items-center gap-2">
-                            <div className={`p-2 rounded text-white bg-${theme}-600`}>{Icons.Store}</div>
+                <div className={`flex flex-col h-full font-sans ${isDark ? 'bg-transparent text-slate-100' : 'bg-transparent text-slate-800'}`}>
+                    <header className={`shadow-lg border-b p-4 flex flex-wrap justify-between items-center gap-4 z-10 glass ${isDark ? 'bg-slate-900/80 border-slate-700' : 'bg-white/80 border-white/20'}`}>
+                        <div className="flex items-center gap-3">
+                            <div className="p-2.5 rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-lg animate-float">
+                                {Icons.Store}
+                            </div>
                             <div>
-                                <h1 className={`text-base sm:text-lg lg:text-xl font-bold ${isDark ? 'text-slate-100' : 'text-primary'}`}>Catálogo {supplier}</h1>
-                                <p className={`text-xs sm:text-sm ${isDark ? 'text-slate-300' : 'text-gray-500'}`}>Vista individual por depósito</p>
+                                <h1 className={`text-base sm:text-lg lg:text-xl font-bold gradient-text`}>Catálogo {supplier}</h1>
+                                <p className={`text-xs sm:text-sm ${isDark ? 'text-slate-400' : 'text-gray-500'}`}>Vista individual por depósito</p>
                             </div>
                         </div>
-                        <div className="flex flex-wrap items-center gap-4">
+                        <div className="flex flex-wrap items-center gap-3">
                             <TabBar />
                             <button
                                 type="button"
                                 onClick={() => setIsDark((prev) => !prev)}
-                                className={`px-3 py-2 border rounded text-xs sm:text-sm flex items-center gap-2 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'border-slate-700 hover:bg-slate-800 text-slate-100' : 'border-gray-100 hover:bg-slate-50 text-gray-700'}`}
+                                className={`px-3 py-2 border rounded-xl text-xs sm:text-sm flex items-center gap-2 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 btn-modern ${isDark ? 'border-slate-700 hover:bg-slate-800 text-slate-100' : 'border-white/30 hover:bg-white/50 text-gray-700'}`}
                                 aria-label={isDark ? 'Activar modo claro' : 'Activar modo oscuro'}
                             >
                                 {isDark ? Icons.Sun : Icons.Moon}
@@ -1012,7 +1160,7 @@
                             <button onClick={() => {
                                 let next = supplier === 'Unidrogas' ? 'Drosan' : supplier === 'Drosan' ? 'Copidrogas' : 'Unidrogas';
                                 setSupplier(next);
-                            }} className={`px-4 py-2 border rounded text-xs sm:text-sm hover:bg-slate-50 flex items-center gap-2 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${isDark ? 'border-slate-700 text-slate-100 hover:bg-slate-800' : 'border-gray-100 text-gray-700 hover:bg-slate-50'}`}>
+                            }} className={`px-4 py-2 border rounded-xl text-xs sm:text-sm flex items-center gap-2 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 btn-modern ${isDark ? 'border-slate-700 text-slate-100 hover:bg-slate-800' : 'border-white/30 text-gray-700 hover:bg-white/50'}`}>
                                 {Icons.Refresh} Cambiar Depósito
                             </button>
                         </div>
@@ -1021,20 +1169,20 @@
                     <main className="flex-grow flex overflow-hidden">
                         {/* Lista productos normal */}
                         <div className="flex-grow overflow-y-auto">
-                            <div className={`sticky top-0 z-10 backdrop-blur border-b px-4 pt-3 pb-2 ${isDark ? 'bg-slate-900/80 border-slate-800' : 'bg-white/70 border-gray-100'}`}>
+                            <div className={`sticky top-0 z-10 backdrop-blur-md border-b px-4 pt-3 pb-2 ${isDark ? 'bg-slate-900/60 border-slate-700' : 'bg-white/60 border-white/20'}`}>
                                 <div className="relative">
                                     <div className={`absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none ${isDark ? 'text-slate-400' : 'text-gray-400'}`}>{Icons.Search}</div>
                                     <input
                                         type="text"
-                                        placeholder="Buscar"
-                                        className={`w-full pl-10 pr-4 text-sm py-1 border rounded-lg outline-none focus:ring-2 focus:ring-blue-500 sm:py-2 ${isDark ? 'bg-slate-900 border-slate-700 text-slate-100 placeholder-slate-400' : 'bg-white border-gray-200 text-slate-800 placeholder-gray-400'}`}
+                                        placeholder="Buscar producto..."
+                                        className={`w-full pl-10 pr-4 text-sm py-2.5 border-2 rounded-xl outline-none input-modern ${isDark ? 'bg-slate-800/50 border-slate-700 text-slate-100 placeholder-slate-500' : 'bg-white/80 border-white/30 text-slate-800 placeholder-gray-400'}`}
                                         value={searchTerm}
                                         onChange={e => setSearchTerm(e.target.value)}
                                         ref={searchInputRef}
                                     />
                                 </div>
                             </div>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 px-4 pb-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 px-4 pb-4">
                                 {currentProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())).map(p => {
                                     let price = p.price;
                                     let final = supplier === 'Unidrogas' ? (p.hasDiscount ? price * (1 - UNIDROGAS_DISCOUNT_RATE) : price) : p.finalPrice;
@@ -1047,34 +1195,36 @@
                                     const hasSavings = savings > 0;
 
                                     return (
-                                        <div key={p.id} className={`relative p-4 rounded-xl shadow-sm border flex flex-col justify-between space-y-2 ${isDark ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-100'}`}>
-                                            <span className={`absolute top-3 right-3 inline-flex items-center rounded-full px-2 py-1 text-[11px] font-semibold ${isOutOfStock ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'}`}>
+                                        <div key={p.id} className={`group relative p-5 rounded-2xl shadow-md border flex flex-col justify-between space-y-3 transition-all duration-300 card-shadow-hover ${isDark ? 'bg-slate-800/80 border-slate-700 glass' : 'bg-white/80 border-white/40 glass'}`}>
+                                            <span className={`absolute top-4 right-4 inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold backdrop-blur-sm ${isOutOfStock ? 'bg-red-500/20 text-red-400 border border-red-500/30' : 'bg-green-500/20 text-green-400 border border-green-500/30'}`}>
                                                 {stockLabel}
                                             </span>
                                             <div className="space-y-2">
                                                 <div className="flex items-start gap-2">
-                                                    <span className={`text-[10px] px-2 py-1 rounded font-bold ${isDark ? 'bg-slate-700 text-slate-200' : 'bg-gray-100 text-gray-600'}`}>{p.category || 'GENERAL'}</span>
-                                                    {qty > 0 && <span className={`text-xs font-bold px-2 py-1 rounded-full text-white bg-${theme}-600`}>x{qty}</span>}
+                                                    <span className={`text-[10px] px-2.5 py-1 rounded-lg font-bold ${isDark ? 'bg-slate-700/50 text-slate-300' : 'bg-gradient-to-r from-indigo-50 to-purple-50 text-indigo-600'}`}>{p.category || 'GENERAL'}</span>
+                                                    {qty > 0 && <span className="text-xs font-bold px-2.5 py-1 rounded-full text-white bg-gradient-to-r from-indigo-600 to-purple-600 shadow-md">x{qty}</span>}
                                                 </div>
-                                                <div className="font-bold text-base sm:text-lg lg:text-xl h-10 line-clamp-2">{p.name}</div>
+                                                <div className="font-bold text-base sm:text-lg lg:text-xl h-12 line-clamp-2 leading-tight">{p.name}</div>
                                             </div>
                                             
-                                            <div className="border-t pt-3 flex flex-col gap-3">
-                                                <div className="space-y-2">
+                                            <div className="border-t border-gray-100/20 pt-4 flex flex-col gap-3">
+                                                <div className="space-y-1.5">
                                                     {hasSavings && (
-                                                        <span className="inline-flex items-center w-fit rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-semibold px-2 py-1">
+                                                        <span className="inline-flex items-center w-fit rounded-full bg-gradient-to-r from-emerald-500/10 to-teal-500/10 text-emerald-500 text-[10px] font-bold px-2.5 py-1 border border-emerald-500/20">
                                                             Ahorro {formatCOP(savings)}
                                                         </span>
                                                     )}
-                                                    <div className={`text-xs line-through ${isDark ? 'text-slate-400' : 'text-gray-400'}`}>{formatCOP(price)}</div>
-                                                    <div className={`text-lg font-bold text-${theme}-700`}>{formatCOP(final)}</div>
+                                                    <div className={`text-xs line-through ${isDark ? 'text-slate-500' : 'text-gray-400'}`}>{formatCOP(price)}</div>
+                                                    <div className="text-xl font-extrabold gradient-text">{formatCOP(final)}</div>
                                                 </div>
                                                 <div className="flex gap-2">
-                                                    {qty > 0 && <button onClick={() => removeFromCart(p.id)} className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 ${isDark ? 'border-slate-600 hover:bg-slate-700' : 'border-gray-100 hover:bg-slate-50'}`}>-</button>}
+                                                    {qty > 0 && <button onClick={() => removeFromCart(p.id)} className={`w-9 h-9 rounded-xl border-2 flex items-center justify-center transition-all duration-200 ease-out active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 btn-modern ${isDark ? 'border-slate-600 hover:bg-slate-700' : 'border-gray-200 hover:bg-slate-100'}`}>
+                                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 12H4"></path></svg>
+                                                    </button>}
                                                     <button 
                                                         onClick={() => addToCart(p.id)} 
                                                         disabled={supplier === 'Copidrogas' && stock <= 0}
-                                                        className={`px-4 py-1 rounded text-white text-xs sm:text-sm font-bold transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-${theme}-400 ${supplier === 'Copidrogas' && stock <= 0 ? 'bg-gray-400' : `bg-${theme}-600 hover:bg-${theme}-700`}`}
+                                                        className={`flex-1 px-4 py-2.5 rounded-xl text-white text-xs sm:text-sm font-bold transition-all duration-200 ease-out active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-400 btn-modern shadow-lg ${supplier === 'Copidrogas' && stock <= 0 ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700'}`}
                                                     >
                                                         {qty === 0 ? 'AGREGAR' : '+'}
                                                     </button>
@@ -1087,19 +1237,19 @@
                         </div>
 
                         {/* Carrito Lateral */}
-                        <div className={`hidden lg:flex w-80 border-l flex-col shadow-md z-20 ${isDark ? 'bg-slate-900 border-slate-800' : 'bg-white border-gray-100'}`}>
+                        <div className={`hidden lg:flex w-80 border-l flex-col shadow-xl z-20 glass ${isDark ? 'bg-slate-900/80 border-slate-700' : 'bg-white/80 border-white/20'}`}>
                             {cartContents()}
                         </div>
                     </main>
 
                     <button
                         onClick={() => setIsCartOpen(true)}
-                        className={`lg:hidden fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full px-4 py-3 text-white shadow-md bg-${theme}-600 hover:bg-${theme}-700 transition-all duration-200 ease-out active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-${theme}-300`}
+                        className={`lg:hidden fixed bottom-5 right-5 z-30 flex items-center gap-2.5 rounded-full px-5 py-3.5 text-white shadow-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 ease-out active:scale-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-300 btn-modern`}
                     >
                         {Icons.Cart}
                         <span className="font-semibold">Carrito</span>
                         {count > 0 && (
-                            <span className="ml-1 rounded-full bg-white/20 px-2 text-xs font-bold">
+                            <span className="ml-1 rounded-full bg-white/30 px-2.5 text-xs font-bold">
                                 {count}
                             </span>
                         )}
@@ -1108,11 +1258,11 @@
                     <div className={`fixed inset-0 z-40 lg:hidden ${isCartOpen ? '' : 'pointer-events-none'}`}>
                         <div
                             onClick={() => setIsCartOpen(false)}
-                            className={`absolute inset-0 bg-black/40 transition-opacity ${isCartOpen ? 'opacity-100' : 'opacity-0'}`}
+                            className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity ${isCartOpen ? 'opacity-100' : 'opacity-0'}`}
                         ></div>
                         <div
                             onClick={(event) => event.stopPropagation()}
-                            className={`absolute inset-x-0 bottom-0 rounded-t-2xl shadow-md transform transition-transform ${isCartOpen ? 'translate-y-0' : 'translate-y-full'} ${isDark ? 'bg-slate-900' : 'bg-white'}`}
+                            className={`absolute inset-x-0 bottom-0 rounded-t-3xl shadow-2xl transform transition-transform ${isCartOpen ? 'translate-y-0' : 'translate-y-full'} ${isDark ? 'bg-slate-900/95' : 'bg-white/95'} glass`}
                         >
                             <div className="max-h-[80vh] flex flex-col">
                                 {cartContents(true)}
